@@ -1,0 +1,51 @@
+{
+  "statusCode": 0,
+  "result": [
+    {
+      "label": "2017",
+      "children": [
+        {
+          "label": "外呼",
+          "marketType": "noline",
+          "children": [
+            {
+              "imgUrl" : "/static/images/report1.png",
+              "label": "大中华区物业摘要望",
+              "nodeCode": 29,
+              "state": 0
+            }
+          ]
+        },
+        {
+          "label": "线下推广",
+          "marketType": "outline",
+          "nodeCode": 1,
+          "children": [
+            {
+              
+              "imgUrl" : "/static/images/report1.png",
+              "label": "大中华区物业摘要望",
+              "nodeCode": 28,
+              "state": 0
+            }
+          ]
+        },
+        {
+          "label": "线上推广",
+          "marketType": "online",
+          "nodeCode": 0,
+          "children": [
+            {
+              
+              "imgUrl" : "/static/images/report1.png",
+              "label": "大中华区物业摘要望",
+              "nodeCode": 27,
+              "state": 0
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "mess": ""
+}

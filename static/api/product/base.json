@@ -1,0 +1,17 @@
+{
+  "statusCode": 0,
+  "result": {
+    "id": 0,
+    "base": {
+      "name": "",
+      "price": 0,
+      "type": 0,
+      "abstract": "",
+      "coverImg": "",
+      "code": "123456",
+      "customs": [1,2],
+      "products": [1,2]
+    }
+  },
+  "mess": ""
+}

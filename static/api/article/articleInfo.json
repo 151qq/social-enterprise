@@ -1,0 +1,76 @@
+{
+  "statusCode": 0,
+  "result": {
+    "statusCode": "down",
+    "marketAbstract": "文章摘要测试测试测试",
+    "articles": [0, 1],
+    "comments": [
+        {
+            "commentId": 0,
+            "userName": "魏宁宁",
+            "userAvatar": "http://img.esocial-cloud.com//048151ea-9e97-4b35-b47d-59e4883c94ff.jpg",
+            "commentCon": {
+                "text": "佳程广场总占地面积造就中西，的形态，表达对世界的拥抱。",
+                "imgList": [
+                    "/static/images/img1.png",
+                    "/static/images/img1.png",
+                    "/static/images/img1.png"
+                ],
+                "articleContent": [
+                    {
+                        "id": 0,
+                        "imgUrl": "/static/images/img1.png",
+                        "title": "文章标题文章标题文章标题文章标题文章标题",
+                        "des": "佳程广场总占地面积17690平方米，总建筑面积141075平方米，楼体高度：103.8米。"
+                    }
+                ],
+                "commentTime": "2017-09-20 10:10:10"
+            },
+            "authorAnswer": {
+                "text": "大兄弟，说啥呢",
+                "imgList": [
+                    "/static/images/img1.png",
+                    "/static/images/img1.png",
+                    "/static/images/img1.png"
+                ],
+                "articleContent": [
+                    {
+                        "id": 0,
+                        "imgUrl": "/static/images/img1.png",
+                        "title": "文章标题文章标题文章标题文章标题文章标题",
+                        "des": "佳程广场总占地面积17690平方米，总建筑面积141075平方米，楼体高度：103.8米。"
+                    }
+                ],
+                "anwerTime": "2017-09-20 10:20:50"
+            }
+        },
+        {
+            "commentId": 1,
+            "userName": "魏宁宁",
+            "userAvatar": "http://img.esocial-cloud.com//048151ea-9e97-4b35-b47d-59e4883c94ff.jpg",
+            "commentCon": {
+                "text": "佳程广场总占地面积造就中西，的形态，表达对世界的拥抱。",
+                "commentTime": "2017-09-21 10:10:10"
+            },
+            "authorAnswer": {
+                "text": "大兄弟，说啥呢",
+                "imgList": [
+                    "/static/images/img1.png",
+                    "/static/images/img1.png",
+                    "/static/images/img1.png"
+                ],
+                "articleContent": [
+                    {
+                        "id": 0,
+                        "imgUrl": "/static/images/img1.png",
+                        "title": "文章标题文章标题文章标题文章标题文章标题",
+                        "des": "佳程广场总占地面积17690平方米，总建筑面积141075平方米，楼体高度：103.8米。"
+                    }
+                ],
+                "anwerTime": "2017-09-21 10:20:50"
+            }
+        }
+    ]
+  },
+  "mess": ""
+}

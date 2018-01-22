@@ -1,0 +1,21 @@
+{
+  "statusCode": 0,
+  "result": {
+    "id": 0,
+    "code": "down",
+    "ewm": "/static/images/ewm.png",
+    "logs": [
+        {
+            "id": 0,
+            "date": "2017-18-21",
+            "des": "规格一说明"
+        },
+        {
+            "id": 1,
+            "date": "2017-18-21",
+            "des": "规格二说明"
+        }
+    ]
+  },
+  "mess": ""
+}

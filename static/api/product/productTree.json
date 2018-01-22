@@ -1,0 +1,68 @@
+{
+  "statusCode": 0,
+  "result": [
+    {
+      "label": "产品",
+      "nodeCode": 1,
+      "nodeType": "dir",
+      "children": [
+        {
+          "label": "产品类型一",
+          "nodeCode": 11,
+          "nodeType": "dir",
+          "children": [
+            {
+              "imgUrl" : "/static/images/report1.png",
+              "label": "大中华区物业摘要望",
+              "nodeCode": 111,
+              "state": 0
+            },
+            {
+              "imgUrl" : "/static/images/report1.png",
+              "label": "大中华区物业摘要望",
+              "nodeCode": 112,
+              "state": 0
+            }
+          ]
+        },
+        {
+          "nodeCode": 12,
+          "nodeType": "list",
+          "children": [
+            {
+              "imgUrl" : "/static/images/report1.png",
+              "label": "大中华区物业摘要望",
+              "nodeCode": 111,
+              "state": 0
+            },
+            {
+              "imgUrl" : "/static/images/report1.png",
+              "label": "大中华区物业摘要望",
+              "nodeCode": 112,
+              "state": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nodeCode": 2,
+      "nodeType": "list",
+      "children": [
+        {
+          "imgUrl" : "/static/images/report1.png",
+          "label": "大中华区物业摘要望",
+          "nodeCode": 21,
+          "state": 0
+        },
+        {
+          "imgUrl" : "/static/images/report1.png",
+          "label": "大中华区物业摘要望",
+          "nodeCode": 22,
+          "state": 0
+        }
+      ]
+    }
+  ],
+  "mess": ""
+}

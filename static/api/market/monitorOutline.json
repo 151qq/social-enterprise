@@ -1,0 +1,32 @@
+{
+  "statusCode": 0,
+  "result": {
+    "name": "什么什么",
+    "point": {
+      "lng": 116.409,
+      "lat": 39.918
+    },
+    "dateArea": "",
+    "hostNum": 21,
+    "mayNum": 23,
+    "muchNum": 3,
+    "comeNum": 1,
+    "newNum": 2,
+    "totalNum": 3,
+    "newTotalNum": 4,
+    "comMidNum": 5,
+    "newMidNum": 6,
+    "echartsData": {
+      "title": "城市订单量",
+      "legend": ["订单"],
+      "yAxis": ["三月", "四月", "五月", "六月", "七月", "八月", "九月"],
+      "seriesBar": [
+        {
+          "name": "订单",
+          "data": [50, 75, 100, 150, 200, 250, 150]
+        }
+      ]
+    }
+  },
+  "mess": ""
+}

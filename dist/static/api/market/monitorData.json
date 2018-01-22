@@ -1,0 +1,37 @@
+{
+  "statusCode": 0,
+  "result": {
+    "name": "什么什么",
+    "dateArea": "",
+    "shareNum": 23,
+    "quanNum": 21,
+    "reedNum": 23,
+    "comentNum": 3,
+    "askNum": 4,
+    "integralNum": 4,
+    "processDay": 3,
+    "articleNum": 3,
+    "allReedNum": 3,
+    "allCommentNum": 3,
+    "allShareNum": 3,
+    "subQuanNum": 3,
+    "SubIntegralNum": 3,
+    "autoAskNum": 3,
+    "lestIntegralNum": 3,
+    "echartsData": {
+      "legend": ["实时", "昨日同期"],
+      "xAxis": ["三月", "四月", "五月", "六月", "七月", "八月", "九月"],
+      "seriesLine": [
+        {
+          "name": "实时",
+          "data": [50, 75, 100, 150, 200, 250, 150]
+        },
+        {
+          "name": "昨日同期",
+          "data": [330, 182, 191, 23, 290, 330, 300]
+        }
+      ]
+    }
+  },
+  "mess": ""
+}

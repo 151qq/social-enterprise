@@ -1,0 +1,84 @@
+{
+  "statusCode": 0,
+  "datas": [
+    {   
+      "id": 0,
+      "label": "产品图片",
+      "imgs": [
+          {
+            "id": 0,
+            "imgUrl": "/static/images/sc1.jpg"
+          },
+          {
+            "id": 1,
+            "imgUrl": "/static/images/sc1.jpg"
+          },
+          {
+            "id": 2,
+            "imgUrl": "/static/images/sc1.jpg"
+          },
+          {
+            "id": 3,
+            "imgUrl": "/static/images/sc1.jpg"
+          }
+      ]
+    },
+    {   
+      "id": 1,
+      "label": "公司形象",
+      "imgs": [
+          {
+            "id": 4,
+            "imgUrl": "/static/images/sc1.jpg"
+          },
+          {
+            "id": 5,
+            "imgUrl": "/static/images/sc1.jpg"
+          },
+          {
+            "id": 6,
+            "imgUrl": "/static/images/sc1.jpg"
+          },
+          {
+            "id": 7,
+            "imgUrl": "/static/images/sc1.jpg"
+          },
+          {
+            "id": 8,
+            "imgUrl": "/static/images/sc1.jpg"
+          },
+          {
+            "id": 9,
+            "imgUrl": "/static/images/sc1.jpg"
+          }
+      ]
+    },
+    {   
+      "id": 2,
+      "label": "客户上传",
+      "imgs": [
+          {
+            "id": 10,
+            "imgUrl": "/static/images/sc1.jpg"
+          },
+          {
+            "id": 11,
+            "imgUrl": "/static/images/sc1.jpg"
+          },
+          {
+            "id": 12,
+            "imgUrl": "/static/images/sc1.jpg"
+          },
+          {
+            "id": 13,
+            "imgUrl": "/static/images/sc1.jpg"
+          },
+          {
+            "id": 14,
+            "imgUrl": "/static/images/sc1.jpg"
+          }
+      ]
+    }
+],
+  "mess": ""
+}

@@ -1,0 +1,14 @@
+{
+  "statusCode": 0,
+  "datas": {   
+    "id": 0,
+    "label": "产品图片",
+    "imgs": [
+      "/static/images/sc1.jpg",
+      "/static/images/sc1.jpg",
+      "/static/images/sc1.jpg",
+      "/static/images/sc1.jpg"
+    ]
+  },
+  "mess": ""
+}

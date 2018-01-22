@@ -1,0 +1,13 @@
+{
+  "statusCode": 0,
+  "result": {
+    "id": 0,
+    "imgs": [
+      {
+        "id": 0,
+        "link": "/static/images/img1.png"
+      }
+    ]
+  },
+  "mess": ""
+}

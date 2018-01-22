@@ -1,0 +1,239 @@
+{
+  "statusCode": 0,
+  "result": {
+    "reedUser": {
+        "title": "阅读用户统计",
+        "legend": ["潜客","粉丝","会员"],
+        "series": [
+            {
+                "value": 55, 
+                "name": "潜客"
+            },
+            {
+                "value": 25, 
+                "name": "粉丝"
+            },
+            {
+                "value": 20, 
+                "name": "会员"
+            }
+        ]
+    },
+    "reedNum": {
+        "title": "阅读总数统计",
+        "legend": ["朋友圈","群聊"],
+        "series": [
+            {
+                "value": 70, 
+                "name": "朋友圈"
+            },
+            {
+                "value": 30, 
+                "name": "群聊"
+            }
+        ]
+    },
+    "reedTop": {
+      "title": "销售分享后阅读最多的10位",
+      "legend": ["阅读"],
+      "yAxis": ["三月", "四月", "五月", "六月", "七月", "八月", "九月"],
+      "seriesBar": [
+        {
+          "name": "阅读",
+          "data": [50, 75, 100, 150, 200, 250, 150]
+        }
+      ]
+    },
+    "shareTop": {
+      "title": "销售分享后分享最多的10位",
+      "legend": ["分享"],
+      "yAxis": ["三月", "四月", "五月", "六月", "七月", "八月", "九月"],
+      "seriesBar": [
+        {
+          "name": "分享",
+          "data": [50, 75, 100, 150, 200, 250, 150]
+        }
+      ]
+    },
+    "shareStatisticsPublic": {
+        "title": "分享统计",
+        "legend": ["私人分享私人","公众号分享朋友圈员","会朋友圈分享朋友圈"],
+        "series": [
+            {
+                "value": 55, 
+                "name": "私人分享私人"
+            },
+            {
+                "value": 25, 
+                "name": "公众号分享朋友圈员"
+            },
+            {
+                "value": 20, 
+                "name": "会朋友圈分享朋友圈"
+            }
+        ]
+    },
+    "shareStatisticsPravite": {
+        "title": "分享统计",
+        "legend": ["可外呼","不可接触客户","会员"],
+        "series": [
+            {
+                "value": 60, 
+                "name": "可外呼"
+            },
+            {
+                "value": 30, 
+                "name": "不可接触客户"
+            },
+            {
+                "value": 10, 
+                "name": "会员"
+            }
+        ]
+    },
+    "comentStatistics": {
+        "title": "评论",
+        "legend": ["好评论","差评论"],
+        "series": [
+            {
+                "value": 55, 
+                "name": "好评论"
+            },
+            {
+                "value": 45, 
+                "name": "差评论"
+            }
+        ]
+    },
+    "askStatistics": {
+        "title": "咨询统计",
+        "legend": ["会员咨询","潜客咨询"],
+        "series": [
+            {
+                "value": 70, 
+                "name": "会员咨询"
+            },
+            {
+                "value": 30, 
+                "name": "潜客咨询"
+            }
+        ]
+    },
+    "spreadGraph": {
+        "categories": [0],
+        "nodes": [
+            {
+                "id": 0,
+                "value": 10,
+                "name": "北京",
+                "category": 0,
+                "symbolSize": 60,
+                "itemStyle": {
+                    "normal": {
+                        "color": "#7ED321"
+                    }
+                }
+            },
+            {
+                "id": 1,
+                "value": 1,
+                "name": "传播者1",
+                "category": 0
+            },
+            {
+                "id": 2,
+                "value": 2,
+                "name": "传播者2",
+                "category": 0
+            },
+            {
+                "id": 3,
+                "value": 3,
+                "name": "传播者3",
+                "category": 0,
+                "symbolSize": 20,
+                "itemStyle": {
+                    "normal": {
+                        "color": "#F5A623"
+                    }
+                }
+            },
+            {
+                "id": 4,
+                "value": 4,
+                "name": "传播者4",
+                "category": 0
+            },
+            {
+                "id": 5,
+                "value": 5,
+                "name": "传播者5",
+                "category": 0
+            },
+            {
+                "id": 6,
+                "value": 6,
+                "name": "传播者6",
+                "category": 0
+            },
+            {
+                "id": 7,
+                "value": 7,
+                "name": "传播者7",
+                "category": 0
+            }
+        ],
+        "links": [
+            {
+                "source": 1,  
+                "target": 0
+            },
+            {
+                "source": 2,  
+                "target": 0
+            },
+            {
+                "source": 3,  
+                "target": 0
+            },
+            {
+                "source": 4,  
+                "target": 1
+            },
+            {
+                "source": 2,  
+                "target": 1
+            },
+            {
+                "source": 3,  
+                "target": 2
+            },
+            {
+                "source": 5,  
+                "target": 4
+            },
+            {
+                "source": 6,  
+                "target": 4
+            },
+            {
+                "source": 7,  
+                "target": 5
+            },
+            {
+                "source": 7,  
+                "target": 6
+            },
+            {
+                "source": 5,  
+                "target": 6
+            },
+            {
+                "source": 7,  
+                "target": 6
+            }
+        ]
+    }
+  },
+  "mess": ""
+}
