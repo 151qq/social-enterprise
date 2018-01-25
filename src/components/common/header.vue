@@ -11,11 +11,16 @@
         catalogCode: 'e2',
         catalogLevel: 1
       }}">产品中心</router-link>
+      <router-link :to="{ name: 'gift',query:{
+        enterpriseCode: userInfo.enterpriseCode,
+        catalogCode: 'e2',
+        catalogLevel: 1
+      }}">礼品中心</router-link>
       <!-- <router-link :to="{ name: 'gift'}">礼品中心</router-link> -->
       <router-link :to="{ name: 'enterprise',query:{enterpriseCode: userInfo.enterpriseCode}}">企业信息</router-link>
       <router-link :to="{ name: 'callcenter',query:{enterpriseCode: userInfo.enterpriseCode}}">营销配置</router-link>
       <router-link :to="{ name: 'source',query:{enterpriseCode: userInfo.enterpriseCode}}">素材库</router-link>
-      <router-link :to="{ name: 'member'}">会员管理</router-link>
+      <router-link :to="{ name: 'member',query:{enterpriseCode: userInfo.enterpriseCode}}">会员管理</router-link>
     </div>
 
     <div class="member-box">
@@ -132,6 +137,10 @@ export default {
       float: left;
       margin-top: 10px;
       margin-right: 26px;
+
+      img {
+        height: 30px;
+      }
     }
 
     .nav-box {
