@@ -21,7 +21,7 @@
             label="操作"
             width="70">
             <template scope="scope">
-              <i class="el-icon-delete2" @click="deleteItem(scope.row)"></i>
+              <i v-if="scope.row.isDelete" class="el-icon-delete2" @click="deleteItem(scope.row)"></i>
             </template>
           </el-table-column>
         </el-table>
@@ -93,9 +93,14 @@ export default {
                 res.result.result.forEach((user) => {
                   if (user.securityRoles.length) {
                     var roleArr = []
+                    var isDelete = true
                     user.securityRoles.forEach((role) => {
                       roleArr.push(role.roleName)
+                      if (role.roleCode == 'enterprise_root') {
+                        isDelete = false
+                      }
                     })
+                    user.isDelete = isDelete
                     user.roleName = roleArr.join(',')
                   }
                 })
