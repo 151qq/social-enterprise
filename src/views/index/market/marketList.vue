@@ -1,6 +1,6 @@
 <template>
     <div class="market-list-box">
-        <div class="input-box">
+        <div class="input-box" :class="isEdit ? '' : 'no-add'">
             <el-input
               placeholder="请输入需查询条件"
               v-model="keyValue"
@@ -11,7 +11,7 @@
               搜索
             </el-button>
 
-            <el-button class="add-new-btn" type="primary" icon="plus" @click="addItem">增加</el-button>
+            <el-button v-if="isEdit" class="add-new-btn" type="primary" icon="plus" @click="addItem">增加</el-button>
         </div>
         <section class="big-cards-box">
             <router-link class="card-box"
@@ -32,15 +32,18 @@
                         <el-tag v-if="item.eventPlanStatus == 'closed'">提前终止</el-tag>
                     </div>
                 </div>
-                <section class="card-btns">
-                    <i class="el-icon-upload2"
+                <section class="card-btns" v-if="isEdit">
+                    <!-- <i class="el-icon-upload2"
                         v-if="item.eventPlanStatus == 'draft'"
-                        @click.stop="changeStatus(item, 'submitted')"></i>
+                        @click.stop="changeStatus(item, 'submitted')"></i> -->
                     <i class="el-icon-delete2"
                         v-if="item.eventPlanStatus == 'draft'"
                         @click.stop="deleteItem(item)"></i>
                 </section>
             </router-link>
+        </section>
+        <section class="null-box" v-if="!marketList.length && isPage">
+          暂无内容！！！
         </section>
         <div class="more-load"
                 v-if="total && marketList.length < total"
@@ -54,7 +57,7 @@
             <el-form-item label="方案封面">
                 <popup-img :path="addItemForm.eventPlanCover"
                             :is-operate="true"
-                            :bg-path="true"
+                            :bg-path="false"
                             @imgClick="imgClick"></popup-img>
             </el-form-item>
             <el-form-item label="方案描述">
@@ -84,10 +87,12 @@
 import util from '../../../assets/common/util'
 import popupImg from '../../../components/common/popupImg.vue'
 import popupLoad from '../../../components/common/popupLoad.vue'
+import { mapGetters } from 'vuex'
 
 export default {
     data () {
         return {
+            isPage: false,
             keyValue: '',
             marketList: [],
             pageSize: 20,
@@ -107,13 +112,27 @@ export default {
     mounted () {
         this.getList()
     },
+    computed: {
+        ...mapGetters({
+            userInfo: 'getUserInfo'
+        }),
+        isEdit () {
+          return this.$route.query.enterpriseCode == this.userInfo.enterpriseCode
+        }
+    },
     methods: {
-        searchItem () {},
+        searchItem () {
+          this.getList()
+        },
         getList (type) {
             var formData = {
                 enterpriseCode: this.$route.query.enterpriseCode,
                 pageSize: this.pageSize,
                 pageNumber: this.pageNumber
+            }
+
+            if (this.keyValue) {
+                formData.keyValue = this.keyValue
             }
 
             util.request({
@@ -127,6 +146,7 @@ export default {
                 }
 
                 this.total = res.result.total
+                this.isPage = true
                 if (!type) {
                     this.marketList = res.result.result
                 } else {
@@ -265,6 +285,10 @@ export default {
             float: right;
             height: 50px;
         }
+    }
+
+    .no-add {
+      width: 696px;
     }
 
     .big-cards-box {

@@ -119,8 +119,8 @@
                         <span>背景图片</span>
                         <div class="input-box">
                             <upload :path="base.titleBackground"
-                                    :is-operate="isOperate"
-                                    :bg-path="true"
+                                    :is-operate="isEdit"
+                                    :bg-path="false"
                                     @changeImg="changeTitleBg"></upload>
                         </div>
                     </section>
@@ -319,8 +319,8 @@
                         <span>背景图片</span>
                         <div class="input-box">
                             <upload :path="base.innerTitleBackground"
-                                    :is-operate="isOperate"
-                                    :bg-path="true"
+                                    :is-operate="isEdit"
+                                    :bg-path="false"
                                     @changeImg="changeInnerTitleBg"></upload>
                         </div>
                     </section>
@@ -381,8 +381,8 @@
                         <span>文章背景</span>
                         <div class="input-box">
                             <upload :path="base.fileBackground"
-                                    :is-operate="isOperate"
-                                    :bg-path="true"
+                                    :is-operate="isEdit"
+                                    :bg-path="false"
                                     @changeImg="changeFileBackground"></upload>
                         </div>
                     </section>
@@ -390,14 +390,14 @@
                         <span>文章结尾图片</span>
                         <div class="input-box">
                             <upload :path="base.fileEndPic"
-                                    :is-operate="isOperate"
-                                    :bg-path="true"
+                                    :is-operate="isEdit"
+                                    :bg-path="false"
                                     @changeImg="changeFileEndPic"></upload>
                         </div>
                     </section>
                     <div class="clear"></div>
                 </div>
-                <el-button v-if="isOperate && base.templateStatus == '2'"
+                <el-button v-if="isEdit"
                             class="save-btn" type="info" :plain="true" size="small" icon="document"
                            @click="saveBase">保存</el-button>
                 <div class="clear"></div>
@@ -451,6 +451,7 @@
 import upload from '../../../components/common/upload'
 import util from '../../../assets/common/util'
 import templateMixin from '../../../assets/common/templateMixin'
+import { mapGetters } from 'vuex'
 export default {
     data () {
         return {
@@ -580,6 +581,14 @@ export default {
         this.getBase()
         this.getTypes()
     },
+    computed: {
+        ...mapGetters({
+            userInfo: 'getUserInfo'
+        }),
+        isEdit () {
+          return this.$route.query.enterpriseCode == this.userInfo.enterpriseCode
+        }
+    },
     methods: {
         getBase () {
             util.request({
@@ -644,14 +653,7 @@ export default {
                 data: this.base
             }).then(res => {
                 if (res.result.success == '1') {
-                    var pathData = {
-                        name: 'enterprise-list',
-                        query: {
-                            enterpriseCode: this.$route.query.enterpriseCode
-                        }
-                    }
-
-                    this.$router.replace(pathData)
+                    this.getBase()
                 } else {
                     this.$message.error(res.result.message)
                 }

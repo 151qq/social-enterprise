@@ -1,5 +1,5 @@
 <template>
-    <section>
+    <section class="float-form-box">
       <div class="formDiscount">
         <section class="formBox bigF">
             <span>文章标题</span>
@@ -9,14 +9,6 @@
                     placeholder="请输入内容"
                     v-model="base.pageTitle">
             </el-input>
-        </section>
-        <section class="formBox bigF">
-          <span>文章封面</span>
-          <div class="input-box">
-            <upload :path="base.pageCover"
-                :bg-path="true"
-                @changeImg="changeImg"></upload>
-          </div>
         </section>
 
         <section class="formBox bigF">
@@ -29,9 +21,19 @@
               v-model="base.pageAbstract">
             </el-input>
         </section>
+
+        <section class="formBox">
+          <span>文章封面</span>
+          <div class="input-box">
+            <upload :path="base.pageCover"
+                :bg-path="false"
+                :is-operate="isEdit"
+                @changeImg="changeImg"></upload>
+          </div>
+        </section>
       </div>
       <div class="clear"></div>
-      <el-button class="save-btn" type="info" :plain="true" size="small" icon="document"
+      <el-button v-if="isEdit" class="save-btn" type="info" :plain="true" size="small" icon="document"
           @click="saveBase">保存</el-button>
       <div class="clear"></div>
     </section>
@@ -39,6 +41,7 @@
 <script>
 import util from '../../../../assets/common/util'
 import upload from '../../../../components/common/upload'
+import { mapGetters } from 'vuex'
 
 export default {
     data () {
@@ -52,6 +55,14 @@ export default {
     },
     mounted () {
       this.getBase()
+    },
+    computed: {
+        ...mapGetters({
+            userInfo: 'getUserInfo'
+        }),
+        isEdit () {
+          return this.$route.query.enterpriseCode == this.userInfo.enterpriseCode
+        }
     },
     methods: {
         changeImg (data) {
@@ -68,6 +79,8 @@ export default {
             }).then(res => {
                 if (res.result.success == '1') {
                   this.base = res.result.result
+
+                  this.$emit('baseChange', Object.assign({}, this.base))
                 } else {
                   this.$message.error(res.result.message)
                 }

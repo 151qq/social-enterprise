@@ -6,7 +6,7 @@
                 <article-list :article-type="item.value"></article-list>
             </el-tab-pane>
         </el-tabs>
-  </div>
+    </div>
 </template>
 <script>
 import util from '../../../assets/common/util'
@@ -18,18 +18,22 @@ export default {
             tabDatas: [
               {
                 label: '宣传文章',
-                value: 'propagate_article'
+                value: 'template_type_1'
               },
               {
                 label: '产品介绍',
-                value: 'product_introduction'
+                value: 'template_type_4'
               },
               {
                 label: '演讲材料',
-                value: 'speech_material'
+                value: 'template_type_2'
+              },
+              {
+                label: '培训材料',
+                value: 'template_type_3'
               }
             ],
-            activeName: 'propagate_article'
+            activeName: 'template_type_1'
         }
     },
     components: {

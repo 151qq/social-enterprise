@@ -12,8 +12,10 @@ export default {
         "sendSmsCode": platform + 'sendSmsCode.json',
         "changePassword": platform + "changePassword.json",
         "resetPassword": platform + "resetPassword.json",
+        addDefaultCookie: platform + 'addDefaultCookie.json',
 
         uploadFile: platform + 'platformFile/uploadFile.json',
+        loginBackground: platform + 'enterprise/loginBackground.json',
 
         /**
         * 企业 get
@@ -36,6 +38,10 @@ export default {
         selectProductAndEvent: platform + 'productAndEvent/selectProductAndEvent.json',
         enterpriseOrderStart: platform + 'platform/enterpriseOrderStart.json',
         enterpriseOrderStop: platform + 'platform/enterpriseOrderStop.json',
+        getPlatformStatus: platform + 'enterprise/platformEnterpriseStatus.json',
+        addUser: platform + 'enterprise/addUser.json',
+        deleteUser: platform + 'enterprise/deleteUser.json',
+        selectUserInfoOfPage: platform + 'enterprise/selectUserInfoOfPage.json',
 
         /**
         * 客服 get
@@ -44,6 +50,7 @@ export default {
         updateCallCenterConfig: platform + 'callCenterConfig/updateCallCenterConfig.json',
         findCallCenterConfig: platform + 'callCenterConfig/findCallCenterConfig.json',
         getEnterpriseConfigDic: platform + 'callCenterConfig/getEnterpriseConfigDic.json',
+        getPlatformConfig: platform + 'callCenterConfig/findPlatformEnterpriseConfig.json',
 
         /**
         * 调研 get

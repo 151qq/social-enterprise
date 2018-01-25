@@ -16,7 +16,7 @@
         </div>
 
         <!-- 右侧操作按钮 -->
-        <section class="btns-op">
+        <section class="btns-op" v-if="isEdit">
             <!-- 多选模式切换 -->
             <img v-show="!isCheck" src="../../../assets/images/select-icon.png" @click="setCheck">
             <img v-show="isCheck" src="../../../assets/images/select-now.png" @click="setCheck">
@@ -51,7 +51,7 @@
             <section class="check-box" v-for="(item, index) in sourceDatas" :key="index">
                 <!-- 选择框 -->
                 <section class="select-box"
-                         v-if="isCheck && (item.catalogType == 'dir' || item.productStatus == 'draft')"
+                         v-if="isCheck && (item.catalogType == 'dir' || item.productStatus == 'draft') && isEdit"
                          @click.stop="selectItem(item)"
                          :class="selectItemList.indexOf(item.catalogCode) > -1 ? 'active' : ''"></section>
                 
@@ -60,7 +60,7 @@
                     <div class="cover-box"
                          @click="showItems(item)"
                          v-if="isCheck || item.catalogType == 'dir'">
-                        <img :src="item.catalogImage">
+                        <img v-if="item.catalogImage" :src="item.catalogImage">
                     </div>
                     <!-- 详情页 -->
                     <router-link class="cover-box"
@@ -73,7 +73,7 @@
                                         productCode: item.catalogCode
                                     }
                                  }">
-                        <img :src="item.catalogImage">
+                        <img v-if="item.catalogImage" :src="item.catalogImage">
                     </router-link>
                     <div class="title-box">
                         <div class="title" v-text="item.catalogCname"></div>
@@ -93,7 +93,7 @@
                                 </template>
                             </span>
                             <span class="btn-box"
-                                  v-if="item.catalogType == 'dir' || item.productStatus == 'draft' || item.productStatus == 'submitted'">
+                                  v-if="(item.catalogType == 'dir' || item.productStatus == 'draft' || item.productStatus == 'submitted') && isEdit">
                                 <!-- draft，submitted，approved，frozen，closed -->
                                 <i @click.stop="editItem(item)" class="el-icon-document"></i>
                             </span>
@@ -131,28 +131,17 @@
                     </el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="封面">
-                <popup-img :path="addItemForm.catalogImage"
-                            :is-operate="true"
-                            :bg-path="true"
-                            @imgClick="imgClick"></popup-img>
-            </el-form-item>
+            <template v-if="addItemForm.catalogType == 'dir'">
+                <el-form-item label="封面">
+                    <popup-img :path="addItemForm.catalogImage"
+                                :is-operate="true"
+                                :bg-path="false"
+                                @imgClick="imgClick"></popup-img>
+                </el-form-item>
+            </template>
             <el-form-item label="标题">
                 <el-input v-model="addItemForm.catalogCname" placeholder="请输入内容"></el-input>
             </el-form-item>
-            <template v-if="addItemForm.catalogType == 'pro'">
-                <el-form-item label="产品类型">
-                <el-select v-model="addItemForm.productType"
-                            placeholder="请选择">
-                    <el-option
-                      v-for="(item, index) in productTypes"
-                      :key="index"
-                      :label="item.dictKeyValue"
-                      :value="item.dictKeyCode">
-                    </el-option>
-                </el-select>
-            </el-form-item>
-            </template>
             <el-form-item label="描述">
                 <el-input
                     type="textarea"
@@ -181,11 +170,12 @@
 import popupImg from '../../../components/common/popupImg.vue'
 import popupLoad from '../../../components/common/popupLoad.vue'
 import util from '../../../assets/common/util'
+import { mapGetters } from 'vuex'
 
 export default {
-    props: ['productType'],
     data() {
         return {
+            productType: 'product',
             keyValue: '',
             // 获取
             sourceDatas: [],
@@ -198,7 +188,6 @@ export default {
             operateText: '添加',
             isAddItem: false,
             addItemForm: {
-                productType: '',
                 enterpriseCode: '',
                 catalogCode: '',
                 catalogCname: '',
@@ -244,10 +233,14 @@ export default {
         this.dirSteps.push(stepOne)
         this.getItems(this.$route.query.catalogCode)
 
-        if (this.productType.indexOf('product') > -1) {
-          this.geProductTypes('product_type')
-        } else if (this.productType.indexOf('gift') > -1) {
-          this.geProductTypes('gift_type')
+        this.geProductTypes('product_type')
+    },
+    computed: {
+        ...mapGetters({
+            userInfo: 'getUserInfo'
+        }),
+        isEdit () {
+          return this.$route.query.enterpriseCode == this.userInfo.enterpriseCode
         }
     },
     watch: {
@@ -382,7 +375,6 @@ export default {
             this.isChangeType = true
             this.addItemForm = {
                 enterpriseCode: this.$route.query.enterpriseCode,
-                productType: '',
                 catalogCode: '',
                 catalogCname: '',
                 catalogImage: '',
@@ -428,7 +420,7 @@ export default {
                 return false
             }
 
-            if (!this.addItemForm.catalogImage) {
+            if (!this.addItemForm.catalogImage && this.addItemForm.catalogType == 'dir') {
                 this.$message({
                     message: '请添加封面！',
                     type: 'warning'
@@ -553,6 +545,8 @@ export default {
 <style lang="scss">
 .product-list-box {
     position: relative;
+    width: 1000px;
+    margin: 80px auto 30px;
 
     .input-box {
         display: block;
@@ -586,6 +580,10 @@ export default {
             float: right;
             height: 50px;
         }
+    }
+
+    .no-add {
+      width: 696px;
     }
 
     .dirSteps {
@@ -730,9 +728,12 @@ export default {
         border-radius: 3px;
 
         .cover-box {
+            display: block;
+            width: 100%;
             height: 170px;
             overflow: hidden;
             cursor: pointer;
+            background: #f1f1f1;
             
             img {
                 display: block;

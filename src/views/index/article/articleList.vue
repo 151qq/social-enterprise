@@ -1,6 +1,6 @@
 <template>
     <div class="article-list-box">
-        <div class="input-box">
+        <div class="input-box" :class="isEdit ? '' : 'no-add'">
             <el-input
               placeholder="请输入需查询条件"
               v-model="keyValue"
@@ -11,12 +11,23 @@
               搜索
             </el-button>
 
-            <el-button class="add-new-btn" type="primary" icon="plus" @click="addItem">增加</el-button>
+            <el-button class="add-new-btn"
+                       type="primary"
+                       icon="plus"
+                       v-if="isEdit"
+                       @click="addItem">增加</el-button>
         </div>
         <section class="big-cards-box">
             <router-link class="card-box"
                          v-for="(item, index) in marketList"
-                         :to="{name: 'article-detail', query: {enterpriseCode: item.enterpriseCode, pageCode: item.pageCode, templateCode: item.templateCode}}">
+                         :to="{
+                                name: 'article-detail',
+                                query: {
+                                  enterpriseCode: item.enterpriseCode,
+                                  pageCode: item.pageCode,
+                                  templateCode: item.templateCode
+                                }
+                              }">
                 <div class="card-img">
                     <img v-if="item.pageCover" :src="item.pageCover">
                 </div>
@@ -30,40 +41,34 @@
                         <el-tag v-if="item.pageStatus == '3'">已下架</el-tag>
                     </div>
                 </div>
-                <section class="card-btns">
-                    <i class="el-icon-upload2"
+                <section class="card-btns" v-if="isEdit">
+                    <!-- <i class="el-icon-upload2"
                         v-if="item.pageStatus == '2'"
-                        @click.prevent="changeStatus(item, 'submitted')"></i>
+                        @click.prevent="changeStatus(item, 'submitted')"></i> -->
                     <i class="el-icon-delete2"
                         v-if="item.pageStatus == '2'"
                         @click.prevent="deleteItem(item)"></i>
                 </section>
             </router-link>
         </section>
+
+        <section class="null-box" v-if="!marketList.length && isPage">
+          暂无内容！！！
+        </section>
+
         <div class="more-load"
                 v-if="total && marketList.length < total"
                 @click="loadMore">加载更多...</div>
 
         <el-dialog title="添加方案" :visible.sync="isAddItem">
           <el-form :label-position="'left'" :model="addItemForm" label-width="80px">
-            <el-form-item label="任务">
-                <el-select v-model="addItemForm.taskCode"
-                            placeholder="请选择">
-                    <el-option
-                      v-for="(item, index) in taskList"
-                      :key="index"
-                      :label="item.label"
-                      :value="item.value">
-                    </el-option>
-                </el-select>
-            </el-form-item>
             <el-form-item label="文章标题">
                 <el-input v-model="addItemForm.pageTitle" auto-complete="off"></el-input>
             </el-form-item>
             <el-form-item label="文章封面">
                 <popup-img :path="addItemForm.pageCover"
-                            :is-operate="true"
-                            :bg-path="true"
+                            :is-operate="isEdit"
+                            :bg-path="false"
                             @imgClick="imgClick"></popup-img>
             </el-form-item>
             <el-form-item label="文章摘要">
@@ -93,11 +98,13 @@
 import util from '../../../assets/common/util'
 import popupImg from '../../../components/common/popupImg.vue'
 import popupLoad from '../../../components/common/popupLoad.vue'
+import { mapGetters } from 'vuex'
 
 export default {
     props: ['articleType'],
     data () {
         return {
+            isPage: false,
             keyValue: '',
             marketList: [],
             pageSize: 20,
@@ -107,15 +114,8 @@ export default {
             addItemForm: {
                 pageTitle: '',
                 pageCover: '',
-                pageAbstract: '',
-                taskCode: ''
+                pageAbstract: ''
             },
-            taskList: [
-              {
-                label: '假任务',
-                value: '3823882322992'
-              }
-            ],
             isUpload: {
                 value: false
             }
@@ -123,6 +123,18 @@ export default {
     },
     mounted () {
       this.getList()
+    },
+    computed: {
+        ...mapGetters({
+            userInfo: 'getUserInfo'
+        }),
+        isEdit () {
+          if (this.$route.query.enterpriseCode == this.userInfo.enterpriseCode && this.articleType == 'template_type_1') {
+            return true
+          } else {
+            return false
+          }
+        }
     },
     watch: {
       $route () {
@@ -133,7 +145,7 @@ export default {
     },
     methods: {
         searchItem () {
-          
+          this.getList()
         },
         getList (type) {
             var formData = {
@@ -143,8 +155,12 @@ export default {
                 pageNumber: this.pageNumber
             }
 
+            if (this.keyValue) {
+                formData.keyValue = this.keyValue
+            }
+
             util.request({
-                method: 'get',
+                method: 'post',
                 interface: 'html5PageList',
                 data: formData
             }).then(res => {
@@ -153,7 +169,8 @@ export default {
                     return
                 }
 
-                this.total = res.result.total
+                this.total = Number(res.result.total)
+                this.isPage = true
                 if (!type) {
                     this.marketList = res.result.result
                 } else {
@@ -206,7 +223,7 @@ export default {
                 pageTitle: '',
                 pageCover: '',
                 pageAbstract: '',
-                taskCode: ''
+                pageEditor: this.userInfo.userCode
             }
             this.isAddItem = true
         },
@@ -217,11 +234,6 @@ export default {
             this.addItemForm.pageCover = data.url
         },
         confirmItem () {
-            if (!this.addItemForm.taskCode) {
-              this.$message.error('请选择任务！')
-              return
-            }
-
             if (!this.addItemForm.pageTitle) {
               this.$message.error('文章标题不能为空！')
               return
@@ -237,8 +249,7 @@ export default {
                 pageType: this.articleType,
                 pageTitle: this.addItemForm.pageTitle,
                 pageCover: this.addItemForm.pageCover,
-                pageAbstract: this.addItemForm.pageAbstract,
-                taskCode: this.addItemForm.taskCode
+                pageAbstract: this.addItemForm.pageAbstract
             }
 
             util.request({
@@ -250,8 +261,6 @@ export default {
                   this.pageNumber = 1
                   this.getList()
                   this.isAddItem = false
-
-                  window.open('/#/articleDetail?enterpriseCode=' + this.$route.query.enterpriseCode + '&pageCode=' + res.result.result.pageCode + '&templateCode=' + res.result.result.templateCode, '_blank')
                 } else {
                   this.$message.error(res.result.message)
                 }
@@ -306,6 +315,10 @@ export default {
         }
     }
 
+    .no-add {
+      width: 696px;
+    }
+
     .big-cards-box {
 
       .card-btns {
@@ -340,7 +353,7 @@ export default {
 
         .card-content {
           float: right;
-          width: 620px;
+          width: 820px;
 
           .card-title {
             font-size: 16px;

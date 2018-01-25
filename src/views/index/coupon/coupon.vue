@@ -11,17 +11,19 @@
                   v-model="quanData.couponTitle">
                 </el-input>
             </section>
-            <el-form-item label="券类型">
-                <el-select v-model="quanData.couponType"
+            <section class="formBox">
+                <span>券类型</span>
+                <el-select class="input-box"
+                           v-model="quanData.couponType"
                            placeholder="请选择">
                     <el-option
                       v-for="(item, index) in couponTypes"
                       :key="index"
-                      :label="item.typeName"
-                      :value="item.id">
+                      :label="item.coupunTypeName"
+                      :value="item.coupunType">
                     </el-option>
                 </el-select>
-            </el-form-item>
+            </section>
             <section class="formBox">
                 <span>券封面文字</span>
                 <el-input
@@ -103,18 +105,6 @@
                   v-model="quanData.couponDetailTxt">
                 </el-input>
             </section>
-            
-            <!-- <el-form-item label="核销方式">
-                <el-select v-model="quanData.couponType"
-                           placeholder="请选择">
-                    <el-option
-                      v-for="(item, index) in couponTypes"
-                      :key="index"
-                      :label="item.typeName"
-                      :value="item.id">
-                    </el-option>
-                </el-select>
-            </el-form-item> -->
 
             <section class="formBox">
                 <span>券按钮提示</span>
@@ -229,7 +219,7 @@
                 </div>
             </section>
           
-          <template v-if="quanData.couponType == 'CASH'">
+          <template v-if="quanData.couponType == 'cashCoupon'">
             <section class="formBox">
               <span>减免(分)</span>
               <el-input
@@ -252,7 +242,7 @@
             </section>
           </template>
 
-          <template v-if="quanData.couponType == 'GIFT'">
+          <template v-if="quanData.couponType == 'giftCoupon'">
             <section class="formBox">
                 <span>礼品</span>
                 <el-select class="input-box" v-model="quanData.couponGiftCode" placeholder="请选择">
@@ -268,7 +258,7 @@
 
           <div class="clear"></div>
         </div>
-        <el-button class="save-btn" type="info" :plain="true" size="small" icon="document"
+        <el-button v-if="isEdit" class="save-btn" type="info" :plain="true" size="small" icon="document"
             @click="saveQuan">保存</el-button>
         <div class="clear"></div>
       </section>
@@ -277,6 +267,7 @@
 <script>
 import util from '../../../assets/common/util'
 import upload from '../../../components/common/upload'
+import { mapGetters } from 'vuex'
 
 export default {
     data () {
@@ -390,6 +381,15 @@ export default {
       }
       
       this.getProducts()
+      this.getTypes()
+    },
+    computed: {
+        ...mapGetters({
+            userInfo: 'getUserInfo'
+        }),
+        isEdit () {
+          return this.$route.query.enterpriseCode == this.userInfo.enterpriseCode
+        }
     },
     methods: {
         getCallcenter () {
@@ -652,7 +652,7 @@ export default {
                   name: 'market-detail',
                   query: {
                     eventCode: this.$route.query.eventCode,
-                    enterprise: this.$route.query.enterpriseCode
+                    enterpriseCode: this.$route.query.enterpriseCode
                   }
                 }
 

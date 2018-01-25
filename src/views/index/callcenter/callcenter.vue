@@ -69,7 +69,7 @@
                         </el-select>
                     </section>
                 </div>
-                <el-button v-if="isOperate"
+                <el-button v-if="isEdit"
                             class="save-btn" type="info" :plain="true" size="small" icon="document"
                            @click="saveCallcenter">保存</el-button>
                 <div class="clear"></div>
@@ -222,7 +222,7 @@
                         </el-input>
                     </section>
                 </div>
-                <el-button v-if="isOperate"
+                <el-button v-if="isEdit"
                             class="save-btn" type="info" :plain="true" size="small" icon="document"
                            @click="saveCallcenter">保存</el-button>
                 <div class="clear"></div>
@@ -303,7 +303,7 @@
                         </el-input>
                     </section>
                 </div>
-                <el-button v-if="isOperate"
+                <el-button v-if="isEdit"
                             class="save-btn" type="info" :plain="true" size="small" icon="document"
                            @click="saveCallcenter">保存</el-button>
                 <div class="clear"></div>
@@ -351,7 +351,7 @@
                         </el-select>
                     </section>
                 </div>
-                <el-button v-if="isOperate"
+                <el-button v-if="isEdit"
                             class="save-btn" type="info" :plain="true" size="small" icon="document"
                            @click="saveCallcenter">保存</el-button>
                 <div class="clear"></div>
@@ -376,7 +376,7 @@
                         </el-input>
                     </section>
                 </div>
-                <el-button v-if="isOperate"
+                <el-button v-if="isEdit"
                             class="save-btn" type="info" :plain="true" size="small" icon="document"
                            @click="saveCallcenter">保存</el-button>
                 <div class="clear"></div>
@@ -424,7 +424,7 @@
                         </el-select>
                     </section>
                 </div>
-                <el-button v-if="isOperate"
+                <el-button v-if="isEdit"
                             class="save-btn" type="info" :plain="true" size="small" icon="document"
                            @click="saveCallcenter">保存</el-button>
                 <div class="clear"></div>
@@ -475,7 +475,7 @@
                         </el-input>
                     </section>
                 </div>
-                <el-button v-if="isOperate"
+                <el-button v-if="isEdit"
                             class="save-btn" type="info" :plain="true" size="small" icon="document"
                            @click="saveCallcenter">保存</el-button>
                 <div class="clear"></div>
@@ -490,63 +490,62 @@
 <script>
 import util from '../../../assets/common/util'
 import templateList from './formAlist/templateList'
-
+import { mapGetters } from 'vuex'
 export default {
     data () {
         return {
-            isOperate: true,
             activeNames: [],
             callcenterData: {
                 enterpriseCode: '',
-                sessionOpenInfo: '您好，您的客户经理正在赶来......',
-                reponseDelayInfo: '抱歉，您的客户经理在忙碌中！请您稍后！您可以选择留言或继续等待！',
-                sessionCloseInfo: '您好！如果您没有其他服务需求，我们将结束本次服务。请您为客户经理的服务做一个评价！',
-                inbandResonseTime: 3,
+                sessionOpenInfo: '',
+                reponseDelayInfo: '',
+                sessionCloseInfo: '',
+                inbandResonseTime: '',
                 servicePhone: '',
                 callcenterDispatchRule: '',
                 // 外呼筛选规则
-                memberReadingRate: 1,
-                memberCommentRate: 2,
-                memberSharePageRate: 4,
-                memberShareWxappRate: 4,
-                memberCouponRate: 4,
-                memberOffllineSignRate: 4,
-                memberConsultingRate: 4,
-                memberOnlineEventSignRate: 2,
-                memberOpenWxappRate: 4,
-                memberReserveRate: 5,
-                memberTrialGoodResultRate: 7,
-                memberOfflineEventSignRate: 6,
-                memberOpenOfflineSurveyRate: 5,
-                memberOrderRate: 10,
-                memberOpenServiceSurveyRate: 4,
-                outbandBeginRate: 6,
-                outbandMinPeriod: 5,
-                outbandComputePeriod: 30,
+                memberReadingRate: '',
+                memberCommentRate: '',
+                memberSharePageRate: '',
+                memberShareWxappRate: '',
+                memberCouponRate: '',
+                memberOffllineSignRate: '',
+                memberConsultingRate: '',
+                memberOnlineEventSignRate: '',
+                memberOpenWxappRate: '',
+                memberReserveRate: '',
+                memberTrialGoodResultRate: '',
+                memberOfflineEventSignRate: '',
+                memberOpenOfflineSurveyRate: '',
+                memberOrderRate: '',
+                memberOpenServiceSurveyRate: '',
+                outbandBeginRate: '',
+                outbandMinPeriod: '',
+                outbandComputePeriod: '',
                 // 外呼冷却规则
-                outbandNoResponse: 15,
-                outbandNoReserve: 10,
-                reserveNoSign: 5,
-                outbandCoolingAgainMinPeriod: 10,
-                outbandNegativeResponse: 100,
-                outbandCoolingRate: 45,
-                outbandCoolingMinPeriod: 30,
-                outbandCoolingComputePeriod: 90,
+                outbandNoResponse: '',
+                outbandNoReserve: '',
+                reserveNoSign: '',
+                outbandCoolingAgainMinPeriod: '',
+                outbandNegativeResponse: '',
+                outbandCoolingRate: '',
+                outbandCoolingMinPeriod: '',
+                outbandCoolingComputePeriod: '',
                 // 外呼绩效计算规则
-                userOutbandRate: 1,
-                userReserveRate: 2,
-                userOfflineSignRate: 3,
-                outbandReviewPeriod: 'week',
+                userOutbandRate: '',
+                userReserveRate: '',
+                userOfflineSignRate: '',
+                outbandReviewPeriod: '',
                 // 地面推广绩效计算规则
-                partySignRate: 1,
-                partyMemberRate: 2,
+                partySignRate: '',
+                partyMemberRate: '',
                 // 微信推广渠道绩效计算规则
-                adChannelSpreadRate: 1,
-                adChannelReadRate: 2,
-                adChannelMemberRate: 5,
-                adChannelReviewPeriod: 'week',
+                adChannelSpreadRate: '',
+                adChannelReadRate: '',
+                adChannelMemberRate: '',
+                adChannelReviewPeriod: '',
                 // 优惠券基本信息设置
-                couponBtnTitle: '立即兑换',
+                couponBtnTitle: '',
                 couponNotice: '',
                 couponBtnUrl: '',
                 couponEcommerceUrlName: '',
@@ -565,6 +564,14 @@ export default {
 
         this.getTypes()
         this.getCallcenter()
+    },
+    computed: {
+        ...mapGetters({
+            userInfo: 'getUserInfo'
+        }),
+        isEdit () {
+          return this.$route.query.enterpriseCode == this.userInfo.enterpriseCode
+        }
     },
     watch: {
       $route () {

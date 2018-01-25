@@ -98,17 +98,10 @@
               v-model="base.productDesc">
             </el-input>
         </section>
-        <section class="formBox">
-          <span>标准图片</span>
-          <div class="input-box">
-            <upload :path="base.productCover"
-                :bg-path="true"
-                @changeImg="changeImg"></upload>
-          </div>
-        </section>
         <div class="clear"></div>
       </div>
       <el-button class="save-btn" type="info" :plain="true" size="small" icon="document"
+            v-if="isEdit"
             @click="saveBase">保存</el-button>
       <div class="clear"></div>
     </section>
@@ -116,6 +109,7 @@
 <script>
 import util from '../../../../assets/common/util'
 import upload from '../../../../components/common/upload'
+import { mapGetters } from 'vuex'
 export default {
     data () {
         return {
@@ -141,6 +135,14 @@ export default {
       this.getBase()
       this.getTypes()
     },
+    computed: {
+        ...mapGetters({
+            userInfo: 'getUserInfo'
+        }),
+        isEdit () {
+          return this.$route.query.enterpriseCode == this.userInfo.enterpriseCode
+        }
+    },
     methods: {
         getBase () {
           util.request({
@@ -152,12 +154,7 @@ export default {
           }).then(res => {
               if (res.result.success = '1') {
                 this.base = res.result.result.productInfo
-
-                if (this.base.productType.indexOf('product') > -1) {
-                  this.geProductTypes('product_type')
-                } else if (this.base.productType.indexOf('gift') > -1) {
-                  this.geProductTypes('gift_type')
-                }
+                this.geProductTypes('product_type')
 
                 this.$emit('change', res.result.result)
               } else {
@@ -197,6 +194,30 @@ export default {
           this.base.productCover = data.url
         },
         saveBase () {
+          if (!this.base.productCname) {
+              this.$message({
+                  message: '请填写产品名称！',
+                  type: 'warning'
+              })
+              return false
+          }
+
+          if (!this.base.productSku) {
+            this.$message({
+                  message: '请填写产品编码！',
+                  type: 'warning'
+              })
+              return false
+          }
+
+          if (!this.base.productType) {
+            this.$message({
+                  message: '请填写产品类型！',
+                  type: 'warning'
+              })
+              return false
+          }
+
           util.request({
               method: 'post',
               interface: 'productInfoSave',

@@ -24,10 +24,13 @@
             label="操作"
             width="100">
             <template scope="scope">
-              <i v-if="scope.row.templateStatus != '1'"
+              <i v-if="scope.row.templateStatus == '1' && isEdit"
+                  class="el-icon-close" @click="closeItem(scope.row)"></i>
+
+              <i v-if="scope.row.templateStatus != '1' && isEdit"
                   class="el-icon-check" @click="submitItem(scope.row)"></i>
 
-              <i v-if="scope.row.templateStatus == '2'"
+              <i v-if="scope.row.templateStatus != '1' && isEdit"
                   class="el-icon-delete2" @click="deleteTemplate(scope.row)"></i>
 
               <router-link  class="el-icon-document black"
@@ -69,6 +72,7 @@
 </template>
 <script>
 import util from '../../../../assets/common/util'
+import { mapGetters } from 'vuex'
 
 export default {
     data () {
@@ -86,6 +90,14 @@ export default {
     mounted () {
       this.getItemList()
       this.getTypes()
+    },
+    computed: {
+        ...mapGetters({
+            userInfo: 'getUserInfo'
+        }),
+        isEdit () {
+          return this.$route.query.enterpriseCode == this.userInfo.enterpriseCode
+        }
     },
     watch: {
       $route () {
@@ -160,8 +172,6 @@ export default {
             if (res.result.success == '1') {
               this.getItemList()
               this.isAddOEdit = false
-
-              window.open('/#/articleTemplate?enterpriseCode=' + this.$route.query.enterpriseCode + '&templateCode=' + res.result.result, '_blank')
             } else {
               this.$message.error(res.result.msg)
             }
@@ -173,21 +183,37 @@ export default {
             interface: 'updateTemplate',
             data: {
               enterpriseCode: this.$route.query.enterpriseCode,
-              templateCode: row.templateCode
+              templateCode: row.templateCode,
+              templateType: row.templateType
             }
         }).then((res) => {
             if (res.result.success == '1') {
               this.getItemList()
-              this.isAddOEdit = false
             } else {
               this.$message.error(res.result.msg)
             }
         })
       },
-      deleteItem (row) {
+      closeItem (row) {
         util.request({
             method: 'post',
-            interface: 'productParameterDelete',
+            interface: 'updateTemplate',
+            data: {
+              enterpriseCode: this.$route.query.enterpriseCode,
+              templateType: row.templateType
+            }
+        }).then((res) => {
+            if (res.result.success == '1') {
+              this.getItemList()
+            } else {
+              this.$message.error(res.result.msg)
+            }
+        })
+      },
+      deleteTemplate (row) {
+        util.request({
+            method: 'post',
+            interface: 'deleteTemplate',
             data: {
               templateCode: row.templateCode,
               id: row.id

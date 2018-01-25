@@ -1,6 +1,6 @@
 <template>
     <div class="image-su-box">
-        <section class="btns-op">
+        <section class="btns-op" v-if="isEdit">
             <img v-show="!isCheck" src="../../../assets/images/select-icon.png" @click="setCheck">
             <img v-show="isCheck" src="../../../assets/images/select-now.png" @click="setCheck">
             <span v-if="showType != '1'"></span>
@@ -12,10 +12,10 @@
             <img :class="isCheck ? '' : 'disable'" src="../../../assets/images/delete-icon-n.png"
                     @click="deleteOpt">
             <span></span>
-            <div v-if="showType == '1'" class="up-box">
+            <div v-if="showType == '1' && fileType != 'e2_2'" class="up-box">
                 <img @click="addDir" src="../../../assets/images/adds-icon.png">
             </div>
-            <div v-else class="up-box">
+            <div v-if="showType == '2'" class="up-box">
                 <img  @click="addItem" src="../../../assets/images/adds-icon.png">
             </div>
         </section>
@@ -27,7 +27,7 @@
                         v-if="dirDatas.length"
                         class="check-box">
 
-                <section v-if="isCheck" @click.stop="selectDir(item)"
+                <section v-if="isCheck && isEdit" @click.stop="selectDir(item)"
                         class="select-box"
                         :class="selectDirList.indexOf(item.docCode) > -1 ? 'active' : ''"></section>
                 <section class="sou-box">
@@ -39,7 +39,7 @@
                         <div class="time">
                             {{item.docCreateTime}}
                             
-                            <span class="btn-box">
+                            <span class="btn-box" v-if="isEdit">
                                 <i @click.stop="editDir(item)" class="el-icon-document"></i>
                             </span>
                         </div>
@@ -68,7 +68,7 @@
                         v-if="sourceDatas.length"
                         class="check-box">
 
-                <section v-if="isCheck" @click.stop="selectItem(item)"
+                <section v-if="isCheck && isEdit" @click.stop="selectItem(item)"
                             class="select-box"
                             :class="selectItemList.indexOf(item.docCode) > -1 ? 'active' : ''"></section>
                 
@@ -89,7 +89,7 @@
                         <span class="time">
                             {{item.docCreateTime}}
 
-                            <span class="btn-box">
+                            <span class="btn-box" v-if="isEdit">
                                 <i @click="editItem(item)" class="el-icon-document"></i>
                             </span>
                         </span>
@@ -115,8 +115,8 @@
           <el-form :label-position="'left'" :model="addDirForm" label-width="80px">
             <el-form-item label="目录封面">
                 <upload-file :path="addDirForm.docCover"
-                        :is-operate="true"
-                        :bg-path="true"
+                        :is-operate="isEdit"
+                        :bg-path="false"
                         :id-name="'dirCover' + fileType"
                         @changeImg="changeDirImg"></upload-file>
             </el-form-item>
@@ -158,7 +158,7 @@
                 <el-form-item v-if="!isNotImg" label="图片">
                     <upload-file :path="addItemForm.fileCode"
                             :is-operate="true"
-                            :bg-path="true"
+                            :bg-path="false"
                             :id-name="'itemCover' + fileType"
                             @changeImg="changeItem"></upload-file>
                 </el-form-item>
@@ -173,8 +173,8 @@
                 </el-form-item>
                 <el-form-item label="媒体封面">
                     <upload-file :path="addItemForm.docCover"
-                            :is-operate="true"
-                            :bg-path="true"
+                            :is-operate="isEdit"
+                            :bg-path="false"
                             :id-name="'itemCover' + fileType"
                             @changeImg="coverChange"></upload-file>
                 </el-form-item>
@@ -229,6 +229,7 @@ import uploadFile from '../../../components/common/uploadFile.vue'
 import uploadMedia from '../../../components/common/uploadMedia.vue'
 import swiperImg from '../../../components/common/swiper-img.vue'
 import util from '../../../assets/common/util'
+import { mapGetters } from 'vuex'
 
 export default {
     props: ['fileType'],
@@ -293,6 +294,14 @@ export default {
             this.getItems(this.$route.query.docCode)
         }
         this.getDirs()
+    },
+    computed: {
+        ...mapGetters({
+            userInfo: 'getUserInfo'
+        }),
+        isEdit () {
+          return this.$route.query.enterpriseCode == this.userInfo.enterpriseCode
+        }
     },
     methods: {
         setCheck () {

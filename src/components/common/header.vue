@@ -12,18 +12,28 @@
         catalogLevel: 1
       }}">产品中心</router-link>
       <!-- <router-link :to="{ name: 'gift'}">礼品中心</router-link> -->
-      <router-link :to="{ name: 'enterprise'}">企业信息</router-link>
+      <router-link :to="{ name: 'enterprise',query:{enterpriseCode: userInfo.enterpriseCode}}">企业信息</router-link>
       <router-link :to="{ name: 'callcenter',query:{enterpriseCode: userInfo.enterpriseCode}}">营销配置</router-link>
       <router-link :to="{ name: 'source',query:{enterpriseCode: userInfo.enterpriseCode}}">素材库</router-link>
       <router-link :to="{ name: 'member'}">会员管理</router-link>
     </div>
 
     <div class="member-box">
-      <span class="member-show-message">
-        您好
-        <span>{{userInfo.userCnName}}</span>
-        <i class="el-icon-caret-bottom el-icon--right"></i>
-      </span>
+      <el-dropdown>
+        <span class="el-dropdown-link">
+          您好
+          <span>{{userInfo.userCnName}}</span>
+          <i class="el-icon-caret-bottom el-icon--right"></i>
+        </span>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item>
+            <div @click="logout">
+              <img src="../../assets/images/logout.png">
+              退出登录
+            </div>
+          </el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
     </div>
   </section>
 </template>
@@ -80,6 +90,31 @@ export default {
 }
 </script>
 <style lang="scss">
+  .el-dropdown-menu__item {
+    font-size: 14px;
+
+    img {
+      float: left;
+      width: 16px;
+      height: 16px;
+      margin: 10px 10px 0 2px;
+    }
+
+    div {
+      line-height: 36px;
+      overflow: hidden;
+    }
+  }
+
+  .el-dropdown-menu {
+    min-width: 120px;
+  }
+
+  .el-dropdown-link {
+    color: #ffffff;
+    cursor: pointer;
+  }
+
   .header-web {
     position: fixed;
     left: 0;

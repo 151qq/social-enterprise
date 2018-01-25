@@ -52,17 +52,17 @@
               v-model="base.eventPlanDesc">
             </el-input>
         </section>
-        <section class="formBox bigF">
+        <section class="formBox">
           <span>标准照片</span>
           <div class="input-box">
             <upload :path="base.eventPlanCover"
-                    :bg-path="true"
-                    :is-operate="isOperate"
+                    :bg-path="false"
+                    :is-operate="isEdit"
                     @changeImg="changeImg"></upload>
           </div>
         </section>
       </div>
-      <el-button class="save-btn" type="info" :plain="true" size="small" icon="document"
+      <el-button v-if="isEdit" class="save-btn" type="info" :plain="true" size="small" icon="document"
           @click="saveBase()">保存</el-button>
       <div class="clear"></div>
     </section>
@@ -71,6 +71,7 @@
 import util from '../../../../assets/common/util'
 import upload from '../../../../components/common/upload'
 import selectBox from '../../../../components/common/select-box'
+import { mapGetters } from 'vuex'
 export default {
     data () {
         return {
@@ -91,6 +92,14 @@ export default {
     },
     mounted () {
       this.getBase()
+    },
+    computed: {
+        ...mapGetters({
+            userInfo: 'getUserInfo'
+        }),
+        isEdit () {
+          return this.$route.query.enterpriseCode == this.userInfo.enterpriseCode
+        }
     },
     watch: {
       $route () {
@@ -144,6 +153,14 @@ export default {
                     type: 'warning'
                 })
                 return false
+            }
+
+            if (new Date(this.base.eventEndTime).getTime() <= new Date(this.base.eventStartTime).getTime()) {
+              this.$message({
+                  message: '结束时间必须大于开始时间！',
+                  type: 'warning'
+              })
+              return false
             }
 
             this.base.eventStartTime = this.formDataDate(this.base.eventStartTime)

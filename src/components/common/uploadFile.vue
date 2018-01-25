@@ -6,7 +6,7 @@
             src="../../assets/images/img-default.jpg">
         <img v-if="!curPath && bgPath"
             src="../../assets/images/page-img.jpg">
-        <img v-else class="img-big" :src="curPath">
+        <img v-if="curPath" class="img-big" :src="curPath">
       </label>
       <input type="file" v-if="isOperate" class="ben-input" :id="idFor" @change="postImg($event)">
     </section>

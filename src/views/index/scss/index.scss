@@ -532,6 +532,29 @@
               }
             }
 
+            .input-btn-box {
+              float: left;
+              width: 220px;
+
+              .input-b {
+                  float: left;
+                  width: 160px;
+
+                  .el-select {
+                      width: 160px;
+                  }
+
+                  input {
+                      height: 30px;
+                  }
+              }
+
+              .input-btn {
+                float: right;
+                height: 28px;
+              }
+            }
+
             .input-box {
                 float: left;
                 width: 220px;

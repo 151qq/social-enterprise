@@ -20,7 +20,7 @@
                     
                     <div class="card-content">
                         <div class="card-title">{{item.couponTitle}}</div>
-                        <div class="card-desc">{{item.couponAbstract}}</div>
+                        <div class="card-desc">{{item.couponDetailTxt}}</div>
                     </div>
                 </router-link>
                 <div class="null-box" v-if="!props.row.couponInfoList.length">
@@ -46,12 +46,15 @@
             label="营销场景">
           </el-table-column>
           <el-table-column
+            v-if="isEdit"
             label="操作"
             width="100">
             <template scope="scope">
-              <i class="el-icon-delete2" @click="deleteDiscount(scope.row)"></i>
+              <i class="el-icon-delete2"
+                  @click="deleteDiscount(scope.row)"></i>
   
-              <i class="el-icon-document" @click="editDiscount(scope.row)"></i>
+              <i class="el-icon-document"
+                  @click="editDiscount(scope.row)"></i>
 
               <router-link class="el-icon-plus black" target="_blank"
                             :to="{
@@ -110,8 +113,8 @@
             </el-form-item>
             <el-form-item label="套券封面">
                 <popup-img :path="quanData.couponGroupCover"
-                            :is-operate="true"
-                            :bg-path="true"
+                            :is-operate="isEdit"
+                            :bg-path="false"
                             @imgClick="imgClick"></popup-img>
             </el-form-item>
             <el-form-item label="广告用语">
@@ -141,6 +144,7 @@
 import util from '../../../../assets/common/util'
 import popupImg from '../../../../components/common/popupImg.vue'
 import popupLoad from '../../../../components/common/popupLoad.vue'
+import { mapGetters } from 'vuex'
 
 export default {
     data () {
@@ -170,6 +174,14 @@ export default {
     mounted () {
       this.getList()
       this.getTypes()
+    },
+    computed: {
+        ...mapGetters({
+            userInfo: 'getUserInfo'
+        }),
+        isEdit () {
+          return this.$route.query.enterpriseCode == this.userInfo.enterpriseCode
+        }
     },
     watch: {
       $route () {
@@ -202,14 +214,17 @@ export default {
             }
         }).then(res => {
             if (res.result.success == '1') {
+                if (!res.result.result.length) {
+                  return false
+                }
+
                 this.total = Number(res.result.total)
 
-                if (res.result.result.length) {
-                  res.result.result.forEach((item) => {
-                    item.couponGroupBeginTime = this.formDataDate(item.couponGroupBeginTimestamp * 1000)
-                    item.couponGroupEndTime = this.formDataDate(item.couponGroupEndTimestamp * 1000)
-                  })
-                }
+                res.result.result.forEach((item) => {
+                  item.couponGroupBeginTime = this.formDataDate(item.couponGroupBeginTimestamp * 1000)
+                  item.couponGroupEndTime = this.formDataDate(item.couponGroupEndTimestamp * 1000)
+                })
+                
                 this.discountData = res.result.result
             } else {
                 this.$message.error(res.result.message)
@@ -254,7 +269,7 @@ export default {
           return false
         }
 
-        if (!this.quanData.couponGroupBeginTimestamp) {
+        if (!this.quanData.couponGroupBeginTime) {
           this.$message({
               message: '请选择生效时间！',
               type: 'warning'
@@ -262,7 +277,7 @@ export default {
           return false
         }
 
-        if (!this.quanData.couponGroupEndTimestamp) {
+        if (!this.quanData.couponGroupEndTime) {
           this.$message({
               message: '请选择失效时间！',
               type: 'warning'
@@ -296,6 +311,14 @@ export default {
 
         this.quanData.couponGroupBeginTimestamp = Math.floor(new Date(this.quanData.couponGroupBeginTime).getTime()/1000)
         this.quanData.couponGroupEndTimestamp = Math.floor(new Date(this.quanData.couponGroupEndTime).getTime()/1000)
+
+        if (this.quanData.couponGroupEndTimestamp <= this.quanData.couponGroupBeginTimestamp) {
+          this.$message({
+              message: '失效时间必须大于生效时间！',
+              type: 'warning'
+          })
+          return false
+        }
 
         this.insertQuan()
       },

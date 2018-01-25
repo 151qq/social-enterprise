@@ -23,6 +23,7 @@
           <el-collapse-item class="float-form-box" title="产品相册" name="4">
             <upload-list :img-lists="imgList"
                           :id-name="'productAlbum'"
+                          :is-edit="isEdit"
                           @changeImg="changeImg"
                           @setImg="setImg"
                           @deleteImg="deleteImg"></upload-list>
@@ -44,6 +45,7 @@ import specList from './formAlist/specList'
 import articleList from './formAlist/articleList'
 import userScence from './formAlist/userScence'
 import uploadList from '../../../components/common/upload-list'
+import { mapGetters } from 'vuex'
 
 export default {
     data () {
@@ -59,6 +61,18 @@ export default {
         var productColl = localStorage.getItem("productColl")
         if (productColl) {
             this.activeNames = productColl.split(',')
+        }
+    },
+    computed: {
+        ...mapGetters({
+            userInfo: 'getUserInfo'
+        }),
+        isEdit () {
+          if (this.$route.query.enterpriseCode == this.userInfo.enterpriseCode) {
+            return true
+          } else {
+            return false
+          }
         }
     },
     methods: {
@@ -96,9 +110,9 @@ export default {
           var addItemForm = {
               enterpriseCode: this.$route.query.enterpriseCode,
               docType: '2',
-              docTitle: this.baseData.productCname + '-1',
+              docTitle: this.baseData.productCname + '-' + (this.imgList.length + 1),
               fileCode: url,
-              docDesc: this.baseData.productCname + '-1',
+              docDesc: this.baseData.productCname + '-' + (this.imgList.length + 1),
               docCover: '',
               docFolder: this.baseData.productAlbum
           }
