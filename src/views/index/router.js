@@ -115,43 +115,12 @@ const routers = [
       {
         // 企业信息
         path: 'enterprise',
+        name: 'enterprise',
         component (resolve) {
-          require.ensure(['./enterprise/main.vue'], () => {
-            resolve(require('./enterprise/main.vue'))
+          require.ensure(['./enterprise/enterpriseDetail.vue'], () => {
+            resolve(require('./enterprise/enterpriseDetail.vue'))
           })
-        },
-        children: [
-          {
-            // 企业信息
-            path: '',
-            name: 'enterprise',
-            component (resolve) {
-              require.ensure(['./enterprise/enterpriseList.vue'], () => {
-                resolve(require('./enterprise/enterpriseList.vue'))
-              })
-            }
-          },
-          {
-            // 企业信息详情
-            path: 'enterpriseDetail',
-            name: 'enterprise-detail',
-            component (resolve) {
-              require.ensure(['./enterprise/enterpriseDetail.vue'], () => {
-                resolve(require('./enterprise/enterpriseDetail.vue'))
-              })
-            }
-          },
-          {
-            // 平台企业信息详情
-            path: 'platformDetail',
-            name: 'platform-detail',
-            component (resolve) {
-              require.ensure(['./enterprise/platformDetail.vue'], () => {
-                resolve(require('./enterprise/platformDetail.vue'))
-              })
-            }
-          }
-        ]
+        }
       },
       
       {
