@@ -1,52 +1,41 @@
 <template>
-    <div class="article-list-box">
-        <div class="input-box" :class="isEdit ? '' : 'no-add'">
-            <el-input
-              placeholder="请输入需查询条件"
-              v-model="keyValue"
-              >
-            </el-input>
-            <el-button class="search-btn" type="primary" icon="search"
-                        @keyup.13="searchItem" @click="searchItem">
+    <div class="survey-list-box">
+        <div class="input-box">
+            <input
+                placeholder="请输入需查询条件"
+                v-model="keyValue"
+                @keyup.13="searchItem"
+                class="input-search">
+            <el-button class="search-btn" type="primary" icon="search" @click="searchItem">
               搜索
             </el-button>
 
-            <el-button class="add-new-btn"
-                       type="primary"
-                       icon="plus"
-                       v-if="isEdit"
-                       @click="addItem">增加</el-button>
+            <el-button class="add-new-btn" type="primary" icon="plus" @click="addItem">增加</el-button>
         </div>
         <section class="big-cards-box">
             <router-link class="card-box"
+                         target="_blank"
                          v-for="(item, index) in marketList"
-                         :to="{
-                                name: 'article-detail',
-                                query: {
-                                  enterpriseCode: item.enterpriseCode,
-                                  pageCode: item.pageCode,
-                                  templateCode: item.templateCode
-                                }
-                              }">
+                         :to="{name: 'cultivate-detail', query: {enterpriseCode: item.enterpriseCode, surveyCode: item.surveyCode, surveyType: item.surveyType}}">
                 <div class="card-img">
-                    <img v-if="item.pageCover" :src="item.pageCover">
+                    <img v-if="item.surveyCover" :src="item.surveyCover">
                 </div>
                 
                 <div class="card-content">
-                    <div class="card-title">{{item.pageTitle}}</div>
-                    <div class="card-desc">{{item.pageAbstract}}</div>
+                    <div class="card-title">{{item.surveyTitle}}</div>
+                    <div class="card-desc">{{item.surveyAbstraction}}</div>
                     <div class="card-tag">
-                        <el-tag v-if="item.pageStatus == '2'" type="gray">草稿</el-tag>
-                        <el-tag v-if="item.pageStatus == '1'" type="success">已发布</el-tag>
-                        <el-tag v-if="item.pageStatus == '3'">已下架</el-tag>
+                        <el-tag v-if="item.surveyStatus == 'survey_status_1'" type="gray">草稿</el-tag>
+                        <el-tag v-if="item.surveyStatus == 'survey_status_2'" type="success">正在使用</el-tag>
+                        <el-tag v-if="item.surveyStatus == 'survey_status_3'">已下线</el-tag>
                     </div>
                 </div>
-                <section class="card-btns" v-if="isEdit">
-                    <!-- <i class="el-icon-upload2"
-                        v-if="item.pageStatus == '2'"
-                        @click.prevent="changeStatus(item, 'submitted')"></i> -->
+                <section class="card-btns">
+                    <i class="el-icon-upload2"
+                        v-if="item.surveyStatus == 'survey_status_1'"
+                        @click.prevent="changeStatus(item, 'survey_status_2')"></i>
                     <i class="el-icon-delete2"
-                        v-if="item.pageStatus == '2'"
+                        v-if="item.surveyStatus == 'survey_status_1'"
                         @click.prevent="deleteItem(item)"></i>
                 </section>
             </router-link>
@@ -55,28 +44,27 @@
         <section class="null-box" v-if="!marketList.length && isPage">
           暂无内容！！！
         </section>
-
         <div class="more-load"
                 v-if="total && marketList.length < total"
                 @click="loadMore">加载更多...</div>
 
-        <el-dialog title="添加方案" :visible.sync="isAddItem">
+        <el-dialog title="添加调研" :visible.sync="isAddItem">
           <el-form :label-position="'left'" :model="addItemForm" label-width="80px">
-            <el-form-item label="文章标题">
-                <el-input v-model="addItemForm.pageTitle" auto-complete="off"></el-input>
+            <el-form-item label="调研标题">
+                <el-input v-model="addItemForm.surveyTitle" auto-complete="off"></el-input>
             </el-form-item>
-            <el-form-item label="文章封面">
-                <popup-img :path="addItemForm.pageCover"
-                            :is-operate="isEdit"
-                            :bg-path="false"
+            <el-form-item label="调研封面">
+                <popup-img :path="addItemForm.surveyCover"
+                            :is-operate="true"
+                            :bg-path="true"
                             @imgClick="imgClick"></popup-img>
             </el-form-item>
-            <el-form-item label="文章摘要">
+            <el-form-item label="调研摘要">
                 <el-input
                     type="textarea"
                     :rows="3"
                     placeholder="请输入内容"
-                    v-model="addItemForm.pageAbstract">
+                    v-model="addItemForm.surveyAbstraction">
                 </el-input>
             </el-form-item>
           </el-form>
@@ -86,7 +74,7 @@
           </div>
         </el-dialog>
 
-        <popup-load :path="addItemForm.pageCover"
+        <popup-load :path="addItemForm.surveyCover"
                      :is-operate="true"
                      :bg-path="true"
                      :id-name="'pageCover'"
@@ -98,13 +86,12 @@
 import util from '../../../assets/common/util'
 import popupImg from '../../../components/common/popupImg.vue'
 import popupLoad from '../../../components/common/popupLoad.vue'
-import { mapGetters } from 'vuex'
 
 export default {
-    props: ['articleType'],
     data () {
         return {
             isPage: false,
+            surveyType: 'survey_type_2',
             keyValue: '',
             marketList: [],
             pageSize: 20,
@@ -112,9 +99,9 @@ export default {
             total: 0,
             isAddItem: false,
             addItemForm: {
-                pageTitle: '',
-                pageCover: '',
-                pageAbstract: ''
+                surveyTitle: '',
+                surveyCover: '',
+                surveyAbstraction: ''
             },
             isUpload: {
                 value: false
@@ -122,26 +109,7 @@ export default {
         }
     },
     mounted () {
-      this.getList()
-    },
-    computed: {
-        ...mapGetters({
-            userInfo: 'getUserInfo'
-        }),
-        isEdit () {
-          if (this.$route.query.enterpriseCode == this.userInfo.enterpriseCode && this.articleType == 'template_type_1') {
-            return true
-          } else {
-            return false
-          }
-        }
-    },
-    watch: {
-      $route () {
-        this.keyValue = ''
-        this.pageNumber = 1
-        this.getList()
-      }
+         this.getList()
     },
     methods: {
         searchItem () {
@@ -150,10 +118,14 @@ export default {
         getList (type) {
             var formData = {
                 enterpriseCode: this.$route.query.enterpriseCode,
-                pageType: this.articleType,
-                pageEditor: this.userInfo.userCode,
+                surveyType: this.surveyType,
                 pageSize: this.pageSize,
                 pageNumber: this.pageNumber
+            }
+
+            // 非root只能操作自己的
+            if (this.userInfo.roleCodes.indexOf('platform_root') < 0) {
+              formData.surveyScenario = this.userInfo.userCode
             }
 
             if (this.keyValue) {
@@ -161,8 +133,8 @@ export default {
             }
 
             util.request({
-                method: 'post',
-                interface: 'html5PageList',
+                method: 'get',
+                interface: 'selectByEcAndTy',
                 data: formData
             }).then(res => {
                 if (res.result.success == '0') {
@@ -181,11 +153,11 @@ export default {
         },
         changeStatus (item, type) {
             util.request({
-              method: 'post',
-              interface: 'html5PageSubmit',
+              method: 'get',
+              interface: 'updateSurveyStatus',
               data: {
-                pageCode: item.pageCode,
-                pageStatus: '1'
+                surveyCode: item.surveyCode,
+                surveyStatus: type
               }
             }).then(res => {
               if (res.result.success == '1') {
@@ -201,10 +173,10 @@ export default {
         },
         deleteItem (item) {
             util.request({
-              method: 'post',
-              interface: 'html5PageDelete',
+              method: 'get',
+              interface: 'deleteSurvey',
               data: {
-                pageCode: item.pageCode
+                surveyCode: item.surveyCode
               }
             }).then(res => {
               if (res.result.success == '1') {
@@ -220,49 +192,45 @@ export default {
             })
         },
         addItem () {
-            this.addItemForm = {
-                pageTitle: '',
-                pageCover: '',
-                pageAbstract: '',
-                pageEditor: this.userInfo.userCode
-            }
             this.isAddItem = true
         },
         imgClick () {
             this.isUpload.value = true
         },
         changeItemImg (data) {
-            this.addItemForm.pageCover = data.url
+            this.addItemForm.surveyCover = data.url
         },
         confirmItem () {
-            if (!this.addItemForm.pageTitle) {
-              this.$message.error('文章标题不能为空！')
+            if (!this.addItemForm.surveyTitle) {
+              this.$message.error('调研标题不能为空！')
               return
             }
 
-            if (!this.addItemForm.pageCover) {
-              this.$message.error('文章封面不能为空！')
+            if (!this.addItemForm.surveyCover) {
+              this.$message.error('调研封面不能为空！')
               return
             }
 
             var formData = {
                 enterpriseCode: this.$route.query.enterpriseCode,
-                pageType: this.articleType,
-                pageTitle: this.addItemForm.pageTitle,
-                pageCover: this.addItemForm.pageCover,
-                pageAbstract: this.addItemForm.pageAbstract,
-                pageEditor: this.userInfo.userCode
+                surveyType: this.surveyType,
+                surveyTitle: this.addItemForm.surveyTitle,
+                surveyCover: this.addItemForm.surveyCover,
+                surveyAbstraction: this.addItemForm.surveyAbstraction,
+                surveyScenario: this.userInfo.userCode
             }
 
             util.request({
                 method: 'post',
-                interface: 'html5PageSave',
+                interface: 'manageSurveyInfo',
                 data: formData
             }).then(res => {
                 if (res.result.success == '1') {
                   this.pageNumber = 1
                   this.getList()
                   this.isAddItem = false
+
+                  window.open('/#/surveyDetail?enterpriseCode=' + this.$route.query.enterpriseCode + '&surveyCode=' + res.result.result, '_blank')
                 } else {
                   this.$message.error(res.result.message)
                 }
@@ -280,8 +248,9 @@ export default {
 }
 </script>
 <style lang="scss">
-.article-list-box {
-    margin: auto;
+.survey-list-box {
+    width: 1000px;
+    margin: 80px auto 30px;
 
     .input-box {
         display: block;
@@ -289,15 +258,22 @@ export default {
         height: 50px;
         margin: 0 auto 30px;
 
-        .el-input {
+        .input-search {
           float: left;
           width: 600px;
           height: 50px;
-
-          input {
-            font-size: 14px;
-            height: 50px;
-          }
+          appearance: none;
+          font-size: 14px;
+          background-color: #fff;
+          background-image: none;
+          border-radius: 4px;
+          border: 1px solid #bfcbd9;
+          box-sizing: border-box;
+          color: #1f2d3d;
+          font-size: inherit;
+          line-height: 1;
+          outline: 0;
+          padding: 3px 10px;
         }
 
         .search-btn {
@@ -315,10 +291,6 @@ export default {
             float: right;
             height: 50px;
         }
-    }
-
-    .no-add {
-      width: 696px;
     }
 
     .big-cards-box {
@@ -342,26 +314,25 @@ export default {
 
         .card-img {
           float: left;
-          width: 160px;
-          height: 100px;
+          width: 200px;
+          height: 120px;
           background: #cfcfd0;
 
           img {
             display: block;
-            width: 160px;
-            height: 100px;
+            width: 200px;
+            height: 120px;
           }
         }
 
         .card-content {
           float: right;
-          width: 820px;
+          width: 780px;
 
           .card-title {
-            font-size: 16px;
-            line-height: 24px;
+            font-size: 18px;
+            line-height: 30px;
             color: #000000;
-            margin-bottom: 3px;
           }
 
           .card-desc {
@@ -369,6 +340,7 @@ export default {
             line-height: 24px;
             color: #475669;
             height: 48px;
+            margin-top: 10px;
             overflow: hidden;
           }
         }

@@ -1,20 +1,20 @@
 <template>
     <div class="market-list-box">
-        <div class="input-box" :class="isEdit ? '' : 'no-add'">
-            <el-input
-              placeholder="请输入需查询条件"
-              v-model="keyValue"
-              >
-            </el-input>
-            <el-button class="search-btn" type="primary" icon="search"
-                        @keyup.13="searchItem" @click="searchItem">
+        <div class="input-box">
+            <input
+                placeholder="请输入需查询条件"
+                v-model="keyValue"
+                @keyup.13="searchItem"
+                class="input-search">
+            <el-button class="search-btn" type="primary" icon="search" @click="searchItem">
               搜索
             </el-button>
 
-            <el-button v-if="isEdit" class="add-new-btn" type="primary" icon="plus" @click="addItem">增加</el-button>
+            <el-button class="add-new-btn" type="primary" icon="plus" @click="addItem">增加</el-button>
         </div>
         <section class="big-cards-box">
             <router-link class="card-box"
+                         target="_blank"
                          v-for="(item, index) in marketList"
                          :to="{name: 'market-detail', query: {eventCode: item.eventCode, enterpriseCode: item.enterpriseCode}}">
                 <div class="card-img">
@@ -26,18 +26,15 @@
                     <div class="card-desc">{{item.eventPlanDesc}}</div>
                     <div class="card-tag">
                         <!-- draft，submitted，approved，frozen，closed -->
-                        <el-tag v-if="item.eventPlanStatus == 'draft'" type="gray">草稿</el-tag>
-                        <el-tag v-if="item.eventPlanStatus == 'submitted'" type="success">已发布</el-tag>
-                        <el-tag v-if="item.eventPlanStatus == 'end'">正常结束</el-tag>
-                        <el-tag v-if="item.eventPlanStatus == 'closed'">提前终止</el-tag>
+                        <el-tag v-if="item.eventStatus == 'draft'" type="gray">草稿</el-tag>
+                        <el-tag v-if="item.eventStatus == 'submitted'" type="success">已发布</el-tag>
+                        <el-tag v-if="item.eventStatus == 'end'">正常结束</el-tag>
+                        <el-tag v-if="item.eventStatus == 'closed'">提前终止</el-tag>
                     </div>
                 </div>
-                <section class="card-btns" v-if="isEdit">
-                    <!-- <i class="el-icon-upload2"
-                        v-if="item.eventPlanStatus == 'draft'"
-                        @click.stop="changeStatus(item, 'submitted')"></i> -->
+                <section class="card-btns">
                     <i class="el-icon-delete2"
-                        v-if="item.eventPlanStatus == 'draft'"
+                        v-if="item.eventStatus == 'draft'"
                         @click.stop="deleteItem(item)"></i>
                 </section>
             </router-link>
@@ -102,7 +99,8 @@ export default {
             addItemForm: {
                 eventPlanTitle: '',
                 eventPlanCover: '',
-                eventPlanDesc: ''
+                eventPlanDesc: '',
+                eventDesigner: ''
             },
             isUpload: {
                 value: false
@@ -115,10 +113,7 @@ export default {
     computed: {
         ...mapGetters({
             userInfo: 'getUserInfo'
-        }),
-        isEdit () {
-          return this.$route.query.enterpriseCode == this.userInfo.enterpriseCode
-        }
+        })
     },
     methods: {
         searchItem () {
@@ -127,9 +122,12 @@ export default {
         getList (type) {
             var formData = {
                 enterpriseCode: this.$route.query.enterpriseCode,
+                eventDesigner: this.userInfo.userCode,
                 pageSize: this.pageSize,
                 pageNumber: this.pageNumber
             }
+
+            formData.eventDesigner = this.userInfo.userCode
 
             if (this.keyValue) {
                 formData.keyValue = this.keyValue
@@ -218,7 +216,8 @@ export default {
                 enterpriseCode: this.$route.query.enterpriseCode,
                 eventPlanTitle: this.addItemForm.eventPlanTitle,
                 eventPlanCover: this.addItemForm.eventPlanCover,
-                eventPlanDesc: this.addItemForm.eventPlanDesc
+                eventPlanDesc: this.addItemForm.eventPlanDesc,
+                eventDesigner: this.userInfo.userCode
             }
 
             util.request({
@@ -230,8 +229,6 @@ export default {
                   this.pageNumber = 1
                   this.getList()
                   this.isAddItem = false
-
-                  window.open('/#/marketDetail?enterpriseCode=' + this.$route.query.enterpriseCode + '&eventCode=' + res.result.result, '_blank')
                 } else {
                   this.$message.error(res.result.message)
                 }
@@ -259,15 +256,22 @@ export default {
         height: 50px;
         margin: 0 auto 30px;
 
-        .el-input {
+        .input-search {
           float: left;
           width: 600px;
           height: 50px;
-
-          input {
-            font-size: 14px;
-            height: 50px;
-          }
+          appearance: none;
+          font-size: 14px;
+          background-color: #fff;
+          background-image: none;
+          border-radius: 4px;
+          border: 1px solid #bfcbd9;
+          box-sizing: border-box;
+          color: #1f2d3d;
+          font-size: inherit;
+          line-height: 1;
+          outline: 0;
+          padding: 3px 10px;
         }
 
         .search-btn {

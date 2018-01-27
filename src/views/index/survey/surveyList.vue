@@ -1,13 +1,12 @@
 <template>
     <div class="survey-list-box">
         <div class="input-box">
-            <el-input
-              placeholder="请输入需查询条件"
-              v-model="keyValue"
-              >
-            </el-input>
-            <el-button class="search-btn" type="primary" icon="search"
-                        @keyup.13="searchItem" @click="searchItem">
+            <input
+                placeholder="请输入需查询条件"
+                v-model="keyValue"
+                @keyup.13="searchItem"
+                class="input-search">
+            <el-button class="search-btn" type="primary" icon="search" @click="searchItem">
               搜索
             </el-button>
 
@@ -40,6 +39,10 @@
                         @click.prevent="deleteItem(item)"></i>
                 </section>
             </router-link>
+        </section>
+
+        <section class="null-box" v-if="!marketList.length && isPage">
+          暂无内容！！！
         </section>
         <div class="more-load"
                 v-if="total && marketList.length < total"
@@ -85,9 +88,10 @@ import popupImg from '../../../components/common/popupImg.vue'
 import popupLoad from '../../../components/common/popupLoad.vue'
 
 export default {
-    props: ['surveyType'],
     data () {
         return {
+            isPage: false,
+            surveyType: 'survey_type_1',
             keyValue: '',
             marketList: [],
             pageSize: 20,
@@ -108,13 +112,24 @@ export default {
          this.getList()
     },
     methods: {
-        searchItem () {},
+        searchItem () {
+          this.getList()
+        },
         getList (type) {
             var formData = {
                 enterpriseCode: this.$route.query.enterpriseCode,
                 surveyType: this.surveyType,
                 pageSize: this.pageSize,
                 pageNumber: this.pageNumber
+            }
+
+            // 非root只能操作自己的
+            if (this.userInfo.roleCodes.indexOf('platform_root') < 0) {
+              formData.surveyScenario = this.userInfo.userCode
+            }
+
+            if (this.keyValue) {
+                formData.keyValue = this.keyValue
             }
 
             util.request({
@@ -128,6 +143,7 @@ export default {
                 }
 
                 this.total = Number(res.result.total)
+                this.isPage = true
                 if (!type) {
                     this.marketList = res.result.result
                 } else {
@@ -200,7 +216,8 @@ export default {
                 surveyType: this.surveyType,
                 surveyTitle: this.addItemForm.surveyTitle,
                 surveyCover: this.addItemForm.surveyCover,
-                surveyAbstraction: this.addItemForm.surveyAbstraction
+                surveyAbstraction: this.addItemForm.surveyAbstraction,
+                surveyScenario: this.userInfo.userCode
             }
 
             util.request({
@@ -232,7 +249,8 @@ export default {
 </script>
 <style lang="scss">
 .survey-list-box {
-    margin: auto;
+    width: 1000px;
+    margin: 80px auto 30px;
 
     .input-box {
         display: block;
@@ -240,15 +258,22 @@ export default {
         height: 50px;
         margin: 0 auto 30px;
 
-        .el-input {
+        .input-search {
           float: left;
           width: 600px;
           height: 50px;
-
-          input {
-            font-size: 14px;
-            height: 50px;
-          }
+          appearance: none;
+          font-size: 14px;
+          background-color: #fff;
+          background-image: none;
+          border-radius: 4px;
+          border: 1px solid #bfcbd9;
+          box-sizing: border-box;
+          color: #1f2d3d;
+          font-size: inherit;
+          line-height: 1;
+          outline: 0;
+          padding: 3px 10px;
         }
 
         .search-btn {

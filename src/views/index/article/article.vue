@@ -11,10 +11,12 @@
 <script>
 import util from '../../../assets/common/util'
 import articleList from './articleList'
+import { mapGetters } from 'vuex'
 
 export default {
     data () {
         return {
+            isPage: false,
             tabDatas: [
               {
                 label: '宣传文章',
@@ -35,6 +37,32 @@ export default {
             ],
             activeName: 'template_type_1'
         }
+    },
+    mounted () {
+      if (!this.$route.query.enterpriseCode) {
+        var pathUrl = {
+          name: 'article',
+          query: {
+            enterpriseCode: this.userInfo.enterpriseCode
+          }
+        }
+
+        this.$router.replace(pathUrl)
+      } else {
+        this.isPage = true
+      }
+    },
+    computed: {
+        ...mapGetters({
+            userInfo: 'getUserInfo'
+        })
+    },
+    watch: {
+      $route () {
+        if (this.$route.query.enterpriseCode) {
+          this.isPage = true
+        }
+      }
     },
     components: {
       articleList

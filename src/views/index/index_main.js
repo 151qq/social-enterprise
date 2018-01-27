@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import VueHtml5Editor from 'vue-html5-editor'
+import jsCookie from 'js-cookie'
 import routes from './router'
 import Element from 'element-ui'
 import store from '../../vuex/store'
@@ -48,9 +49,19 @@ const router = new VueRouter({
 
 // 验证登录
 router.beforeEach((to, from, next) => {
-  // 滚动置顶
-  window.scrollTo && window.scrollTo(0, 0)
-  next()
+    document.title = to.meta.title
+    var e2Token = jsCookie.get('socialmarketing_cloud_user')
+    if (!e2Token && to.name !== 'login') {
+        window.location.href = '/login'
+    }
+
+    if (to.name == 'home') {
+        next('/article')
+    }
+
+    // 滚动置顶
+    window.scrollTo && window.scrollTo(0, 0)
+    next()
 })
 
 new Vue({

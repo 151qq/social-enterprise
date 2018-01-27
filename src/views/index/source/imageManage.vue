@@ -1,6 +1,6 @@
 <template>
     <div class="image-su-box">
-        <section class="btns-op" v-if="isEdit">
+        <section class="btns-op" v-if="isEdit && fileType != 'e2_4'">
             <img v-show="!isCheck" src="../../../assets/images/select-icon.png" @click="setCheck">
             <img v-show="isCheck" src="../../../assets/images/select-now.png" @click="setCheck">
             <span v-if="showType != '1'"></span>
@@ -12,7 +12,7 @@
             <img :class="isCheck ? '' : 'disable'" src="../../../assets/images/delete-icon-n.png"
                     @click="deleteOpt">
             <span></span>
-            <div v-if="showType == '1' && fileType != 'e2_2'" class="up-box">
+            <div v-if="showType == '1'" class="up-box">
                 <img @click="addDir" src="../../../assets/images/adds-icon.png">
             </div>
             <div v-if="showType == '2'" class="up-box">
@@ -27,7 +27,8 @@
                         v-if="dirDatas.length"
                         class="check-box">
 
-                <section v-if="isCheck && isEdit" @click.stop="selectDir(item)"
+                <section v-if="isCheck && item.docFolder != 'e2_2' &&  item.docFolder != 'e2_4'"
+                        @click.stop="selectDir(item)"
                         class="select-box"
                         :class="selectDirList.indexOf(item.docCode) > -1 ? 'active' : ''"></section>
                 <section class="sou-box">
@@ -39,7 +40,7 @@
                         <div class="time">
                             {{item.docCreateTime}}
                             
-                            <span class="btn-box" v-if="isEdit">
+                            <span class="btn-box" v-if="isEdit && fileType != 'e2_4'">
                                 <i @click.stop="editDir(item)" class="el-icon-document"></i>
                             </span>
                         </div>
@@ -89,7 +90,7 @@
                         <span class="time">
                             {{item.docCreateTime}}
 
-                            <span class="btn-box" v-if="isEdit">
+                            <span class="btn-box" v-if="isEdit && fileType != 'e2_4'">
                                 <i @click="editItem(item)" class="el-icon-document"></i>
                             </span>
                         </span>
@@ -300,7 +301,7 @@ export default {
             userInfo: 'getUserInfo'
         }),
         isEdit () {
-          return this.$route.query.enterpriseCode == this.userInfo.enterpriseCode
+          return this.userInfo.roleCodes.indexOf('platform_material_admin') > -1
         }
     },
     methods: {
@@ -436,7 +437,9 @@ export default {
         },
         showItems (item) {
             if (this.isCheck) {
-                this.selectDir(item)
+                if (item.docFolder != 'e2_2' &&  item.docFolder != 'e2_4') {
+                    this.selectDir(item)
+                }
                 return false
             }
 
@@ -454,15 +457,20 @@ export default {
             this.getItems()
         },
         getItems (docCode) {
+            var formData = {
+                docFolder: docCode ? docCode : this.nowDir.docCode,
+                pageNumber: this.itemPageNumber,
+                pageSize: this.itemPageSize
+            }
+
+            if (this.fileType != 'e2_4') {
+                formData.enterpriseCode = this.$route.query.enterpriseCode
+            }
+                
             util.request({
                 method: 'get',
                 interface: 'listPage',
-                data: {
-                    enterpriseCode: this.$route.query.enterpriseCode,
-                    docFolder: docCode ? docCode : this.nowDir.docCode,
-                    pageNumber: this.itemPageNumber,
-                    pageSize: this.itemPageSize
-                }
+                data: formData
             }).then(res => {
                 if (res.result.success == '1') {
                     this.bigImgs = []

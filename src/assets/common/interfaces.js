@@ -1,7 +1,7 @@
 /**
  * Created by zhangbin on 2017/7/6.
  */
-const platform = "/E2-Platform/"
+const platform = "/e2-platform-api/"
 export default {
     interfaces: {
         "authentication": platform + "authentication.json",

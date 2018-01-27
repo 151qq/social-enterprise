@@ -3,24 +3,49 @@
     <router-link class="logo-box" :to="{name: 'market'}"><img src="../../assets/images/logo.png"></router-link>
 
     <div class="nav-box">
-      <router-link :to="{ name: 'market',query:{enterpriseCode: userInfo.enterpriseCode}}">营销方案</router-link>
-      <router-link :to="{ name: 'article',query:{enterpriseCode: userInfo.enterpriseCode}}">推广文章</router-link>
-      <router-link :to="{ name: 'survey',query:{enterpriseCode: userInfo.enterpriseCode}}">调研发布</router-link>
-      <router-link :to="{ name: 'product',query:{
-        enterpriseCode: userInfo.enterpriseCode,
-        catalogCode: 'e2',
-        catalogLevel: 1
-      }}">产品中心</router-link>
-      <router-link :to="{ name: 'gift',query:{
-        enterpriseCode: userInfo.enterpriseCode,
-        catalogCode: 'e2',
-        catalogLevel: 1
-      }}">礼品中心</router-link>
-      <!-- <router-link :to="{ name: 'gift'}">礼品中心</router-link> -->
-      <router-link :to="{ name: 'enterprise',query:{enterpriseCode: userInfo.enterpriseCode}}">企业信息</router-link>
-      <router-link :to="{ name: 'callcenter',query:{enterpriseCode: userInfo.enterpriseCode}}">营销配置</router-link>
-      <router-link :to="{ name: 'source',query:{enterpriseCode: userInfo.enterpriseCode}}">素材库</router-link>
-      <router-link :to="{ name: 'member',query:{enterpriseCode: userInfo.enterpriseCode}}">会员管理</router-link>
+      <router-link :to="{ name: 'article',query:{enterpriseCode: userInfo.enterpriseCode}}">
+        推广文章
+      </router-link>
+      <router-link :to="{ name: 'market',query:{enterpriseCode: userInfo.enterpriseCode}}">
+        营销方案
+      </router-link>
+      <router-link :to="{ name: 'source',query:{enterpriseCode: userInfo.enterpriseCode}}">
+        素材库
+      </router-link>
+      <router-link  v-if="isProduct"
+                    :to="{ name: 'product',query:{
+                      enterpriseCode: userInfo.enterpriseCode,
+                      catalogCode: 'e2',
+                      catalogLevel: 1
+                    }}">
+        产品中心
+      </router-link>
+      <router-link  v-if="isProduct"
+                    :to="{ name: 'gift',query:{
+                      enterpriseCode: userInfo.enterpriseCode,
+                      catalogCode: 'e2',
+                      catalogLevel: 1
+                    }}">
+        礼品中心
+      </router-link>
+      <router-link :to="{ name: 'survey',query:{enterpriseCode: userInfo.enterpriseCode}}">
+        调研发布
+      </router-link>
+      <router-link :to="{ name: 'cultivate',query:{enterpriseCode: userInfo.enterpriseCode}}">
+        营销培训
+      </router-link>
+      <router-link  v-if="isMember"
+                    :to="{ name: 'member',query:{enterpriseCode: userInfo.enterpriseCode}}">
+        会员管理
+      </router-link>
+      <router-link  v-if="isConfig"
+                    :to="{ name: 'callcenter',query:{enterpriseCode: userInfo.enterpriseCode}}">
+        营销配置
+      </router-link>
+      <router-link  v-if="isRoot"
+                    :to="{ name: 'enterprise',query:{enterpriseCode: userInfo.enterpriseCode}}">
+        企业信息
+      </router-link>
     </div>
 
     <div class="member-box">
@@ -48,15 +73,29 @@ import { mapGetters, mapActions } from 'vuex'
 
 export default {
   data () {
-    return {}
+    return {
+      roleCodes: []
+    }
   },
   created () {
     this.getUserInfo()
   },
   computed: {
       ...mapGetters({
-          userInfo: 'getUserInfo'
-      })
+        userInfo: 'getUserInfo'
+      }),
+      isRoot () {
+        return this.roleCodes.indexOf('enterprise_root') > -1
+      },
+      isProduct () {
+        return this.roleCodes.indexOf('product_admin') > -1
+      },
+      isMember () {
+        return this.roleCodes.indexOf('enterprise_member_admin') > -1
+      },
+      isConfig () {
+        return this.roleCodes.indexOf('enterprise_config_admin') > -1
+      }
   },
   methods: {
     ...mapActions([
@@ -70,6 +109,15 @@ export default {
       }).then(res => {
         if (res.result.success == '1') {
           if (res.result.result.enterpriseCode) {
+            var roleCodes = []
+            res.result.result.roleDefs.forEach((item) => {
+                roleCodes.push(item.roleCode)
+            })
+
+            this.roleCodes = roleCodes
+
+            res.result.result.roleCodes = roleCodes.concat([])
+
             this.setUserInfo(res.result.result)
             this.$emit('loadPage', '1')
           } else {
