@@ -130,6 +130,10 @@
                         </el-input>
                     </section>
                 </div>
+                <el-button v-if="isEdit"
+                            class="save-btn" type="info" :plain="true" size="small" icon="document"
+                           @click="saveCallcenter">保存</el-button>
+                <div class="clear"></div>
             </el-collapse-item>
           <div class="line-bold"></div>
           <el-collapse-item class="float-form-box" title="商机新建外呼规则" name="4">

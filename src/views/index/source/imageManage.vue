@@ -776,11 +776,14 @@ export default {
         .title-box {
             padding: 5px 10px;
             border-top: 1px solid #D3DCE6;
+            height: 50px;
+            box-sizing: border-box;
             
             .title {
                 display: block;
                 font-size: 14px;
                 line-height: 20px;
+                height: 20px;
                 border: none;
                 color: #000000;
             }

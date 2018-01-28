@@ -35,7 +35,7 @@
                 <section class="card-btns">
                     <i class="el-icon-delete2"
                         v-if="item.eventStatus == 'draft'"
-                        @click.stop="deleteItem(item)"></i>
+                        @click.prevent="deleteItemByCode(item)"></i>
                 </section>
             </router-link>
         </section>
@@ -45,45 +45,10 @@
         <div class="more-load"
                 v-if="total && marketList.length < total"
                 @click="loadMore">加载更多...</div>
-
-        <el-dialog title="添加方案" :visible.sync="isAddItem">
-          <el-form :label-position="'left'" :model="addItemForm" label-width="80px">
-            <el-form-item label="方案名称">
-                <el-input v-model="addItemForm.eventPlanTitle" auto-complete="off"></el-input>
-            </el-form-item>
-            <el-form-item label="方案封面">
-                <popup-img :path="addItemForm.eventPlanCover"
-                            :is-operate="true"
-                            :bg-path="false"
-                            @imgClick="imgClick"></popup-img>
-            </el-form-item>
-            <el-form-item label="方案描述">
-                <el-input
-                    type="textarea"
-                    :rows="3"
-                    placeholder="请输入内容"
-                    v-model="addItemForm.eventPlanDesc">
-                </el-input>
-            </el-form-item>
-          </el-form>
-          <div slot="footer" class="dialog-footer">
-                <el-button @click="isAddItem = false">取 消</el-button>
-                <el-button type="primary" @click="confirmItem">确 定</el-button>
-          </div>
-        </el-dialog>
-
-        <popup-load :path="addItemForm.eventPlanCover"
-                     :is-operate="true"
-                     :bg-path="true"
-                     :id-name="'eventPlanCover'"
-                     :is-upload="isUpload"
-                     @changeImg="changeItemImg"></popup-load>
   </div>
 </template>
 <script>
 import util from '../../../assets/common/util'
-import popupImg from '../../../components/common/popupImg.vue'
-import popupLoad from '../../../components/common/popupLoad.vue'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -94,17 +59,7 @@ export default {
             marketList: [],
             pageSize: 20,
             pageNumber: 1,
-            total: 0,
-            isAddItem: false,
-            addItemForm: {
-                eventPlanTitle: '',
-                eventPlanCover: '',
-                eventPlanDesc: '',
-                eventDesigner: ''
-            },
-            isUpload: {
-                value: false
-            }
+            total: 0
         }
     },
     mounted () {
@@ -126,8 +81,6 @@ export default {
                 pageSize: this.pageSize,
                 pageNumber: this.pageNumber
             }
-
-            formData.eventDesigner = this.userInfo.userCode
 
             if (this.keyValue) {
                 formData.keyValue = this.keyValue
@@ -152,26 +105,6 @@ export default {
                 }
             })
         },
-        changeStatus (item, type) {
-            util.request({
-              method: 'post',
-              interface: 'eventInfoChangeStatus',
-              data: {
-                eventCode: item.eventCode,
-                eventPlanStatus: type
-              }
-            }).then(res => {
-              if (res.result.success == '1') {
-                this.getList()
-                this.$message({
-                  type: 'success',
-                  message: '状态修改成功!'
-                })
-              } else {
-                this.$message.error(res.result.message)
-              }
-            })
-        },
         deleteItemByCode (item) {
             util.request({
               method: 'post',
@@ -193,55 +126,19 @@ export default {
             })
         },
         addItem () {
-            this.isAddItem = true
-        },
-        imgClick () {
-            this.isUpload.value = true
-        },
-        changeItemImg (data) {
-            this.addItemForm.eventPlanCover = data.url
-        },
-        confirmItem () {
-            if (!this.addItemForm.eventPlanTitle) {
-              this.$message.error('方案名称不能为空！')
-              return
+            var pathUrl = {
+              name: 'market-detail',
+              query: {
+                enterpriseCode: this.$route.query.enterpriseCode
+              }
             }
 
-            if (!this.addItemForm.eventPlanCover) {
-              this.$message.error('方案封面不能为空！')
-              return
-            }
-
-            var formData = {
-                enterpriseCode: this.$route.query.enterpriseCode,
-                eventPlanTitle: this.addItemForm.eventPlanTitle,
-                eventPlanCover: this.addItemForm.eventPlanCover,
-                eventPlanDesc: this.addItemForm.eventPlanDesc,
-                eventDesigner: this.userInfo.userCode
-            }
-
-            util.request({
-                method: 'post',
-                interface: 'eventInfoInsert',
-                data: formData
-            }).then(res => {
-                if (res.result.success == '1') {
-                  this.pageNumber = 1
-                  this.getList()
-                  this.isAddItem = false
-                } else {
-                  this.$message.error(res.result.message)
-                }
-            })
+            this.$router.push(pathUrl)
         },
         loadMore () {
             this.pageNumber++
             this.getList('more')
         }
-    },
-    components: {
-        popupImg,
-        popupLoad
     }
 }
 </script>

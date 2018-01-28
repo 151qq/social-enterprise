@@ -307,6 +307,8 @@ export default {
             if (this.addItemForm.catalogType != '1') {
                 this.addItemForm.productClass = this.productType
             }
+
+            this.addItemForm.catalogCreator = this.userInfo.userCode
             
             util.request({
                 method: 'post',

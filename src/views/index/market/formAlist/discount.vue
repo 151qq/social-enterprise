@@ -147,6 +147,7 @@ import popupLoad from '../../../../components/common/popupLoad.vue'
 import { mapGetters } from 'vuex'
 
 export default {
+    props: ['base'],
     data () {
         return {
           discountData: [],
@@ -315,6 +316,25 @@ export default {
         if (this.quanData.couponGroupEndTimestamp <= this.quanData.couponGroupBeginTimestamp) {
           this.$message({
               message: '失效时间必须大于生效时间！',
+              type: 'warning'
+          })
+          return false
+        }
+
+        var eventEndTime = Math.floor(new Date(this.base.eventEndTime).getTime()/1000)
+        var eventStartTime = Math.floor(new Date(this.base.eventStartTime).getTime()/1000)
+
+        if (this.quanData.couponGroupBeginTimestamp < eventStartTime) {
+          this.$message({
+              message: '生效时间必须大于方案开始时间！',
+              type: 'warning'
+          })
+          return false
+        }
+
+        if (this.quanData.couponGroupEndTimestamp > eventEndTime) {
+          this.$message({
+              message: '失效时间必须小于方案结束时间！',
               type: 'warning'
           })
           return false

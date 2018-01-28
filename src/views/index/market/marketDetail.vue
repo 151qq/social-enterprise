@@ -1,14 +1,16 @@
 <template>
     <div class="form-discount">
         <el-collapse v-model="activeNames" @change="collChange">
-          <el-collapse-item class="float-form-box" title="基本信息" name="0">
-            <market-base></market-base>
-          </el-collapse-item>
-          <div class="line-bold"></div>
+            <el-collapse-item class="float-form-box" title="基本信息" name="0">
+                <market-base @hasBase="hasBase"></market-base>
+            </el-collapse-item>
 
-          <el-collapse-item class="float-form-box" title="活动优惠" name="3">
-            <discount></discount>
-          </el-collapse-item>
+            <template v-if="baseData.eventCode">
+                <div class="line-bold"></div>
+                <el-collapse-item class="float-form-box" title="活动优惠" name="1">
+                    <discount :base="baseData"></discount>
+                </el-collapse-item>
+            </template>
         </el-collapse>          
     </div>
 </template>
@@ -21,7 +23,8 @@ export default {
     data () {
         return {
             id: 0,
-            activeNames: ['1']
+            baseData: {},
+            activeNames: ['0']
         }
     },
     mounted () {
@@ -31,6 +34,9 @@ export default {
         }
     },
     methods: {
+        hasBase (base) {
+            this.baseData = Object.assign({}, base)
+        },
         collChange () {
             localStorage.setItem("marketColl", this.activeNames)
         }

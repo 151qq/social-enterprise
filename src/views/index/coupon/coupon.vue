@@ -169,8 +169,8 @@
                     <el-option
                       v-for="(item, index) in products"
                       :key="index"
-                      :label="item.catalogCname"
-                      :value="item.catalogCode">
+                      :label="item.productCname"
+                      :value="item.productCode">
                     </el-option>
                 </el-select>
             </section>
@@ -249,8 +249,8 @@
                     <el-option
                       v-for="(item, index) in giftLists"
                       :key="index"
-                      :label="item.label"
-                      :value="item.id">
+                      :label="item.productCname"
+                      :value="item.productCode">
                     </el-option>
                 </el-select>
             </section>
@@ -377,11 +377,13 @@ export default {
         this.getBase()
       } else {
         this.quanData.couponGroupCode = this.$route.query.couponGroupCode
+        this.quanData.enterpriseCode = this.$route.query.enterpriseCode
         this.getCallcenter()
       }
       
       this.getProducts()
       this.getTypes()
+      this.getGifts()
     },
     computed: {
         ...mapGetters({
@@ -409,7 +411,10 @@ export default {
                       couponBtnUrl: data.couponBtnUrl,
                       couponEcommerceUrlName: data.couponEcommerceUrlName,
                       couponEcommerceUrl: data.couponEcommerceUrl,
-                      couponEcommerceUrlSubTitle: data.couponEcommerceUrlSubTitle
+                      couponEcommerceUrlSubTitle: data.couponEcommerceUrlSubTitle,
+                      couponGetLimit: 1,
+                      couponUseLimit: 1,
+                      couponTransferOpt: '1'
                     }
 
                     this.quanData = Object.assign(this.quanData,callcenterData)
@@ -473,10 +478,10 @@ export default {
         getProducts () {
             util.request({
                 method: 'get',
-                interface: 'pruductCatalogList',
+                interface: 'gifProductList',
                 data: {
                     enterpriseCode: this.$route.query.enterpriseCode,
-                    catalogType: 'pro'
+                    productType: 'product'
                 }
             }).then(res => {
                 if (res.result.success == '1') {
@@ -489,10 +494,10 @@ export default {
         getGifts () {
             util.request({
                 method: 'get',
-                interface: 'pruductCatalogList',
+                interface: 'gifProductList',
                 data: {
                     enterpriseCode: this.$route.query.enterpriseCode,
-                    catalogType: 'pro'
+                    productType: 'gift'
                 }
             }).then(res => {
                 if (res.result.success == '1') {

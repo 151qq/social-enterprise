@@ -14,6 +14,7 @@
             <el-date-picker
               class="input-box"
               type="date"
+              :disabled="!!$route.query.eventCode"
               v-model="base.eventStartTime"
               placeholder="选择">
             </el-date-picker>
@@ -23,6 +24,7 @@
             <el-date-picker
               class="input-box"
               type="date"
+              :disabled="!!$route.query.eventCode"
               v-model="base.eventEndTime"
               placeholder="选择">
             </el-date-picker>
@@ -91,7 +93,9 @@ export default {
         }
     },
     mounted () {
-      this.getBase()
+      if (this.$route.query.eventCode) {
+        this.getBase()
+      }
     },
     computed: {
         ...mapGetters({
@@ -103,7 +107,9 @@ export default {
     },
     watch: {
       $route () {
-        this.getBase()
+        if (this.$route.query.eventCode) {
+          this.getBase()
+        }
       }
     },
     methods: {
@@ -116,6 +122,7 @@ export default {
               }
           }).then(res => {
               this.base = res.result.result
+              this.$emit('hasBase', res.result.result)
           })
         },
         changeImg (data) {
@@ -131,7 +138,7 @@ export default {
             return year + '-' + month + '-' + day
         },
         saveBase () {
-            if (!this.base.eventPlanTitle) {
+            if (this.base.eventPlanTitle.trim() == '') {
                 this.$message({
                     message: '请填写方案名称！',
                     type: 'warning'
@@ -145,6 +152,14 @@ export default {
                     type: 'warning'
                 })
                 return false
+            }
+
+            if (new Date().getTime() > new Date(this.base.eventStartTime).getTime()) {
+              this.$message({
+                  message: '开始时间必须大于当前时间！',
+                  type: 'warning'
+              })
+              return false
             }
 
             if (!this.base.eventEndTime) {
@@ -165,19 +180,40 @@ export default {
 
             this.base.eventStartTime = this.formDataDate(this.base.eventStartTime)
             this.base.eventEndTime = this.formDataDate(this.base.eventEndTime)
+
+            var interfaceName = 'eventInfoInsert'
+
+            if (this.$route.query.eventCode) {
+              interfaceName = 'eventInfoUpdate'
+            }
+
+            this.base.enterpriseCode = this.$route.query.enterpriseCode
             
             util.request({
                 method: 'post',
-                interface: 'eventInfoUpdate',
+                interface: interfaceName,
                 data: this.base
             }).then(res => {
                 if (res.result.success == '1') {
-                    this.getBase()
-
                     this.$message({
                       type: 'success',
                       message: '保存成功!'
                     })
+
+                    if (this.$route.query.eventCode) {
+                      this.getBase()
+                    } else {
+                      var pathUrl = {
+                        name: 'market-detail',
+                        query: {
+                          eventCode: res.result.result,
+                          enterpriseCode: this.$route.query.enterpriseCode
+                        }
+                      }
+
+                      this.$router.replace(pathUrl)
+                    }
+                    
                 } else {
                     this.$message.error(res.result.message)
                 }
