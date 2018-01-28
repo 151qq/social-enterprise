@@ -65,7 +65,7 @@ export default {
         border: 1px solid #20A0FF;
         border-radius: 3px;
         cursor: pointer;
-        z-index: 9999;
+        z-index: 1997;
 
         &:hover {
             opacity: 0.8;

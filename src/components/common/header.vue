@@ -178,7 +178,7 @@ export default {
     background: #000000;
     color: #fff;
     padding: 0 20px;
-    z-index: 99999;
+    z-index: 2000;
     box-sizing: border-box;
 
     .logo-box {

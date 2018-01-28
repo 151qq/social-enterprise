@@ -91,7 +91,7 @@ export default {
     height: 100%;
     left: 0;
     top: 0;
-    z-index: 9999;
+    z-index: 1998;
     transition: all 0.3s;
 
     .popup-bg {
