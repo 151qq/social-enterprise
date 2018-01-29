@@ -25,42 +25,13 @@
                 </el-select>
             </section>
             <section class="formBox">
-                <span>券封面文字</span>
+                <span>券数量</span>
                 <el-input
                   class="input-box"
+                  type="number"
+                  :min="1"
                   placeholder="请输入"
-                  v-model="quanData.couponAbstract">
-                </el-input>
-            </section>
-
-            <section class="formBox">
-                <span>券颜色</span>
-                <el-select class="input-box"
-                            v-model="quanData.couponColor"
-                            placeholder="请选择">
-                    <el-option
-                      v-for="(item, index) in colorList"
-                      :style="{background: item.label}"
-                      :key="index"
-                      :label="item.label"
-                      :value="item.value">
-                    </el-option>
-                </el-select>
-            </section>
-            <section class="formBox">
-                <span>核心提示</span>
-                <el-input
-                  class="input-box"
-                  placeholder="请输入"
-                  v-model="quanData.couponDescription">
-                </el-input>
-            </section>
-            <section class="formBox">
-                <span>按钮标题</span>
-                <el-input
-                  class="input-box"
-                  placeholder="请输入"
-                  v-model="quanData.couponBtnTitle">
+                  v-model="quanData.couponQuantity">
                 </el-input>
             </section>
 
@@ -84,77 +55,27 @@
                   v-model="quanData.couponUseLimit">
                 </el-input>
             </section>
-            <section class="formBox bigF">
-                <span>券核销提示</span>
-                <el-input
-                  type="textarea"
-                  :rows="4"
-                  :maxlength="1024"
-                  placeholder="请输入内容"
-                  v-model="quanData.couponNotice">
-                </el-input>
+            <section class="formBox">
+                <span>是否可转</span>
+                <div class="input-box">
+                  <el-switch
+                    v-model="quanData.couponTransferOpt"
+                    on-text="是"
+                    off-text="否"
+                    on-value="1"
+                    off-value="0">
+                  </el-switch>
+                </div>
             </section>
 
             <section class="formBox bigF">
-                <span>券详情</span>
+                <span>优惠说明</span>
                 <el-input
                   type="textarea"
                   :rows="4"
-                  :maxlength="160"
+                  :maxlength="140"
                   placeholder="请输入内容"
-                  v-model="quanData.couponDetailTxt">
-                </el-input>
-            </section>
-
-            <section class="formBox">
-                <span>券按钮提示</span>
-                <el-input
-                  class="input-box"
-                  placeholder="请输入"
-                  v-model="quanData.couponBtnSubTitle">
-                </el-input>
-            </section>
-            <section class="formBox">
-                <span>券核销链接</span>
-                <el-input
-                  class="input-box"
-                  placeholder="请输入"
-                  v-model="quanData.couponBtnUrl">
-                </el-input>
-            </section>
-            <section class="formBox">
-                <span>券数量</span>
-                <el-input
-                  class="input-box"
-                  type="number"
-                  :min="1"
-                  placeholder="请输入"
-                  v-model="quanData.couponQuantity">
-                </el-input>
-            </section>
-
-            <section class="formBox">
-                <span>企业电商名称</span>
-                <el-input
-                  class="input-box"
-                  placeholder="请输入"
-                  v-model="quanData.couponEcommerceUrlName">
-                </el-input>
-            </section>
-            <section class="formBox">
-                <span>企业电商链接</span>
-                <el-input
-                  class="input-box"
-                  placeholder="请输入"
-                  v-model="quanData.couponEcommerceUrl">
-                </el-input>
-            </section>
-            <section class="formBox">
-                <span>企业电商提示</span>
-                <el-input
-                  class="input-box"
-                  placeholder="请输入"
-                  v-model="quanData.couponEcommerceUrlSubTitle">
+                  v-model="quanData.couponDescription">
                 </el-input>
             </section>
 
@@ -185,40 +106,7 @@
                         @changeImg="changeCouponCover"></upload>
               </div>
             </section>
-            <section class="formBox">
-              <span>券详情页图</span>
-              <div class="input-box">
-                <upload :path="quanData.couponDetailImg"
-                        :bg-path="true"
-                        :is-operate="isOperate"
-                        :id-name="'couponDetailImg'"
-                        @changeImg="changeCouponDetailImg"></upload>
-              </div>
-            </section>
-            <section class="formBox">
-              <span>券logo</span>
-              <div class="input-box">
-                <upload :path="quanData.couponIconUrl"
-                        :bg-path="true"
-                        :is-operate="isOperate"
-                        :id-name="'couponIconUrl'"
-                        @changeImg="changeCouponIconUrl"></upload>
-              </div>
-            </section>
             
-            <section class="formBox">
-                <span>是否可转</span>
-                <div class="input-box">
-                  <el-switch
-                    v-model="quanData.couponTransferOpt"
-                    on-text="是"
-                    off-text="否"
-                    on-value="1"
-                    off-value="0">
-                  </el-switch>
-                </div>
-            </section>
-          
           <template v-if="quanData.couponType == 'cashCoupon'">
             <section class="formBox">
               <span>减免(分)</span>
@@ -273,99 +161,23 @@ export default {
     data () {
         return {
             isOperate: true,
-            couponTimes: [],
             productList: [],
             quanData: {
               couponGroupCode: '',
               couponTitle: '',
               couponCode: '',
-              couponColor: '',
               couponType: '',
-              couponNotice: '',
               couponDescription: '',
-              couponStatus: '',
-              couponIconUrl: '',
-              couponTitle: '',
-              couponAbstract: '',
-              couponExchangeTxt: '',
+              couponCover: '',
               couponQuantity: '',
-              couponRealInventory: '',
-              eventCode: '',
               enterpriseCode: '',
-              couponScenario: '',
-              couponBtnTitle: '',
-              couponBtnSubTitle: '',
-              couponBtnUrl: '',
-              couponEcommerceUrlName: '',
-              couponEcommerceUrlSubTitle: '',
               couponTransferOpt: '',
               couponGetLimit: '',
               couponUseLimit: '',
-              couponDetailImg: '',
-              couponDetailTxt: '',
               couponGiftCode: '',
-              couponDiscount: '',
               couponLeastCost: '',
               couponReduceCost: ''
             },
-            colorList: [
-              {
-                label: '#63b359',
-                value: 'Color010'
-              },
-              {
-                label: '#2c9f67',
-                value: 'Color020'
-              },
-              {
-                label: '#509fc9',
-                value: 'Color030'
-              },
-              {
-                label: '#5885cf',
-                value: 'Color040'
-              },
-              {
-                label: '#9062c0',
-                value: 'Color050'
-              },
-              {
-                label: '#d09a45',
-                value: 'Color060'
-              },
-              {
-                label: '#e4b138',
-                value: 'Color070'
-              },
-              {
-                label: '#ee903c',
-                value: 'Color080'
-              },
-              {
-                label: '#f08500',
-                value: 'Color081'
-              },
-              {
-                label: '#a9d92d',
-                value: 'Color082'
-              },
-              {
-                label: '#dd6549',
-                value: 'Color090'
-              },
-              {
-                label: '#cc463d',
-                value: 'Color100'
-              },
-              {
-                label: '#cf3e36',
-                value: 'Color101'
-              },
-              {
-                label: '#5E6671',
-                value: 'Color102'
-              }
-            ],
             couponTypes: [],
             products: [],
             giftLists: [],
@@ -376,9 +188,11 @@ export default {
       if (this.$route.query.couponCode) {
         this.getBase()
       } else {
-        this.quanData.couponGroupCode = this.$route.query.couponGroupCode
         this.quanData.enterpriseCode = this.$route.query.enterpriseCode
-        this.getCallcenter()
+        this.quanData.couponGroupCode = this.$route.query.couponGroupCode
+        this.quanData.couponGetLimit = 1
+        this.quanData.couponUseLimit = 1
+        this.quanData.couponTransferOpt = '1'
       }
       
       this.getProducts()
@@ -394,36 +208,6 @@ export default {
         }
     },
     methods: {
-        getCallcenter () {
-            util.request({
-                method: 'get',
-                interface: 'findCallCenterConfig',
-                data: {
-                    enterpriseCode: this.$route.query.enterpriseCode
-                }
-            }).then(res => {
-                if (res.result.success == '1') {
-                    var data = res.result.result
-
-                    var callcenterData = {
-                      couponBtnTitle: data.couponBtnTitle,
-                      couponNotice: data.couponNotice,
-                      couponBtnUrl: data.couponBtnUrl,
-                      couponEcommerceUrlName: data.couponEcommerceUrlName,
-                      couponEcommerceUrl: data.couponEcommerceUrl,
-                      couponEcommerceUrlSubTitle: data.couponEcommerceUrlSubTitle,
-                      couponGetLimit: 1,
-                      couponUseLimit: 1,
-                      couponTransferOpt: '1'
-                    }
-
-                    this.quanData = Object.assign(this.quanData,callcenterData)
-                    
-                } else {
-                    this.$message.error(res.result.message)
-                }
-            })
-        },
         getBase () {
           util.request({
               method: 'get',
@@ -436,26 +220,6 @@ export default {
                 let result = res.result.result.couponInfo
 
                 this.productList = res.result.result.couponProductArray
-
-                if (!result.couponGetLimit) {
-                  result.couponGetLimit = 1
-                }
-
-                if (!result.couponUseLimit) {
-                  result.couponUseLimit = 1
-                }
-
-                if (result.couponTransferOpt === '') {
-                  result.couponTransferOpt = '0'
-                }
-
-                if (result.couponBeginTimestamp && result.couponEndTimestamp) {
-                  this.couponTimes = [
-                    new Date(result.couponBeginTimestamp * 1000),
-                    new Date(result.couponEndTimestamp * 1000)
-                  ]
-                }
-
                 this.quanData = result
               } else {
                 this.$message.error(res.result.msg)
@@ -510,12 +274,6 @@ export default {
         changeCouponCover (data) {
           this.quanData.couponCover = data.url
         },
-        changeCouponIconUrl (data) {
-          this.quanData.couponIconUrl = data.url
-        },
-        changeCouponDetailImg (data) {
-          this.quanData.couponDetailImg = data.url
-        },
         saveQuan () {
           if (!this.quanData.couponTitle) {
             this.$message({
@@ -541,33 +299,17 @@ export default {
             return false
           }
 
-          if (!this.quanData.couponColor) {
+          if (!this.quanData.couponGetLimit) {
             this.$message({
-                message: '请选择券颜色！',
+                message: '请添加每人限领！',
                 type: 'warning'
             })
             return false
           }
 
-          if (this.quanData.couponAbstract.length > 9) {
+          if (!this.quanData.couponUseLimit) {
             this.$message({
-                message: '券封面标题最多9个字！',
-                type: 'warning'
-            })
-            return false
-          }
-
-          if (!this.quanData.couponNotice) {
-            this.$message({
-                message: '请添加券封面标题！',
-                type: 'warning'
-            })
-            return false
-          }
-
-          if (this.quanData.couponNotice.length > 16) {
-            this.$message({
-                message: '券封面标题最多16个字！',
+                message: '请添加最多可用！',
                 type: 'warning'
             })
             return false
@@ -575,23 +317,23 @@ export default {
 
           if (!this.quanData.couponDescription) {
             this.$message({
-                message: '请添加券使用说明！',
+                message: '请添加券优惠说明！',
                 type: 'warning'
             })
             return false
           }
 
-          if (this.quanData.couponDescription.length > 1000) {
+          if (this.quanData.couponDescription.length > 140) {
             this.$message({
-                message: '券使用说明最多1000个字！',
+                message: '券优惠说明最多140个字！',
                 type: 'warning'
             })
             return false
           }
 
-          if (!this.quanData.couponIconUrl) {
+          if (!this.quanData.couponCover) {
             this.$message({
-                message: '请添加券logo！',
+                message: '请添加券封面！',
                 type: 'warning'
             })
             return false

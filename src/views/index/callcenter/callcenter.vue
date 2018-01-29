@@ -434,7 +434,7 @@
                         <span>微信券按钮标题</span>
                         <el-input
                                 class="input-box"
-                                v-model="callcenterData.couponBtnTitle">
+                                v-model="callcenterData.couponCenterTitle">
                         </el-input>
                     </section>
                     <section class="formBox">
@@ -445,55 +445,55 @@
                         </el-input>
                     </section>
                     <section class="formBox">
-                        <span>微信券使用链接</span>
+                        <span>微信券时间类型</span>
                         <el-input
                                 class="input-box"
-                                v-model="callcenterData.couponBtnUrl">
+                                :disabled="true"
+                                v-model="callcenterData.couponDateRangeType">
                         </el-input>
                     </section>
                     <section class="formBox">
-                        <span>企业电商名称</span>
+                        <span>企业品牌</span>
                         <el-input
                                 class="input-box"
-                                v-model="callcenterData.couponEcommerceUrlName">
+                                v-model="callcenterData.couponBrandName">
                         </el-input>
                     </section>
                     <section class="formBox">
-                        <span>企业电商提示</span>
-                        <el-input
-                                class="input-box"
-                                v-model="callcenterData.couponEcommerceUrlSubTitle">
-                        </el-input>
+                        <span>券颜色</span>
+                        <el-select class="input-box"
+                                    v-model="callcenterData.couponColor"
+                                    placeholder="请选择">
+                            <el-option
+                              v-for="(item, index) in colorList"
+                              :style="{background: item.label}"
+                              :key="index"
+                              :label="item.label"
+                              :value="item.value">
+                            </el-option>
+                        </el-select>
                     </section>
                     <section class="formBox">
-                        <span>企业电商链接</span>
+                        <span>券详情提示</span>
                         <el-input
                                 class="input-box"
-                                v-model="callcenterData.couponEcommerceUrl">
+                                v-model="callcenterData.couponAbstract">
                         </el-input>
                     </section>
                     <section class="formBox">
                       <span>微信券Logo</span>
                       <div class="input-box">
-                        <upload :path="callcenterData.wechatCouponLogo"
+                        <upload :path="callcenterData.couponLogoUrl"
                                 :bg-path="true"
                                 :is-operate="isEdit"
                                 @changeImg="changeImg"></upload>
                       </div>
                     </section>
                     <section class="formBox">
-                        <span>微信券时间类型</span>
+                        <span>电商链接</span>
                         <el-input
                                 class="input-box"
-                                :disabled="true"
-                                v-model="callcenterData.wechatCouponDateRangeType">
-                        </el-input>
-                    </section>
-                    <section class="formBox">
-                        <span>微信券品牌</span>
-                        <el-input
-                                class="input-box"
-                                v-model="callcenterData.wechatCouponBrand">
+                                v-model="callcenterData.couponEcommerceUrl">
                         </el-input>
                     </section>
                 </div>
@@ -573,19 +573,77 @@ export default {
                 adChannelMemberRate: '',
                 adChannelReviewPeriod: '',
                 // 优惠券基本信息设置
-                couponBtnTitle: '',
+                couponCenterTitle: '',
                 couponNotice: '',
                 couponBtnUrl: '',
-                couponEcommerceUrlName: '',
-                couponEcommerceUrlSubTitle: '',
-                couponEcommerceUrl: '',
-                wechatCouponLogo: '',
-                wechatCouponDateRangeType: '',
-                wechatCouponBrand: ''
+                couponDateRangeType: '',
+                couponBrandName: '',
+                couponColor: '',
+                couponAbstract: '',
+                couponLogoUrl: '',
+                couponEcommerceUrl: ''
             },
             dispatchRules: [],
             periodTypes: [],
-            commentReplayRule: []
+            commentReplayRule: [],
+            colorList: [
+                {
+                    label: '#63b359',
+                    value: 'Color010'
+                },
+                {
+                    label: '#2c9f67',
+                    value: 'Color020'
+                },
+                {
+                    label: '#509fc9',
+                    value: 'Color030'
+                },
+                {
+                    label: '#5885cf',
+                    value: 'Color040'
+                },
+                {
+                    label: '#9062c0',
+                    value: 'Color050'
+                },
+                {
+                    label: '#d09a45',
+                    value: 'Color060'
+                },
+                {
+                    label: '#e4b138',
+                    value: 'Color070'
+                },
+                {
+                    label: '#ee903c',
+                    value: 'Color080'
+                },
+                {
+                    label: '#f08500',
+                    value: 'Color081'
+                },
+                {
+                    label: '#a9d92d',
+                    value: 'Color082'
+                },
+                {
+                    label: '#dd6549',
+                    value: 'Color090'
+                },
+                {
+                    label: '#cc463d',
+                    value: 'Color100'
+                },
+                {
+                    label: '#cf3e36',
+                    value: 'Color101'
+                },
+                {
+                    label: '#5E6671',
+                    value: 'Color102'
+                }
+            ]
         }
     },
     mounted () {
@@ -596,7 +654,7 @@ export default {
 
         this.getTypes()
         this.getCallcenter()
-        this.callcenterData.wechatCouponDateRangeType = 'DATE_TYPE_FIX_TIME_RANGE'
+        this.callcenterData.couponDateRangeType = 'DATE_TYPE_FIX_TIME_RANGE'
     },
     computed: {
         ...mapGetters({
@@ -616,7 +674,7 @@ export default {
             localStorage.setItem("callCenterColl", this.activeNames)
         },
         changeImg (data) {
-          this.callcenterData.wechatCouponLogo = data.url
+          this.callcenterData.couponLogoUrl = data.url
         },
         getCallcenter () {
             util.request({
@@ -628,7 +686,7 @@ export default {
             }).then(res => {
                 if (res.result.success == '1') {
                     if (res.result.result.id) {
-                        res.result.result.wechatCouponDateRangeType = 'DATE_TYPE_FIX_TIME_RANGE'
+                        res.result.result.couponDateRangeType = 'DATE_TYPE_FIX_TIME_RANGE'
                         this.callcenterData = res.result.result
                     }
                 } else {
