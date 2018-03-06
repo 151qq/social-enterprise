@@ -213,25 +213,26 @@ export default {
 
         .card-img {
           float: left;
-          width: 200px;
-          height: 120px;
+          width: 160px;
+          height: 100px;
           background: #cfcfd0;
 
           img {
             display: block;
-            width: 200px;
-            height: 120px;
+            width: 160px;
+            height: 100px;
           }
         }
 
         .card-content {
           float: right;
-          width: 780px;
+          width: 820px;
 
           .card-title {
-            font-size: 18px;
-            line-height: 30px;
+            font-size: 16px;
+            line-height: 24px;
             color: #000000;
+            margin-bottom: 3px;
           }
 
           .card-desc {
@@ -239,7 +240,6 @@ export default {
             line-height: 24px;
             color: #475669;
             height: 48px;
-            margin-top: 10px;
             overflow: hidden;
           }
         }

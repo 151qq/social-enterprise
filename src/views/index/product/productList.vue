@@ -51,16 +51,16 @@
             <section class="check-box" v-for="(item, index) in sourceDatas" :key="index">
                 <!-- 选择框 -->
                 <section class="select-box"
-                         v-if="isCheck && (item.catalogType == 'dir' || item.productStatus == 'draft') && isEdit"
+                         v-if="isCheck && (item.catalogType == 'dir' || item.productStatus == '2') && isEdit"
                          @click.stop="selectItem(item)"
                          :class="selectItemList.indexOf(item.catalogCode) > -1 ? 'active' : ''"></section>
                 
                 <!-- 产品和目录列表 -->
-                <section class="sou-box" :class="item.catalogType == 'dir' ? 'dir-box' : ''">
+                <section class="sou-box">
                     <div class="cover-box"
                          @click="showItems(item)"
                          v-if="isCheck || item.catalogType == 'dir'">
-                        <img v-if="item.catalogImage" :src="item.catalogImage">
+                        <img src="/static/images/folder.jpg">
                     </div>
                     <!-- 详情页 -->
                     <router-link class="cover-box"
@@ -82,19 +82,18 @@
                                 {{item.catalogCreateTime}}
                             </span>
                             <span v-else>
-                                <template v-if="item.productStatus == 'draft'">
+                                <template v-if="item.productStatus == '2'">
                                     草稿
                                 </template>
-                                <template v-if="item.productStatus == 'submitted'">
+                                <template v-if="item.productStatus == '1'">
                                     已发布
                                 </template>
-                                <template v-if="item.productStatus == 'closed'">
+                                <template v-if="item.productStatus == '3'">
                                     已下架
                                 </template>
                             </span>
                             <span class="btn-box"
-                                  v-if="(item.catalogType == 'dir' || item.productStatus == 'draft' || item.productStatus == 'submitted') && isEdit">
-                                <!-- draft，submitted，approved，frozen，closed -->
+                                  v-if="(item.catalogType == 'dir' || item.productStatus == '2' || item.productStatus == '1') && isEdit">
                                 <i @click.stop="editItem(item)" class="el-icon-document"></i>
                             </span>
                         </div>
@@ -131,14 +130,14 @@
                     </el-option>
                 </el-select>
             </el-form-item>
-            <template v-if="addItemForm.catalogType == 'dir'">
+            <!-- <template v-if="addItemForm.catalogType == 'dir'">
                 <el-form-item label="封面">
                     <popup-img :path="addItemForm.catalogImage"
                                 :is-operate="true"
                                 :bg-path="false"
                                 @imgClick="imgClick"></popup-img>
                 </el-form-item>
-            </template>
+            </template> -->
             <el-form-item label="标题">
                 <el-input v-model="addItemForm.catalogCname" placeholder="请输入内容"></el-input>
             </el-form-item>
@@ -422,13 +421,13 @@ export default {
                 return false
             }
 
-            if (!this.addItemForm.catalogImage && this.addItemForm.catalogType == 'dir') {
-                this.$message({
-                    message: '请添加封面！',
-                    type: 'warning'
-                })
-                return false
-            }
+            // if (!this.addItemForm.catalogImage && this.addItemForm.catalogType == 'dir') {
+            //     this.$message({
+            //         message: '请添加封面！',
+            //         type: 'warning'
+            //     })
+            //     return false
+            // }
 
             if (this.addItemForm.catalogCode) {
                 this.updateItem()
@@ -452,7 +451,7 @@ export default {
         // 单击card操作
         showItems (item) {
             // 多选模式下为多选
-            if (this.isCheck && (item.catalogType == 'dir' || item.productStatus == 'draft')) {
+            if (this.isCheck && (item.catalogType == 'dir' || item.productStatus == '2')) {
                 this.selectItem(item)
                 return false
             }
@@ -730,9 +729,7 @@ export default {
         border-radius: 3px;
 
         .cover-box {
-            display: block;
-            width: 100%;
-            height: 170px;
+            height: 130px;
             overflow: hidden;
             cursor: pointer;
             background: #f1f1f1;
@@ -740,7 +737,7 @@ export default {
             img {
                 display: block;
                 width: 100%;
-                min-height: 170px;
+                min-height: 130px;
             }
         }
 

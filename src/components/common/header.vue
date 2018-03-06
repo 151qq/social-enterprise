@@ -12,14 +12,14 @@
       <router-link :to="{ name: 'source',query:{enterpriseCode: userInfo.enterpriseCode}}">
         素材库
       </router-link>
-      <router-link  v-if="isProduct"
+      <!-- <router-link  v-if="isProduct"
                     :to="{ name: 'product',query:{
                       enterpriseCode: userInfo.enterpriseCode,
                       catalogCode: 'e2',
                       catalogLevel: 1
                     }}">
         产品中心
-      </router-link>
+      </router-link> -->
       <router-link  v-if="isProduct"
                     :to="{ name: 'gift',query:{
                       enterpriseCode: userInfo.enterpriseCode,
@@ -28,7 +28,7 @@
                     }}">
         礼品中心
       </router-link>
-      <router-link :to="{ name: 'survey',query:{enterpriseCode: userInfo.enterpriseCode}}">
+      <!-- <router-link :to="{ name: 'survey',query:{enterpriseCode: userInfo.enterpriseCode}}">
         调研发布
       </router-link>
       <router-link :to="{ name: 'cultivate',query:{enterpriseCode: userInfo.enterpriseCode}}">
@@ -37,7 +37,7 @@
       <router-link  v-if="isMember"
                     :to="{ name: 'member',query:{enterpriseCode: userInfo.enterpriseCode}}">
         会员管理
-      </router-link>
+      </router-link> -->
       <router-link  v-if="isConfig"
                     :to="{ name: 'callcenter',query:{enterpriseCode: userInfo.enterpriseCode}}">
         营销配置

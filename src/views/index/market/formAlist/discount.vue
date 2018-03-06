@@ -1,6 +1,11 @@
 <template>
     <section class="discount-list-box">
-        <el-button class="add-btn" type="primary" icon="plus" size="small" @click="addQuan">增加</el-button>
+        <el-button class="add-btn" type="primary"
+                  icon="plus" size="small"
+                  v-if="base.eventStatus == '1' || base.eventStatus == '2'"
+                  @click="addQuan">
+          增加
+        </el-button>
         <el-table
           :data="discountData"
           border
@@ -14,13 +19,14 @@
                              v-for="(item, index) in props.row.couponInfoList"
                              :key="index"
                              :to="{name: 'coupon', query: {enterpriseCode: $route.query.enterpriseCode, eventCode: $route.query.eventCode, couponCode: item.couponCode}}">
-                    <div class="card-img">
-                        <img v-if="item.couponCover" :src="item.couponCover">
+                    <div class="card-type">
+                        {{item.couponTypeName}}
                     </div>
-                    
-                    <div class="card-content">
-                        <div class="card-title">{{item.couponTitle}}</div>
-                        <div class="card-desc">{{item.couponDetailTxt}}</div>
+                    <div class="card-title">
+                      {{item.couponTitle}}
+                    </div>
+                    <div class="card-desc">
+                      {{item.couponViewName}}
                     </div>
                 </router-link>
                 <div class="null-box" v-if="!props.row.couponInfoList.length">
@@ -57,6 +63,7 @@
                   @click="editDiscount(scope.row)"></i>
 
               <router-link class="el-icon-plus black" target="_blank"
+                            v-if="base.eventStatus == '1' || base.eventStatus == '2'"
                             :to="{
                               name: 'coupon',
                               query: {
@@ -405,7 +412,6 @@ export default {
   }
 
   .big-coupon-box {
-
     .null-box {
         height: 80px;
         font-size: 16px;
@@ -418,43 +424,42 @@ export default {
         position: relative;
         display: flex;
         overflow: hidden;
-        padding-bottom: 20px;
-        border-bottom: 1px solid #C0CCDA;
-        margin-bottom: 10px;
+        height: 36px;
+        border: 1px solid #C0CCDA;
+        border-top: none;
 
-        .card-img {
-            width: 120px;
-            height: 80px;
-            background: #cfcfd0;
-            margin-right: 20px;
-
-            img {
-                display: block;
-                width: 120px;
-                height: 80px;
-            }
+        &:first-child {
+          border-top: 1px solid #C0CCDA;
         }
 
-        .card-content {
+        &:hover {
+          background: #ffffff;
+        }
+
+        .card-type {
+            width: 120px;
+            font-size: 14px;
+            line-height: 36px;
+            color: #000000; 
+            padding: 0 15px;
+            border-right: 1px solid #C0CCDA;
+        }
+
+        .card-title {
             flex: 1;
+            font-size: 14px;
+            line-height: 36px;
+            color: #000000;
+            padding: 0 15px;
+            border-right: 1px solid #C0CCDA;
+        }
 
-            .card-title {
-                font-size: 16px;
-                line-height: 24px;
-                color: #000000;
-                margin-bottom: 3px;
-            }
-
-            .card-desc {
-                font-size: 14px;
-                line-height: 24px;
-                color: #475669;
-                height: 48px;
-                display: -webkit-box;
-                -webkit-box-orient: vertical;
-                -webkit-line-clamp: 2;
-                overflow: hidden;
-            }
+        .card-desc {
+            width: 500px;
+            font-size: 14px;
+            line-height: 36px;
+            color: #000000;
+            padding: 0 15px;
         }
     }
   }

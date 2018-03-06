@@ -15,9 +15,9 @@
             <el-tab-pane :label="'产品相册'" :name="'e2_5'">
                 <image-manage :file-type="'e2_5'"></image-manage>
             </el-tab-pane>
-            <el-tab-pane :label="'平台图片'" :name="'e2_4'">
+            <!-- <el-tab-pane :label="'平台图片'" :name="'e2_4'">
                 <image-manage :file-type="'e2_4'"></image-manage>
-            </el-tab-pane>
+            </el-tab-pane> -->
         </el-tabs>
     </div>
 </template>

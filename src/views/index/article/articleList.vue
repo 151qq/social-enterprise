@@ -1,16 +1,6 @@
 <template>
     <div class="article-list-box">
-        <div class="input-box" :class="isEdit ? '' : 'no-add'">
-            <el-input
-              placeholder="请输入需查询条件"
-              v-model="keyValue"
-              >
-            </el-input>
-            <el-button class="search-btn" type="primary" icon="search"
-                        @keyup.13="searchItem" @click="searchItem">
-              搜索
-            </el-button>
-
+        <div class="btn-input-box" :class="isEdit ? '' : 'no-add'">
             <el-button class="add-new-btn"
                        type="primary"
                        icon="plus"
@@ -283,20 +273,22 @@ export default {
 .article-list-box {
     margin: auto;
 
-    .input-box {
+    .btn-input-box {
+        position: absolute;
+        right: 0;
+        top: -50px;
         display: block;
-        width: 800px;
-        height: 50px;
+        height: 30px;
         margin: 0 auto 30px;
 
         .el-input {
           float: left;
-          width: 600px;
-          height: 50px;
+          width: 200px;
+          height: 30px;
 
           input {
             font-size: 14px;
-            height: 50px;
+            height: 30px;
           }
         }
 
@@ -306,14 +298,16 @@ export default {
           margin-left: -10px;
           border-top-left-radius: 0;
           border-bottom-left-radius: 0;
-          height: 50px;
+          height: 30px;
           font-size: 16px;
           padding: 0 23px;
         }
 
         .add-new-btn {
             float: right;
-            height: 50px;
+            height: 30px;
+            line-height: 30px;
+            padding: 0 10px;
         }
     }
 
