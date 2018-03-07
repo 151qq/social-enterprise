@@ -33,7 +33,7 @@
                         :class="selectDirList.indexOf(item.docCode) > -1 ? 'active' : ''"></section>
                 <section class="sou-box">
                     <div class="cover-box" @click="showItems(item, index)">
-                        <img class="cover-img" :src="item.docCover">
+                        <img class="cover-img" src="/static/images/folder.jpg">
                     </div>
                     <div class="title-box">
                         <div class="title" v-text="item.docTitle"></div>
@@ -114,13 +114,13 @@
         
         <el-dialog title="目录" :visible.sync="isAddDir">
           <el-form :label-position="'left'" :model="addDirForm" label-width="80px">
-            <el-form-item label="目录封面">
+            <!-- <el-form-item label="目录封面">
                 <upload-file :path="addDirForm.docCover"
                         :is-operate="isEdit"
                         :bg-path="false"
                         :id-name="'dirCover' + fileType"
                         @changeImg="changeDirImg"></upload-file>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item label="目录名称">
                 <el-input v-model="addDirForm.docTitle" placeholder="请输入内容"></el-input>
             </el-form-item>
@@ -301,7 +301,7 @@ export default {
             userInfo: 'getUserInfo'
         }),
         isEdit () {
-          return this.userInfo.roleCodes.indexOf('platform_material_admin') > -1
+          return this.userInfo.roleCodes.indexOf('enterprise_material_admin') > -1 || this.userInfo.roleCodes.indexOf('enterprise_root') > -1
         }
     },
     methods: {
@@ -362,13 +362,13 @@ export default {
                 return false
             }
 
-            if (!this.addDirForm.docCover) {
-                this.$message({
-                    message: '请添加目录封面！',
-                    type: 'warning'
-                })
-                return false
-            }
+            // if (!this.addDirForm.docCover) {
+            //     this.$message({
+            //         message: '请添加目录封面！',
+            //         type: 'warning'
+            //     })
+            //     return false
+            // }
 
             this.addDirForm.enterpriseCode = this.$route.query.enterpriseCode
 

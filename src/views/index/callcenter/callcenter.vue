@@ -483,10 +483,12 @@
                     <section class="formBox">
                       <span>微信券Logo</span>
                       <div class="input-box">
-                        <upload :path="callcenterData.couponLogoUrl"
-                                :bg-path="true"
-                                :is-operate="isEdit"
-                                @changeImg="changeImg"></upload>
+                          <div class="logo-upload">
+                            <upload :path="callcenterData.couponLogoUrl"
+                                    :bg-path="true"
+                                    :is-operate="isEdit"
+                                    @changeImg="changeImg"></upload>
+                          </div>
                       </div>
                     </section>
                     <section class="formBox">

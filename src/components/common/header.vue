@@ -20,7 +20,7 @@
                     }}">
         产品中心
       </router-link> -->
-      <router-link  v-if="isProduct"
+      <router-link  v-if="isProduct || isRoot"
                     :to="{ name: 'gift',query:{
                       enterpriseCode: userInfo.enterpriseCode,
                       catalogCode: 'e2',
@@ -34,11 +34,11 @@
       <router-link :to="{ name: 'cultivate',query:{enterpriseCode: userInfo.enterpriseCode}}">
         营销培训
       </router-link>
-      <router-link  v-if="isMember"
+      <router-link  v-if="isMember || isRoot"
                     :to="{ name: 'member',query:{enterpriseCode: userInfo.enterpriseCode}}">
         会员管理
       </router-link> -->
-      <router-link  v-if="isConfig"
+      <router-link  v-if="isConfig || isRoot"
                     :to="{ name: 'callcenter',query:{enterpriseCode: userInfo.enterpriseCode}}">
         营销配置
       </router-link>

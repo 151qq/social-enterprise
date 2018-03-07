@@ -14,11 +14,9 @@
             <!-- props.row -->
             <template scope="props">
               <div class="big-coupon-box">
-                <router-link class="card-box"
-                             target="_blank"
-                             v-for="(item, index) in props.row.couponInfoList"
-                             :key="index"
-                             :to="{name: 'coupon', query: {enterpriseCode: $route.query.enterpriseCode, eventCode: $route.query.eventCode, couponCode: item.couponCode}}">
+                <div class="card-box"
+                      v-for="(item, index) in props.row.couponInfoList"
+                      :key="index">
                     <div class="card-type">
                         {{item.couponTypeName}}
                     </div>
@@ -28,7 +26,23 @@
                     <div class="card-desc">
                       {{item.couponViewName}}
                     </div>
-                </router-link>
+                    <div class="card-btn">
+                      <i class="el-icon-delete2"
+                          @click="deleteCoupon(item.couponCode)"></i>
+          
+                      <router-link  class="el-icon-document"
+                                    target="_blank"
+                                    :to="{
+                                      name: 'coupon',
+                                      query: {
+                                        enterpriseCode: $route.query.enterpriseCode,
+                                        eventCode: $route.query.eventCode,
+                                        couponCode: item.couponCode
+                                      }
+                                    }">
+                      </router-link>
+                    </div>
+                </div>
                 <div class="null-box" v-if="!props.row.couponInfoList.length">
                     暂无内容！
                 </div>
@@ -369,11 +383,39 @@ export default {
         this.isAddQuan = true
       },  
       deleteDiscount (row) {
+        if (row.couponInfoList.length) {
+          this.$message({
+              message: '请先删除该组下的券！',
+              type: 'warning'
+          })
+          return false
+        }
+
         util.request({
             method: 'get',
             interface: 'deleteCouponGroup',
             data: {
               couponGroupCode: row.couponGroupCode,
+            }
+        }).then(res => {
+          if (res.result.success == '1') {
+            this.getList()
+
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            })
+          } else {
+            this.$message.error(res.result.message)
+          }
+        })
+      },
+      deleteCoupon (code) {
+        util.request({
+            method: 'get',
+            interface: 'couponInfoDelete',
+            data: {
+              couponCode: code,
             }
         }).then(res => {
           if (res.result.success == '1') {
@@ -411,9 +453,15 @@ export default {
     width: 100%;
   }
 
+  .el-table__expanded-cell {
+    padding: 10px 50px;
+  }
+
   .big-coupon-box {
+    width: 850px;
+
     .null-box {
-        height: 80px;
+        height: 60px;
         font-size: 16px;
         color: #999999;
         text-align: center;
@@ -432,7 +480,7 @@ export default {
           border-top: 1px solid #C0CCDA;
         }
 
-        &:hover {
+        &:nth-child(even) {
           background: #ffffff;
         }
 
@@ -455,11 +503,24 @@ export default {
         }
 
         .card-desc {
-            width: 500px;
+            width: 400px;
             font-size: 14px;
             line-height: 36px;
             color: #000000;
             padding: 0 15px;
+            border-right: 1px solid #C0CCDA;
+        }
+
+        .card-btn {
+          width: 70px;
+          padding: 0 15px;
+          font-size: 14px;
+          line-height: 36px;
+          color: #000000;
+
+          a {
+            color: #000000;
+          }
         }
     }
   }

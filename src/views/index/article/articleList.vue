@@ -1,6 +1,6 @@
 <template>
     <div class="article-list-box">
-        <div class="btn-input-box" :class="isEdit ? '' : 'no-add'">
+        <div class="btn-input-box">
             <el-button class="add-new-btn"
                        type="primary"
                        icon="plus"
@@ -55,12 +55,6 @@
             <el-form-item label="文章标题">
                 <el-input v-model="addItemForm.pageTitle" auto-complete="off"></el-input>
             </el-form-item>
-            <el-form-item label="文章封面">
-                <popup-img :path="addItemForm.pageCover"
-                            :is-operate="isEdit"
-                            :bg-path="false"
-                            @imgClick="imgClick"></popup-img>
-            </el-form-item>
             <el-form-item label="文章摘要">
                 <el-input
                     type="textarea"
@@ -68,6 +62,12 @@
                     placeholder="请输入内容"
                     v-model="addItemForm.pageAbstract">
                 </el-input>
+            </el-form-item>
+            <el-form-item label="文章封面">
+                <popup-img :path="addItemForm.pageCover"
+                            :is-operate="isEdit"
+                            :bg-path="false"
+                            @imgClick="imgClick"></popup-img>
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">

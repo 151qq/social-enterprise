@@ -167,19 +167,23 @@
               <section class="formBox">
                 <span>企业LOGO</span>
                 <div class="input-box">
-                  <upload :path="base.enterpriseLogo"
-                          :bg-path="true"
-                          :is-operate="isOperate"
-                          @changeImg="changeImg"></upload>
+                  <div class="logo-upload">
+                    <upload :path="base.enterpriseLogo"
+                            :bg-path="true"
+                            :is-operate="isOperate"
+                            @changeImg="changeImg"></upload>
+                  </div>
                 </div>
               </section>
 
               <section class="formBox" v-if="base.enterpriseWechatQrcode">
                   <span>企业微信二维码</span>
                   <div class="input-box">
-                    <upload :path="base.enterpriseWechatQrcode"
-                            :bg-path="true"
-                            :is-operate="false"></upload>
+                    <div class="logo-upload">
+                      <upload :path="base.enterpriseWechatQrcode"
+                              :bg-path="true"
+                              :is-operate="false"></upload>
+                    </div>
                   </div>
               </section>
               

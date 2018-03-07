@@ -568,6 +568,10 @@
                 }
             }
 
+            .logo-upload {
+              width: 120px;
+            }
+
             .el-textarea {
               width: 220px;
             }
@@ -667,4 +671,8 @@
 
 .width-240 {
   width: 240px;
+}
+
+.el-tabs__content {
+  overflow: visible;
 }
