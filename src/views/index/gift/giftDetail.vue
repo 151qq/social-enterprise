@@ -8,32 +8,33 @@
           <div class="line-bold"></div>
 
           <!-- 详细规格 -->
-          <el-collapse-item class="float-form-box" title="礼品规格" name="2">
+          <!-- <el-collapse-item class="float-form-box" title="礼品规格" name="2">
             <spec-list ref="productSpec"></spec-list>
           </el-collapse-item>
-          <div class="line-bold"></div>
+          <div class="line-bold"></div> -->
 
           <!-- 礼品场景化推荐 -->
-          <el-collapse-item class="float-form-box" title="礼品场景化推荐" name="3">
+          <!-- <el-collapse-item class="float-form-box" title="礼品场景化推荐" name="3">
             <user-scence></user-scence>
           </el-collapse-item>
-          <div class="line-bold"></div>
+          <div class="line-bold"></div> -->
 
           <!-- 礼品图片 -->
           <el-collapse-item class="float-form-box" title="礼品相册" name="4">
             <upload-list :img-lists="imgList"
                           :id-name="'productAlbum'"
                           :is-edit="isEdit"
+                          :pro-cover="baseData.productCover"
                           @changeImg="changeImg"
                           @setImg="setImg"
                           @deleteImg="deleteImg"></upload-list>
           </el-collapse-item>
-          <div class="line-bold"></div>
+          <!-- <div class="line-bold"></div> -->
 
           <!-- 介绍文章 -->
-          <el-collapse-item class="float-form-box" title="礼品介绍" name="5">
+          <!-- <el-collapse-item class="float-form-box" title="礼品介绍" name="5">
             <article-list :article-data="articleData"></article-list>
-          </el-collapse-item>
+          </el-collapse-item> -->
           
         </el-collapse>
     </div>
@@ -155,6 +156,7 @@ export default {
               }
           }).then(res => {
               if (res.result.success == '1') {
+                  this.baseData.productCover = url
                   this.$refs.baseForm.base.productCover = url
               } else {
                   this.$message.error(res.result.message)

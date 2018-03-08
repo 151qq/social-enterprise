@@ -49,10 +49,11 @@
             <el-input
               type="textarea"
               :rows="4"
-              :maxlength="70"
+              :maxlength="500"
               placeholder="请输入内容"
               v-model="base.eventPlanDesc">
             </el-input>
+            <div class="limit-box">剩余<a>{{descNum}}</a>字</div>
         </section>
         <section class="formBox">
           <span>标准照片</span>
@@ -103,6 +104,9 @@ export default {
         }),
         isEdit () {
           return this.$route.query.enterpriseCode == this.userInfo.enterpriseCode
+        },
+        descNum () {
+          return 500 - this.base.eventPlanDesc.length
         }
     },
     watch: {

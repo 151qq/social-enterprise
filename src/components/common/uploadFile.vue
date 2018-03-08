@@ -8,7 +8,7 @@
             src="../../assets/images/page-img.jpg">
         <img v-if="curPath" class="img-big" :src="curPath">
       </label>
-      <input type="file" v-if="isOperate" class="ben-input" :id="idFor" @change="postImg($event)">
+      <input type="file" accept="image/*" v-if="isOperate" class="ben-input" :id="idFor" @change="postImg($event)">
     </section>
   </div>
 </template>

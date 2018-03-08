@@ -54,7 +54,7 @@ export default {
           console.log(results)
           // 更新调用记录
           _self.count++
-          _self.messDate = results.yr
+          _self.messDate = results.zr
         }
       }
       

@@ -18,7 +18,7 @@
       size="tiny">
       <section>
         <label class="input-label" :for="idFor">本地上传</label>
-        <input type="file" class="ben-input" :id="idFor" @change="postImg($event)">
+        <input type="file" accept="image/*" class="ben-input" :id="idFor" @change="postImg($event)">
 
         <el-button @click="getMediaList('pic')" class="upload-btn" type="primary">图片素材</el-button>
         <el-button v-if="isMedia" @click="getMediaList('media')" class="upload-btn" type="primary">媒体素材</el-button>

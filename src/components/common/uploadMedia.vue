@@ -1,9 +1,9 @@
 <template>
     <section>
         <el-upload
-            class="upload-media"
-            drag
-            action="/E2-Platform/platformFile/uploadFile.json"
+            class="upload-demo"
+            action="/e2-platform-api/platformFile/uploadFile.json"
+            accept="video/*"
             :show-file-list="false"
             :before-upload="resetData"
             :on-success="setUploadCode"
@@ -12,8 +12,8 @@
                 oldFilePath: curPath,
                 enterpriseCode: $route.query.enterpriseCode
             }">
-          <i class="el-icon-upload"></i>
-          <div class="el-upload__text">将媒体拖到此处，或<em>点击上传</em></div>
+            <el-button size="small" type="primary">点击上传</el-button>
+            <!-- <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div> -->
         </el-upload>
         <div v-if="fileName" class="name-box">
             {{fileName}}

@@ -676,3 +676,18 @@
 .el-tabs__content {
   overflow: visible;
 }
+
+.el-dialog {
+  top: 5% !important;
+}
+
+.limit-box {
+  float: right;
+  text-align: right;
+  line-height: 20px;
+  font-size: 12px;
+
+  a {
+    color: red;
+  }
+}

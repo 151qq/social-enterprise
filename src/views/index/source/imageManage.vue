@@ -1,6 +1,6 @@
 <template>
     <div class="image-su-box">
-        <section class="btns-op" v-if="isEdit && fileType != 'e2_4'">
+        <section class="btns-op" v-if="isEdit && fileType == 'e2_1'">
             <img v-show="!isCheck" src="../../../assets/images/select-icon.png" @click="setCheck">
             <img v-show="isCheck" src="../../../assets/images/select-now.png" @click="setCheck">
             <span v-if="showType != '1'"></span>
@@ -27,7 +27,7 @@
                         v-if="dirDatas.length"
                         class="check-box">
 
-                <section v-if="isCheck && item.docFolder != 'e2_2' &&  item.docFolder != 'e2_4'"
+                <section v-if="isCheck"
                         @click.stop="selectDir(item)"
                         class="select-box"
                         :class="selectDirList.indexOf(item.docCode) > -1 ? 'active' : ''"></section>
@@ -40,7 +40,7 @@
                         <div class="time">
                             {{item.docCreateTime}}
                             
-                            <span class="btn-box" v-if="isEdit && fileType != 'e2_4'">
+                            <span class="btn-box" v-if="isEdit && fileType == 'e2_1'">
                                 <i @click.stop="editDir(item)" class="el-icon-document"></i>
                             </span>
                         </div>
@@ -90,7 +90,7 @@
                         <span class="time">
                             {{item.docCreateTime}}
 
-                            <span class="btn-box" v-if="isEdit && fileType != 'e2_4'">
+                            <span class="btn-box" v-if="isEdit && fileType == 'e2_1'">
                                 <i @click="editItem(item)" class="el-icon-document"></i>
                             </span>
                         </span>
@@ -437,9 +437,7 @@ export default {
         },
         showItems (item) {
             if (this.isCheck) {
-                if (item.docFolder != 'e2_2' &&  item.docFolder != 'e2_4') {
-                    this.selectDir(item)
-                }
+                this.selectDir(item)
                 return false
             }
 

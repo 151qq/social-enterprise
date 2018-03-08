@@ -132,19 +132,21 @@
                     </el-option>
                 </el-select>
             </el-form-item>
+            <el-form-item label="广告用语">
+                <el-input
+                    type="textarea"
+                    :rows="2"
+                    :maxlength="70"
+                    placeholder="请输入内容"
+                    v-model="quanData.couponGroupIntro">
+                </el-input>
+                <div class="limit-box">剩余<a>{{couponGroupIntroNum}}</a>字</div>
+            </el-form-item>
             <el-form-item label="套券封面">
                 <popup-img :path="quanData.couponGroupCover"
                             :is-operate="isEdit"
                             :bg-path="false"
                             @imgClick="imgClick"></popup-img>
-            </el-form-item>
-            <el-form-item label="广告用语">
-                <el-input
-                    type="textarea"
-                    :rows="3"
-                    placeholder="请输入内容"
-                    v-model="quanData.couponGroupIntro">
-                </el-input>
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
@@ -203,6 +205,9 @@ export default {
         }),
         isEdit () {
           return this.$route.query.enterpriseCode == this.userInfo.enterpriseCode
+        },
+        couponGroupIntroNum () {
+          return 70 - this.quanData.couponGroupIntro.length
         }
     },
     watch: {
@@ -454,11 +459,27 @@ export default {
   }
 
   .el-table__expanded-cell {
-    padding: 10px 50px;
+    padding: 10px 0 10px 47px;
+  }
+
+  .el-table__expanded-cell {
+    padding: 10px 0 10px 47px;
+  }
+
+  .el-dialog--small {
+      width: 490px;
+  }
+
+  .el-dialog__body {
+      padding: 20px 20px 0 20px;
+
+      .el-form-item {
+          margin-bottom: 10px;
+      }
   }
 
   .big-coupon-box {
-    width: 850px;
+    width: 924px;
 
     .null-box {
         height: 60px;
@@ -485,7 +506,7 @@ export default {
         }
 
         .card-type {
-            width: 120px;
+            width: 215px;
             font-size: 14px;
             line-height: 36px;
             color: #000000; 
@@ -503,7 +524,7 @@ export default {
         }
 
         .card-desc {
-            width: 400px;
+            width: 425px;
             font-size: 14px;
             line-height: 36px;
             color: #000000;

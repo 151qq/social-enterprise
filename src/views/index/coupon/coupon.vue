@@ -73,13 +73,14 @@
                 <el-input
                   type="textarea"
                   :rows="4"
-                  :maxlength="140"
+                  :maxlength="500"
                   placeholder="请输入内容"
                   v-model="quanData.couponDescription">
                 </el-input>
+                <div class="limit-box">剩余<a>{{couponDescriptionNum}}</a>字</div>
             </section>
 
-            <section class="formBox bigF">
+            <!-- <section class="formBox bigF">
                 <span>适用产品</span>
                 <el-select class="input-box"
                            multiple
@@ -94,7 +95,7 @@
                       :value="item.productCode">
                     </el-option>
                 </el-select>
-            </section>
+            </section> -->
 
             <section class="formBox">
               <span>券封面</span>
@@ -205,6 +206,9 @@ export default {
         }),
         isEdit () {
           return this.$route.query.enterpriseCode == this.userInfo.enterpriseCode
+        },
+        couponDescriptionNum () {
+          return 500 - this.quanData.couponDescription.length
         }
     },
     methods: {
@@ -219,7 +223,7 @@ export default {
               if (res.result.success == '1') {
                 let result = res.result.result.couponInfo
 
-                this.productList = res.result.result.couponProductArray
+                // this.productList = res.result.result.couponProductArray
                 this.quanData = result
               } else {
                 this.$message.error(res.result.msg)
@@ -323,13 +327,13 @@ export default {
             return false
           }
 
-          if (this.quanData.couponDescription.length > 140) {
-            this.$message({
-                message: '券优惠说明最多140个字！',
-                type: 'warning'
-            })
-            return false
-          }
+          // if (this.quanData.couponDescription.length > 140) {
+          //   this.$message({
+          //       message: '券优惠说明最多140个字！',
+          //       type: 'warning'
+          //   })
+          //   return false
+          // }
 
           if (!this.quanData.couponCover) {
             this.$message({
@@ -339,13 +343,13 @@ export default {
             return false
           }
           
-          if (!this.productList.length) {
-            this.$message({
-                message: '请添加产品！',
-                type: 'warning'
-            })
-            return false
-          }
+          // if (!this.productList.length) {
+          //   this.$message({
+          //       message: '请添加产品！',
+          //       type: 'warning'
+          //   })
+          //   return false
+          // }
 
           if (!this.quanData.couponQuantity) {
             this.$message({
@@ -379,7 +383,7 @@ export default {
             return false
           }
 
-          this.quanData.productCode = this.productList.join(',')
+          // this.quanData.productCode = this.productList.join(',')
 
           var interfaceName = 'couponInfoInsert'
 

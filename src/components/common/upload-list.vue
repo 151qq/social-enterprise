@@ -2,15 +2,15 @@
   <div class="imgs-box">
     <section class="img-box" v-for="(item, index) in imgLists" :key="index">
       <img class="img-big" :src="item" @click="showImg(index)">
-      <div class="delete-box">
-        <i class="el-icon-setting" @click="setImg(item)"></i>
-        <i class="el-icon-delete2" @click="deleteImg(index)"></i>
+      <div class="delete-box" v-if="proCover && item != proCover">
+        <i @click="setImg(item)">设为封面</i>
+        <i @click="deleteImg(index)">删除</i>
       </div>
     </section>
-    <label class="img-box" :for="idName">
+    <label v-if="isEdit" class="img-box" :for="idName">
       <img class="img-big" src="../../assets/images/add-img.jpg">
     </label>
-    <input :id="idName" type="file" class="img-input" @change="postImg($event)">
+    <input v-if="isEdit" :id="idName" type="file" accept="image/*" class="img-input" @change="postImg($event)">
 
     <!-- 大图 -->
     <swiper-img :is-show="isShow" :index="nowIndex" :big-imgs="imgLists"></swiper-img>
@@ -21,7 +21,7 @@ import util from '../../assets/common/util'
 import swiperImg from './swiper-img.vue'
 
 export default {
-    props: ['imgLists', 'idName'],
+    props: ['imgLists', 'idName', 'isEdit', 'proCover'],
     data() {
       return {
         imgList: [],
@@ -100,6 +100,10 @@ export default {
 
       i {
         margin-right: 3px;
+
+        &:hover {
+          color: #20a0ff;
+        }
       }
     }
 

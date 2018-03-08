@@ -3,7 +3,7 @@
     <div class="el-upload file-container">
       <div class="el-dragger">
         <img class="preview-img" :src="imgPath" v-show="imgPath" />
-        <input class="btn_file" type="file" @change="fileChange"/>
+        <input class="btn_file" type="file" accept="image/*" @change="fileChange"/>
       </div>
       {{remark}}
     </div>
