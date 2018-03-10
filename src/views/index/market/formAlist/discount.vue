@@ -97,6 +97,7 @@
             class="page-box"
             @current-change="pageChange"
             layout="prev, pager, next"
+            :page-size="pageSize"
             :total="total">
         </el-pagination>
 
@@ -105,7 +106,8 @@
             <el-form-item label="套券标题">
                 <el-input v-model="quanData.couponGroupName"
                           auto-complete="off"
-                          placeholder="请输入内容"></el-input>
+                          placeholder="请输入内容,最多16个字"
+                          :maxlength="16"></el-input>
             </el-form-item>
             <el-form-item label="生效时间">
                 <el-date-picker

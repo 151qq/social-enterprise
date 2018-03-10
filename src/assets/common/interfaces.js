@@ -101,6 +101,7 @@ export default {
         getPriceType: platform + 'product/getPriceType.json',
         saveProductCover: platform + 'product/saveProductCover.json',
         gifProductList: platform + 'product/gifProductList.json',
+        savaProductStatus: platform + 'product/savaProductStatus.json',
 
         /**
         * 营销树 get

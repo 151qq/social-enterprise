@@ -50,18 +50,23 @@
                 v-if="total && marketList.length < total"
                 @click="loadMore">加载更多...</div>
 
-        <el-dialog title="添加方案" :visible.sync="isAddItem">
+        <el-dialog title="添加文章" :visible.sync="isAddItem">
           <el-form :label-position="'left'" :model="addItemForm" label-width="80px">
             <el-form-item label="文章标题">
-                <el-input v-model="addItemForm.pageTitle" auto-complete="off"></el-input>
+                <el-input v-model="addItemForm.pageTitle"
+                          auto-complete="off"
+                          placeholder="请输入内容,最多40个字"
+                          :maxlength="40"></el-input>
             </el-form-item>
             <el-form-item label="文章摘要">
                 <el-input
                     type="textarea"
                     :rows="3"
                     placeholder="请输入内容"
+                    :maxlength="140"
                     v-model="addItemForm.pageAbstract">
                 </el-input>
+                <div class="limit-box">剩余<a>{{pageAbstractNum}}</a>字</div>
             </el-form-item>
             <el-form-item label="文章封面">
                 <popup-img :path="addItemForm.pageCover"
@@ -124,6 +129,9 @@ export default {
           } else {
             return false
           }
+        },
+        pageAbstractNum () {
+          return 140 - this.addItemForm.pageAbstract.length
         }
     },
     watch: {

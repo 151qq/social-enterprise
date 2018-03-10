@@ -10,6 +10,7 @@
                         <el-input
                                 class="input-box"
                                 placeholder="请输入内容"
+                                :maxlength="40"
                                 v-model="base.templateTitle">
                         </el-input>
                     </section>

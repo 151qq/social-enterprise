@@ -23,7 +23,7 @@
           <el-collapse-item class="float-form-box" title="礼品相册" name="4">
             <upload-list :img-lists="imgList"
                           :id-name="'productAlbum'"
-                          :is-edit="isEdit"
+                          :is-edit="isEdit && baseData.productStatus == '2'"
                           :pro-cover="baseData.productCover"
                           @changeImg="changeImg"
                           @setImg="setImg"

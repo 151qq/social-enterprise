@@ -8,7 +8,8 @@
                         <span>客户接入欢迎词</span>
                         <el-input
                                 class="input-box"
-                                placeholder="请输入"
+                                placeholder="请输入内容,最多15个字"
+                                :maxlength="15"
                                 v-model="callcenterData.sessionOpenInfo">
                         </el-input>
                         <div class="mess-box">
@@ -19,39 +20,48 @@
                         <span>等候致歉语</span>
                         <el-input
                                 class="input-box"
-                                placeholder="请输入"
+                                placeholder="请输入内容,最多40个字"
+                                :maxlength="40"
                                 v-model="callcenterData.reponseDelayInfo">
                         </el-input>
                         <div class="mess-box">
-                          *当客户通过微信小程序联系客服后，客服人员未能在X秒内响应，客户将收到等候提醒消息
+                          *当客户通过微信小程序联系客服后，客服人员未能在45秒内响应，客户将收到等候提醒消息
                         </div>
                     </section>
                     <section class="formBox bigF">
                         <span>客服结束问候语</span>
                         <el-input
                                 class="input-box"
-                                placeholder="请输入"
+                                placeholder="请输入内容,最多40个字"
+                                :maxlength="40"
                                 v-model="callcenterData.sessionCloseInfo">
                         </el-input>
                         <div class="mess-box">
-                          *当客户通过微信小程序内超过X秒没有输入消息，客户将受到结束问候
+                          *当客户通过微信小程序内超过30秒没有输入消息，客户将受到结束问候
                         </div>
                     </section>
-                    <section class="formBox">
+                    <!-- <section class="formBox">
                         <span>等候致歉时间(m)</span>
                         <el-input
                                 class="input-box"
                                 type="number"
                                 v-model="callcenterData.inbandResonseTime">
                         </el-input>
-                    </section>
+                    </section> -->
                     <section class="formBox">
                         <span>客服电话</span>
-                        <el-input
+                        <div class="input-box">
+                            <input class="input-box el-input__inner"
+                                    maxlength="15" 
+                                    @input="telChange"
+                                    v-model="callcenterData.servicePhone">
+                        </div>
+                        <!-- <el-input
                                 class="input-box"
-                                type="tel"
+                                :maxlength="15"
+                                @change="telChange"
                                 v-model="callcenterData.servicePhone">
-                        </el-input>
+                        </el-input> -->
                     </section>
                     <section class="formBox">
                         <span>客服分配模式</span>
@@ -114,7 +124,7 @@
           <el-collapse-item class="float-form-box" title="外呼规则" name="3">
                 <div class="formDiscount">
                     <section class="formBox">
-                        <span>外呼间隔期</span>
+                        <span>外呼间隔期(天)</span>
                         <el-input
                                 class="input-box"
                                 type="number"
@@ -122,7 +132,7 @@
                         </el-input>
                     </section>
                     <section class="formBox">
-                        <span>外呼冷却期</span>
+                        <span>外呼冷却期(天)</span>
                         <el-input
                                 class="input-box"
                                 type="number"
@@ -136,7 +146,7 @@
                 <div class="clear"></div>
             </el-collapse-item>
           <div class="line-bold"></div>
-          <el-collapse-item class="float-form-box" title="商机新建外呼规则" name="4">
+          <el-collapse-item class="float-form-box" title="商机新建规则" name="4">
                 <div class="formDiscount">
                     <section class="formBox">
                         <span>阅读权重</span>
@@ -233,7 +243,7 @@
                 <div class="clear"></div>
           </el-collapse-item>
           <div class="line-bold"></div>
-          <el-collapse-item class="float-form-box" title="商机推进外呼规则" name="5">
+          <el-collapse-item class="float-form-box" title="商机推进规则" name="5">
                 <div class="formDiscount">
                     <section class="formBox">
                         <span>接触期外呼限制</span>
@@ -259,6 +269,14 @@
                                 v-model="callcenterData.outbandTrailLimit">
                         </el-input>
                     </section>
+                    <section class="formBox">
+                        <span>体验期体验限制</span>
+                        <el-input
+                                class="input-box"
+                                type="number"
+                                v-model="callcenterData.trailLimit">
+                        </el-input>
+                    </section>
                 </div>
                 <el-button v-if="isEdit"
                             class="save-btn" type="info" :plain="true" size="small" icon="document"
@@ -269,7 +287,7 @@
           <el-collapse-item class="float-form-box" title="商机客户差异度计算规则" name="6">
                 <div class="formDiscount">
                     <section class="formBox">
-                        <span>接触失败</span>
+                        <span>接触失败(减分)</span>
                         <el-input
                                 class="input-box"
                                 type="number"
@@ -277,7 +295,7 @@
                         </el-input>
                     </section>
                     <section class="formBox">
-                        <span>预约失败</span>
+                        <span>预约失败(减分)</span>
                         <el-input
                                 class="input-box"
                                 type="number"
@@ -285,7 +303,7 @@
                         </el-input>
                     </section>
                     <section class="formBox">
-                        <span>体验失败</span>
+                        <span>体验失败(减分)</span>
                         <el-input
                                 class="input-box"
                                 type="number"
@@ -293,7 +311,7 @@
                         </el-input>
                     </section>
                     <section class="formBox">
-                        <span>销售成功</span>
+                        <span>销售成功(加分)</span>
                         <el-input
                                 class="input-box"
                                 type="number"
@@ -434,6 +452,8 @@
                         <span>微信券按钮标题</span>
                         <el-input
                                 class="input-box"
+                                placeholder="请输入内容,最多6个字"
+                                :maxlength="6"
                                 v-model="callcenterData.couponCenterTitle">
                         </el-input>
                     </section>
@@ -441,6 +461,8 @@
                         <span>微信券核销提示</span>
                         <el-input
                                 class="input-box"
+                                placeholder="请输入内容,最多15个字"
+                                :maxlength="15"
                                 v-model="callcenterData.couponNotice">
                         </el-input>
                     </section>
@@ -456,6 +478,8 @@
                         <span>企业品牌</span>
                         <el-input
                                 class="input-box"
+                                placeholder="请输入内容,最多12个字"
+                                :maxlength="12"
                                 v-model="callcenterData.couponBrandName">
                         </el-input>
                     </section>
@@ -477,6 +501,8 @@
                         <span>券详情提示</span>
                         <el-input
                                 class="input-box"
+                                placeholder="请输入内容,最多8个字"
+                                :maxlength="8"
                                 v-model="callcenterData.couponAbstract">
                         </el-input>
                     </section>
@@ -529,7 +555,7 @@ export default {
                 servicePhone: '',
                 callcenterDispatchRule: '',
                 // 软文推广规则
-                pagePromotionOpt: '',
+                pagePromotionOpt: '1',
                 commentReplayRule: '',
                 // 外呼规则
                 outbandMinPeriod: '',
@@ -664,6 +690,12 @@ export default {
         }),
         isEdit () {
           return this.$route.query.enterpriseCode == this.userInfo.enterpriseCode
+        },
+        reponseDelayInfoNum () {
+          return 40 - this.callcenterData.reponseDelayInfo.length
+        },
+        sessionCloseInfoNum () {
+          return 40 - this.callcenterData.sessionCloseInfo.length
         }
     },
     watch: {
@@ -672,6 +704,9 @@ export default {
       }
     },
     methods: {
+        telChange () {
+            this.callcenterData.servicePhone = this.callcenterData.servicePhone.replace(/[^\d]/g, '')
+        },
         collChange () {
             localStorage.setItem("callCenterColl", this.activeNames)
         },

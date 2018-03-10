@@ -106,6 +106,7 @@ export default{
               data: {
                   enterpriseCode: this.$route.query.enterpriseCode,
                   docType: this.docType,
+                  remark: '1',
                   pageNumber: this.pageNumber,
                   pageSize: this.pageSize
               }

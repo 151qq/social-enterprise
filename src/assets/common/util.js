@@ -116,11 +116,19 @@ export default {
                 return response;
             })
             let file = e.target.files[0];
+
+            var fileSize = file.size / 1024 / 1024
+            if (fileSize > 10) {
+                alert('文件大小不能超过10MB!')
+                return false
+            }
+
             let param = new FormData(); //创建form对象
             param.append('file', file, file.name);//通过append向form对象添加数据
             //param.append('chunk','0');//添加form表单中其他数据
             //console.log(param.get('file')); //FormData私有类对象，访问不到，可以通过get判断值是否传进去
             let config = {
+                timeout: 50000,
                 headers: {'Content-Type': 'multipart/form-data'}
             };  //添加请求头
             axios.post(interfaces.interfaces.uploadArticleAreaImage, param, config)
@@ -150,6 +158,13 @@ export default {
                 return response;
             })
             let file = option.event.target.files[0];
+
+            var fileSize = file.size / 1024 / 1024
+            if (fileSize > 10) {
+                alert('文件大小不能超过10MB!')
+                return false
+            }
+            
             let param = new FormData(); //创建form对象
             param.append('file', file, file.name);//通过append向form对象添加数据
             //param.append('chunk','0');//添加form表单中其他数据
@@ -160,6 +175,7 @@ export default {
                 }
             }
             let config = {
+                timeout: 50000,
                 headers: {'Content-Type': 'multipart/form-data'}
             };  //添加请求头
             axios.post(interfaces.interfaces[option.url], param, config)

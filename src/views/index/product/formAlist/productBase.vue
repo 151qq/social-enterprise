@@ -5,7 +5,8 @@
             <span>产品名称</span>
             <el-input
               class="input-box"
-              placeholder="请输入内容"
+              placeholder="请输入内容，最多20个字"
+              :maxlength="20"
               v-model="base.productCname">
             </el-input>
         </section>
@@ -60,11 +61,12 @@
             <span>价格说明</span>
             <el-input
               class="input-box"
-              placeholder="请输入内容"
+              placeholder="请输入内容,最多140个字"
+              :maxlength="140"
               v-model="base.priceDesc">
             </el-input>
         </section>
-        <section class="formBox">
+        <section class="formBox bigF">
             <span>官网链接</span>
             <el-input
               class="input-box"
@@ -72,7 +74,7 @@
               v-model="base.productEcommerceLink">
             </el-input>
         </section>
-        <section class="formBox">
+        <!-- <section class="formBox">
             <span>天猫链接</span>
             <el-input
               class="input-box"
@@ -87,16 +89,17 @@
               placeholder="请输入内容"
               v-model="base.productJdLink">
             </el-input>
-        </section>
+        </section> -->
         <section class="formBox bigF">
             <span>产品摘要</span>
             <el-input
               type="textarea"
               :rows="4"
-              :maxlength="140"
+              :maxlength="40"
               placeholder="请输入内容"
               v-model="base.productDesc">
             </el-input>
+            <div class="limit-box">剩余<a>{{productDescNum}}</a>字</div>
         </section>
         <div class="clear"></div>
       </div>

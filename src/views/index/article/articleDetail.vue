@@ -15,9 +15,9 @@
                 </section>
             </el-tab-pane>
 
-            <el-tab-pane class="form-discount" label="文章管理" name="articleManage">
+            <!-- <el-tab-pane class="form-discount" label="文章管理" name="articleManage">
                 <log-page></log-page>
-            </el-tab-pane>
+            </el-tab-pane> -->
         </el-tabs>
     </div>
 </template>

@@ -15,7 +15,7 @@
         </div>
 
         <!-- 右侧操作按钮 -->
-        <section class="btns-op" v-if="isEdit">
+        <section class="btns-op" v-if="isEdit && !isRemark">
             <!-- 多选模式切换 -->
             <img v-show="!isCheck" src="../../../assets/images/select-icon.png" @click="setCheck">
             <img v-show="isCheck" src="../../../assets/images/select-now.png" @click="setCheck">
@@ -50,7 +50,7 @@
             <section class="check-box" v-for="(item, index) in sourceDatas" :key="index">
                 <!-- 选择框 -->
                 <section class="select-box"
-                         v-if="isCheck && (item.catalogType.indexOf('dir') > -1 || item.productStatus == '2') && isEdit"
+                         v-if="isCheck && (item.catalogType == 'dir' || item.productStatus == '2') && isEdit"
                          @click.stop="selectItem(item)"
                          :class="selectItemList.indexOf(item.catalogCode) > -1 ? 'active' : ''"></section>
                 
@@ -80,9 +80,9 @@
                     <div class="title-box">
                         <div class="title" v-text="item.catalogCname"></div>
                         <div class="time">
-                            <span>
+                            <!-- <span>
                                 {{item.catalogCreateTime}}
-                            </span>
+                            </span> -->
                             <!-- <span v-else>
                                 <template v-if="item.productStatus == '2'">
                                     未发布
@@ -94,10 +94,19 @@
                                     已下架
                                 </template>
                             </span> -->
-                            <span class="btn-box"
-                                  v-if="(item.catalogType.indexOf('dir') > -1 || item.productStatus == '2') && isEdit">
-                                <i @click.stop="editItem(item)" class="el-icon-document"></i>
-                            </span>
+                            <template v-if="item.catalogType != 'platform_gift_dir'">
+                                <span class="btn-box"
+                                      v-if="(item.catalogType.indexOf('dir') > -1 || item.productStatus == '2') && isEdit">
+
+                                    <i @click.stop="editItem(item)" class="el-icon-document"></i>
+                                </span>
+
+                                <span class="btn-box"
+                                      v-if="(item.catalogType.indexOf('dir') > -1 || item.productStatus == '2') && isEdit">
+
+                                    <i @click.stop="deleteItem(item.catalogCode)" class="el-icon-delete2"></i>
+                                </span>
+                            </template>
                         </div>
                     </div>
                 </section>
@@ -109,6 +118,7 @@
                 class="page-box"
                 @current-change="pageChange"
                 layout="prev, pager, next"
+                :page-size="pageSize"
                 :total="total">
             </el-pagination>
         </template>
@@ -132,18 +142,44 @@
                     </el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="标题">
-                <el-input v-model="addItemForm.catalogCname" placeholder="请输入内容"></el-input>
-            </el-form-item>
-            <el-form-item label="描述">
-                <el-input
-                    type="textarea"
-                    :rows="3"
-                    placeholder="请输入内容"
-                    v-model="addItemForm.catalogDesc">
-                </el-input>
-            </el-form-item>
-            <template v-if="addItemForm.catalogType == 'pro'">
+            <template v-if="addItemForm.catalogType.indexOf('pro') > -1">
+                <el-form-item label="标题">
+                    <el-input v-model="addItemForm.catalogCname"
+                                :maxlength="20"
+                                placeholder="请输入内容，最多12个字"></el-input>
+                </el-form-item>
+            </template>
+            <template v-if="addItemForm.catalogType.indexOf('dir') > -1">
+                <el-form-item label="标题">
+                    <el-input v-model="addItemForm.catalogCname"
+                                :maxlength="12"
+                                placeholder="请输入内容，最多12个字"></el-input>
+                </el-form-item>
+            </template>
+            <template v-if="addItemForm.catalogType.indexOf('pro') > -1">
+                <el-form-item label="描述">
+                    <el-input
+                        type="textarea"
+                        :rows="3"
+                        placeholder="请输入内容"
+                        :maxlength="600"
+                        v-model="addItemForm.catalogDesc">
+                    </el-input>
+                    <div class="limit-box">剩余<a>{{catalogDescNum}}</a>字</div>
+                </el-form-item>
+            </template>
+            <template v-if="addItemForm.catalogType.indexOf('dir') > -1">
+                <el-form-item label="描述">
+                    <el-input
+                        type="textarea"
+                        :rows="3"
+                        placeholder="请输入内容，最多140个字"
+                        :maxlength="140"
+                        v-model="addItemForm.catalogDesc">
+                    </el-input>
+                </el-form-item>
+            </template>
+            <template v-if="addItemForm.catalogType.indexOf('pro') > -1">
                 <el-form-item label="封面">
                     <popup-img :path="addItemForm.catalogImage"
                                 :is-operate="true"
@@ -180,7 +216,7 @@ export default {
             // 获取
             sourceDatas: [],
             pageNumber: 1,
-            pageSize: 20,
+            pageSize: 15,
             total: 0,
             // 当前parentCode
             currentParentCode: 'e2',
@@ -202,7 +238,7 @@ export default {
                     value: 'dir'
                 },
                 {
-                    label: '产品',
+                    label: '礼品',
                     value: 'pro'
                 }
             ],
@@ -217,7 +253,9 @@ export default {
                 value: false
             },
             isChangeType: true,
-            productTypes: []
+            productTypes: [],
+            // 是否和平台共享
+            isRemark: ''
         }
     },
     mounted () {
@@ -241,6 +279,9 @@ export default {
         }),
         isEdit () {
           return this.$route.query.enterpriseCode == this.userInfo.enterpriseCode
+        },
+        catalogDescNum () {
+            return 140 - this.addItemForm.catalogDesc.length
         }
     },
     watch: {
@@ -338,6 +379,10 @@ export default {
             })       
         },
         deleteItems () {
+            if (!this.selectItemList.length) {
+                return false
+            }
+
             util.request({
                 method: 'post',
                 interface: 'deleteProductCatalog',
@@ -349,6 +394,29 @@ export default {
                     if (res.result.result.length) {
                         this.$message({
                             message: '部分目录下有产品存在，未能删除！',
+                            type: 'warning'
+                        })
+                    }
+                    // 刷新列表 关闭多选模式
+                    this.isCheck = false
+                    this.getItems(this.currentParentCode)
+                } else {
+                    this.$message.error(res.result.message)
+                }
+            })       
+        },
+        deleteItem (code) {
+            util.request({
+                method: 'post',
+                interface: 'deleteProductCatalog',
+                data: {
+                    catalogCodes: [code]
+                }
+            }).then(res => {
+                if (res.result.success == '1') {
+                    if (res.result.result.length) {
+                        this.$message({
+                            message: '该目录下有产品存在，未能删除！',
                             type: 'warning'
                         })
                     }
@@ -374,7 +442,7 @@ export default {
                 catalogCname: '',
                 catalogImage: '',
                 catalogParentCode: '',
-                catalogType: '',
+                catalogType: 'pro',
                 catalogDesc: '',
                 catalogLevel: Number(this.$route.query.catalogLevel) + 1
             }
@@ -451,6 +519,10 @@ export default {
             this.selectItemList = []
         },
         selectItem (item) {
+            if (item.catalogType == 'platform_gift_dir') {
+                return false
+            }
+
             var index = this.selectItemList.indexOf(item.catalogCode)
             if (index > -1) {
                 this.selectItemList.splice(index, 1)
@@ -464,6 +536,12 @@ export default {
             if (this.isCheck && (item.catalogType.indexOf('dir') > -1 || item.productStatus == '2')) {
                 this.selectItem(item)
                 return false
+            }
+
+            if (item.catalogType == 'platform_gift_dir') {
+                this.isRemark = '1'
+            } else {
+                this.isRemark = '0'
             }
 
             // 目录类型展开 产品类型跳到详情
@@ -498,7 +576,7 @@ export default {
             this.pageNumber = 1
             this.keyValue = ''
             this.isCheck = false
-            this.dirSteps.splice(this.floorNumber)
+            this.dirSteps.splice(this.floorNumber, 1)
             var data = this.dirSteps[this.floorNumber - 1]
 
             var pathData = {
@@ -783,6 +861,7 @@ export default {
                float: right;
                font-size: 14px;
                color: #333333;
+               margin-left: 5px;
 
                i, label {
                     cursor: pointer;

@@ -25,11 +25,10 @@
                     <div class="card-title">{{item.eventPlanTitle}}</div>
                     <div class="card-desc">{{item.eventPlanDesc}}</div>
                     <div class="card-tag">
-                        <!-- draft，submitted，approved，frozen，closed -->
-                        <el-tag v-if="item.eventStatus == 'draft'" type="gray">草稿</el-tag>
-                        <el-tag v-if="item.eventStatus == 'submitted'" type="success">已发布</el-tag>
-                        <el-tag v-if="item.eventStatus == 'end'">正常结束</el-tag>
-                        <el-tag v-if="item.eventStatus == 'closed'">提前终止</el-tag>
+                        <el-tag v-if="item.eventStatus == '1' || item.eventStatus == '2'" type="gray">草稿</el-tag>
+                        <el-tag v-if="item.eventStatus == '3'" type="success">已发布</el-tag>
+                        <el-tag v-if="item.eventStatus == '5'">正常结束</el-tag>
+                        <el-tag v-if="item.eventStatus == '4'">提前终止</el-tag>
                     </div>
                 </div>
                 <section class="card-btns">

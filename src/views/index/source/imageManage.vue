@@ -38,10 +38,12 @@
                     <div class="title-box">
                         <div class="title" v-text="item.docTitle"></div>
                         <div class="time">
-                            {{item.docCreateTime}}
-                            
                             <span class="btn-box" v-if="isEdit && fileType == 'e2_1'">
                                 <i @click.stop="editDir(item)" class="el-icon-document"></i>
+                            </span>
+
+                            <span class="btn-box" v-if="isEdit && fileType == 'e2_1'">
+                                <i @click="deleteDir(item.docCode)" class="el-icon-delete2"></i>
                             </span>
                         </div>
                     </div>
@@ -56,6 +58,7 @@
                 class="page-box"
                 @current-change="dirPageChange"
                 layout="prev, pager, next"
+                :page-size="dirPageSize"
                 :total="dirTotal">
             </el-pagination>
         </template>
@@ -88,10 +91,11 @@
                     <div class="title-box">
                         <div class="title" v-text="item.docTitle"></div>
                         <span class="time">
-                            {{item.docCreateTime}}
-
                             <span class="btn-box" v-if="isEdit && fileType == 'e2_1'">
                                 <i @click="editItem(item)" class="el-icon-document"></i>
+                            </span>
+                            <span class="btn-box" v-if="isEdit && fileType == 'e2_1'">
+                                <i @click="deleteItem(item.docCode)" class="el-icon-delete2"></i>
                             </span>
                         </span>
                     </div>
@@ -107,6 +111,7 @@
                 class="page-box"
                 @current-change="itemPageChange"
                 layout="prev, pager, next"
+                :page-size="itemPageSize"
                 :total="itemTotal">
             </el-pagination>
         </template>
@@ -122,13 +127,16 @@
                         @changeImg="changeDirImg"></upload-file>
             </el-form-item> -->
             <el-form-item label="目录名称">
-                <el-input v-model="addDirForm.docTitle" placeholder="请输入内容"></el-input>
+                <el-input v-model="addDirForm.docTitle"
+                          placeholder="请输入内容,最多12个字"
+                          :maxlength="12"></el-input>
             </el-form-item>
             <el-form-item label="目录描述">
                 <el-input
                     type="textarea"
                     :rows="3"
-                    placeholder="请输入内容"
+                    placeholder="请输入内容,最多140个字"
+                    :maxlength="140"
                     v-model="addDirForm.docDesc">
                 </el-input>
             </el-form-item>
@@ -456,13 +464,14 @@ export default {
         },
         getItems (docCode) {
             var formData = {
+                enterpriseCode: this.$route.query.enterpriseCode,
                 docFolder: docCode ? docCode : this.nowDir.docCode,
                 pageNumber: this.itemPageNumber,
                 pageSize: this.itemPageSize
             }
 
-            if (this.fileType != 'e2_4') {
-                formData.enterpriseCode = this.$route.query.enterpriseCode
+            if (this.fileType == 'e2_4' || this.fileType == 'e2_5') {
+                formData.remark = '1'
             }
                 
             util.request({
@@ -533,23 +542,46 @@ export default {
                 }
             })
         },
+        deleteItem (code) {
+            util.request({
+                method: 'post',
+                interface: 'materialFolderDelete',
+                data: {
+                    docType: '2',
+                    docCodes: [code]
+                }
+            }).then(res => {
+                if (res.result.success == '1') {
+                    this.getItems()
+                    this.isCheck = false
+                } else {
+                    this.$message.error(res.result.message)
+                }
+            })
+        },
         dirPageChange (size) {
             this.dirPageNumber = size
             this.getDirs()
         },
         getDirs () {
+            var formData = {
+                enterpriseCode: this.$route.query.enterpriseCode,
+                docFolder: this.fileType,
+                pageNumber: this.dirPageNumber,
+                pageSize: this.dirPageSize
+            }
+
+            if (this.fileType == 'e2_4' || this.fileType == 'e2_5') {
+                formData.remark = '1'
+            }
+
             util.request({
                 method: 'get',
                 interface: 'listPage',
-                data: {
-                    enterpriseCode: this.$route.query.enterpriseCode,
-                    docFolder: this.fileType,
-                    pageNumber: this.dirPageNumber,
-                    pageSize: this.dirPageSize
-                }
+                data: formData
             }).then(res => {
                 if (res.result.success == '1') {
-                    this.dirTotal = Number(res.result.totalPages)
+                    this.dirTotal = Number(res.result.total)
 
                     res.result.result.forEach((item) => {
                         item.docCreateTime = item.docCreateTime.split(' ')[0]
@@ -603,6 +635,29 @@ export default {
                     if (res.result.result.length) {
                         this.$message({
                             message: '部分目录下有文件存在，未能删除！',
+                            type: 'warning'
+                        })
+                    }
+                    this.getDirs()
+                    this.isCheck = false
+                } else {
+                    this.$message.error(res.result.message)
+                }
+            })       
+        },
+        deleteDir (code) {
+            util.request({
+                method: 'post',
+                interface: 'materialFolderDelete',
+                data: {
+                    docType: '1',
+                    docCodes: [code]
+                }
+            }).then(res => {
+                if (res.result.success == '1') {
+                    if (res.result.result.length) {
+                        this.$message({
+                            message: '该目录下有文件存在，未能删除！',
                             type: 'warning'
                         })
                     }
@@ -797,6 +852,7 @@ export default {
                float: right;
                font-size: 14px;
                color: #333333;
+               margin-left: 5px;
 
                i, label {
                     cursor: pointer;

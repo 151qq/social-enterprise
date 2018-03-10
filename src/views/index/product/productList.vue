@@ -2,13 +2,12 @@
     <div class="product-list-box">
 
         <div class="input-box">
-            <el-input
-              placeholder="请输入需查询条件"
-              v-model="keyValue"
-              >
-            </el-input>
-            <el-button class="search-btn" type="primary" icon="search"
-                        @keyup.13="searchItem" @click="searchItem">
+            <input
+                placeholder="请输入需查询条件"
+                v-model="keyValue"
+                @keyup.13="searchItem"
+                class="input-search">
+            <el-button class="search-btn" type="primary" icon="search" @click="searchItem">
               搜索
             </el-button>
 
@@ -51,7 +50,7 @@
             <section class="check-box" v-for="(item, index) in sourceDatas" :key="index">
                 <!-- 选择框 -->
                 <section class="select-box"
-                         v-if="isCheck && (item.catalogType == 'dir' || item.productStatus == '2') && isEdit"
+                         v-if="isCheck && (item.catalogType.indexOf('dir') > -1 || item.productStatus == '2') && isEdit"
                          @click.stop="selectItem(item)"
                          :class="selectItemList.indexOf(item.catalogCode) > -1 ? 'active' : ''"></section>
                 
@@ -59,8 +58,11 @@
                 <section class="sou-box">
                     <div class="cover-box"
                          @click="showItems(item)"
-                         v-if="isCheck || item.catalogType == 'dir'">
-                        <img src="/static/images/folder.jpg">
+                         v-if="isCheck || item.catalogType.indexOf('dir') > -1">
+
+                        <img v-if="item.catalogType.indexOf('dir') > -1" src="/static/images/folder.jpg">
+
+                        <img v-if="item.catalogImage && item.catalogType == 'pro'" :src="item.catalogImage">
                     </div>
                     <!-- 详情页 -->
                     <router-link class="cover-box"
@@ -78,22 +80,23 @@
                     <div class="title-box">
                         <div class="title" v-text="item.catalogCname"></div>
                         <div class="time">
-                            <span v-if="item.catalogType == 'dir'">
+                            <!-- <span>
                                 {{item.catalogCreateTime}}
-                            </span>
-                            <span v-else>
+                            </span> -->
+                            <!-- <span v-else>
                                 <template v-if="item.productStatus == '2'">
-                                    草稿
+                                    未开通
                                 </template>
                                 <template v-if="item.productStatus == '1'">
-                                    已发布
+                                    已开通
                                 </template>
                                 <template v-if="item.productStatus == '3'">
                                     已下架
                                 </template>
-                            </span>
+                            </span> -->
                             <span class="btn-box"
-                                  v-if="(item.catalogType == 'dir' || item.productStatus == '2' || item.productStatus == '1') && isEdit">
+                                  v-if="(item.catalogType.indexOf('dir') > -1 || item.productStatus == '2') && isEdit">
+
                                 <i @click.stop="editItem(item)" class="el-icon-document"></i>
                             </span>
                         </div>
@@ -130,26 +133,52 @@
                     </el-option>
                 </el-select>
             </el-form-item>
-            <!-- <template v-if="addItemForm.catalogType == 'dir'">
+            <template v-if="addItemForm.catalogType == 'pro'">
+                <el-form-item label="标题">
+                    <el-input v-model="addItemForm.catalogCname"
+                                :maxlength="20"
+                                placeholder="请输入内容，最多12个字"></el-input>
+                </el-form-item>
+            </template>
+            <template v-if="addItemForm.catalogType == 'dir'">
+                <el-form-item label="标题">
+                    <el-input v-model="addItemForm.catalogCname"
+                                :maxlength="12"
+                                placeholder="请输入内容，最多12个字"></el-input>
+                </el-form-item>
+            </template>
+            
+            <template v-if="addItemForm.catalogType == 'pro'">
+                <el-form-item label="描述">
+                    <el-input
+                        type="textarea"
+                        :rows="3"
+                        placeholder="请输入内容"
+                        :maxlength="40"
+                        v-model="addItemForm.catalogDesc">
+                    </el-input>
+                    <div class="limit-box">剩余<a>{{catalogDescNum}}</a>字</div>
+                </el-form-item>
+            </template>
+            <template v-if="addItemForm.catalogType == 'dir'">
+                <el-form-item label="描述">
+                    <el-input
+                        type="textarea"
+                        :rows="3"
+                        placeholder="请输入内容，最多140个字"
+                        :maxlength="140"
+                        v-model="addItemForm.catalogDesc">
+                    </el-input>
+                </el-form-item>
+            </template>
+            <template v-if="addItemForm.catalogType == 'pro'">
                 <el-form-item label="封面">
                     <popup-img :path="addItemForm.catalogImage"
                                 :is-operate="true"
                                 :bg-path="false"
                                 @imgClick="imgClick"></popup-img>
                 </el-form-item>
-            </template> -->
-            <el-form-item label="标题">
-                <el-input v-model="addItemForm.catalogCname" placeholder="请输入内容"></el-input>
-            </el-form-item>
-            <el-form-item label="描述">
-                <el-input
-                    type="textarea"
-                    :rows="3"
-                    placeholder="请输入内容"
-                    v-model="addItemForm.catalogDesc">
-                </el-input>
-            </el-form-item>
-            
+            </template>
           </el-form>
           <div slot="footer" class="dialog-footer">
                 <el-button @click="isAddItem = false">取 消</el-button>
@@ -240,6 +269,9 @@ export default {
         }),
         isEdit () {
           return this.$route.query.enterpriseCode == this.userInfo.enterpriseCode
+        },
+        catalogDescNum () {
+            return 40 - this.addItemForm.catalogDesc
         }
     },
     watch: {

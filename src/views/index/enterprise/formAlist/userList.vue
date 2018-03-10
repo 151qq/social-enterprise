@@ -32,6 +32,7 @@
             class="page-box"
             @current-change="pageChange"
             layout="prev, pager, next"
+            :page-size="pageSize"
             :total="total">
         </el-pagination>
         <el-dialog class="user-add-box" title="添加员工" :visible.sync="isAddOEdit">

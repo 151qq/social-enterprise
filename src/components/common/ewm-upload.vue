@@ -5,7 +5,7 @@
           src="../../assets/images/img-default.jpg">
       <img v-else class="img-big" :src="curPath">    
     </label>
-    <input v-if="isOperate" class="input-u" :id="idName" type="file" name="" @change="postImg">
+    <input v-if="isOperate" class="input-u" :id="idName" type="file" accept="image/*" name="" @change="postImg">
 
     <div class="title-box">{{titleName}}</div>
   </div>

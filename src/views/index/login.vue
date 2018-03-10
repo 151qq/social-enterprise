@@ -97,7 +97,16 @@
             }, 150)
 
             setTimeout(() => {
-              $('.wrap').height($(document).height())
+                $('.wrap').height($(document).height())
+                var userAgent = navigator.userAgent
+                var isWebkit = userAgent.indexOf("Chrome") > -1 || userAgent.indexOf("Safari") > -1
+
+                if (!isWebkit) {
+                    this.$message({
+                        message: '更好的体验，请您移驾Chrome或Safari浏览器！',
+                        type: 'warning'
+                    })
+                }
             }, 0)
             this.getPlatformStatus()
             this.getBackground()
