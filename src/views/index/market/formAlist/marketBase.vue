@@ -190,6 +190,8 @@ export default {
 
             if (this.$route.query.eventCode) {
               interfaceName = 'eventInfoUpdate'
+            } else {
+              this.base.eventDesigner = this.userInfo.userCode
             }
 
             this.base.enterpriseCode = this.$route.query.enterpriseCode

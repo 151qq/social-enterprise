@@ -109,7 +109,7 @@
             @click="saveBase">保存</el-button>
 
       <el-button class="save-btn" type="info" :plain="true" size="small" icon="check"
-            v-if="isEdit && base.productStatus == '2'"
+            v-if="isEdit && base.productStatus == '2' && isSave"
             @click="savaProductStatus('1')">发布</el-button>
 
       <el-button class="save-btn" type="info" :plain="true" size="small" icon="close"
@@ -140,7 +140,8 @@ export default {
               productJdLink: ''
             },
             productTypes: [],
-            priceTypes: []
+            priceTypes: [],
+            isSave: false
         }
     },
     mounted () {
@@ -167,8 +168,13 @@ export default {
                 productCode: this.$route.query.productCode
               }
           }).then(res => {
-              if (res.result.success = '1') {
+              if (res.result.success == '1') {
                 this.base = res.result.result.productInfo
+
+                if (res.result.result.productInfo.productType) {
+                  this.isSave = true
+                }
+
                 // this.geProductTypes('gift_type')
 
                 this.$emit('change', res.result.result)
@@ -183,7 +189,7 @@ export default {
               interface: 'getPriceType',
               data: {}
           }).then(res => {
-              if (res.result.success = '1') {
+              if (res.result.success == '1') {
                 this.priceTypes = res.result.result
               } else {
                 this.$message.error(res.result.message)
@@ -198,7 +204,7 @@ export default {
                 typeCode: type
               }
           }).then(res => {
-              if (res.result.success = '1') {
+              if (res.result.success == '1') {
                 this.productTypes = res.result.result
               } else {
                 this.$message.error(res.result.message)
@@ -233,12 +239,14 @@ export default {
           //     return false
           // }
 
+          this.base.productType = 'gift_enterprise'
+
           util.request({
               method: 'post',
               interface: 'productInfoSave',
               data: this.base
           }).then(res => {
-              if (res.result.success = '1') {
+              if (res.result.success == '1') {
                 this.getBase()
               } else {
                 this.$message.error(res.result.message)
@@ -255,7 +263,7 @@ export default {
                 productStatus: type
               }
           }).then(res => {
-              if (res.result.success = '1') {
+              if (res.result.success == '1') {
                 this.getBase()
               } else {
                 this.$message.error(res.result.message)
