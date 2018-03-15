@@ -13,6 +13,10 @@ export default {
        * @return 格式化后的日期
        */
     formatDate (date, fmt) {
+        if (!date || !fmt) {
+            return false
+        }
+        
         let theDate = new Date(date)
         var o = {
             'M+': theDate.getMonth() + 1, // 月份

@@ -16,10 +16,11 @@
             <el-input
               type="textarea"
               :rows="4"
-              :maxlength="50"
+              :maxlength="70"
               placeholder="请输入内容"
               v-model="base.pageAbstract">
             </el-input>
+            <div class="limit-box">剩余<a>{{pageAbstractNum}}</a>字</div>
         </section>
 
         <section class="formBox">
@@ -62,6 +63,9 @@ export default {
         }),
         isEdit () {
           return this.$route.query.enterpriseCode == this.userInfo.enterpriseCode
+        },
+        pageAbstractNum () {
+          return 70 - this.base.pageAbstract.length
         }
     },
     methods: {
@@ -87,6 +91,21 @@ export default {
             })
         },
         saveBase () {
+          if (!this.base.pageTitle) {
+            this.$message.error('文章标题不能为空！')
+            return
+          }
+
+          if (this.base.pageAbstract.length < 40) {
+            this.$message.error('文章摘要最少40个字！')
+            return
+          }
+
+          if (!this.base.pageCover) {
+            this.$message.error('文章封面不能为空！')
+            return
+          }
+
           util.request({
               method: 'post',
               interface: 'html5PageSave',

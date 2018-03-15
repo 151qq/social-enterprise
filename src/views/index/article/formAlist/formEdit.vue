@@ -16,6 +16,7 @@
                 <div :style="arContent"
                      v-html="item.content"
                      v-for="(item, index) in articleList"></div>
+                <img class="ar-img" :style="arImg" :src="base.fileEndPic">
             </template>
                 
             <template v-if="!isLook && isEdit">
@@ -109,7 +110,7 @@
                 </div>
             </template>
         </section>
-        <div class="edit-btn" v-if="isEdit && articleData.pageStatus == '2'">
+        <div class="edit-btn" v-if="isEdit">
             <div @click="addTem('look')">
                 <img class="gray-box" src="../../../../assets/images/add-look-icon.png">
                 <img class="now-box" src="../../../../assets/images/look-icon.png">
@@ -318,10 +319,6 @@ export default {
                 }
             }).then(res => {
                 if (res.result.success == '1') {
-                    if (this.articleData.pageStatus != '2') {
-                        this.isLook = true
-                    }
-                    
                     this.editInte(res.result.result)
                 } else {
                     this.$message.error(res.result.message)

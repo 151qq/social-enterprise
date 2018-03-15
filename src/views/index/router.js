@@ -42,6 +42,19 @@ const routers = [
             meta: {
               title: '推广文章'
             }
+          },
+          {
+            // 推广文章
+            path: 'articleInfo',
+            name: 'article-info',
+            component (resolve) {
+              require.ensure(['./article/articleInfo.vue'], () => {
+                resolve(require('./article/articleInfo.vue'))
+              })
+            },
+            meta: {
+              title: '推广文章'
+            }
           }
         ]
       },

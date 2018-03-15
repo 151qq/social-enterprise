@@ -341,6 +341,9 @@ export default {
           return false
         }
 
+        this.quanData.couponGroupBeginTime = this.quanData.couponGroupBeginTime.length > 10 ? this.quanData.couponGroupBeginTime : this.quanData.couponGroupBeginTime + ' 00:00:00'
+        this.quanData.couponGroupEndTime = this.quanData.couponGroupEndTime.length > 10 ? this.quanData.couponGroupEndTime : this.quanData.couponGroupEndTime + ' 00:00:00'
+
         this.quanData.couponGroupBeginTimestamp = Math.floor(new Date(this.quanData.couponGroupBeginTime).getTime()/1000)
         this.quanData.couponGroupEndTimestamp = Math.floor(new Date(this.quanData.couponGroupEndTime).getTime()/1000)
 
