@@ -66,7 +66,7 @@
           </div>
         </section>
       </div>
-      <el-button v-if="isEdit" class="save-btn" type="info" :plain="true" size="small" icon="document"
+      <el-button v-if="isEdit && (base.eventStatus == '1' || base.eventStatus == '2')" class="save-btn" type="info" :plain="true" size="small" icon="document"
           @click="saveBase()">保存</el-button>
       <div class="clear"></div>
     </section>

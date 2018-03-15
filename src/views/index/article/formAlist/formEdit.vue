@@ -109,7 +109,7 @@
                 </div>
             </template>
         </section>
-        <div class="edit-btn" v-if="isEdit">
+        <div class="edit-btn" v-if="isEdit && articleData.pageStatus == '2'">
             <div @click="addTem('look')">
                 <img class="gray-box" src="../../../../assets/images/add-look-icon.png">
                 <img class="now-box" src="../../../../assets/images/look-icon.png">
@@ -318,6 +318,10 @@ export default {
                 }
             }).then(res => {
                 if (res.result.success == '1') {
+                    if (this.articleData.pageStatus != '2') {
+                        this.isLook = true
+                    }
+                    
                     this.editInte(res.result.result)
                 } else {
                     this.$message.error(res.result.message)

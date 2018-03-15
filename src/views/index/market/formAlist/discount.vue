@@ -28,6 +28,7 @@
                     </div>
                     <div class="card-btn">
                       <i class="el-icon-delete2"
+                          v-if="base.eventStatus == '1' || base.eventStatus == '2'"
                           @click="deleteCoupon(item.couponCode)"></i>
           
                       <router-link  class="el-icon-document"
@@ -71,6 +72,7 @@
             width="100">
             <template scope="scope">
               <i class="el-icon-delete2"
+                  v-if="base.eventStatus == '1' || base.eventStatus == '2'"
                   @click="deleteDiscount(scope.row)"></i>
   
               <i class="el-icon-document"
@@ -146,12 +148,13 @@
             </el-form-item>
             <el-form-item label="套券封面">
                 <popup-img :path="quanData.couponGroupCover"
-                            :is-operate="isEdit"
+                            :is-operate="isEdit && (base.eventStatus == '1' || base.eventStatus == '2')"
                             :bg-path="false"
                             @imgClick="imgClick"></popup-img>
             </el-form-item>
           </el-form>
-          <div slot="footer" class="dialog-footer">
+          <div slot="footer" class="dialog-footer"
+                v-if="isEdit && (base.eventStatus == '1' || base.eventStatus == '2')">
                 <el-button @click="isAddQuan = false">取 消</el-button>
                 <el-button type="primary" @click="confirmQuan">确 定</el-button>
           </div>
