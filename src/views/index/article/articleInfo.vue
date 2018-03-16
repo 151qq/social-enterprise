@@ -1,101 +1,63 @@
 <template>
-    <div class="article-list-info-box">
-        <div class="ar-title" :style="arTitle">{{articleData.pageTitle}}</div>
-        <div class="ar-author-date" :style="arAuthorDate">
-            <span class="ar-date">{{ articleData.pageEditTime | formatDate(base.dateStyle)}}</span>
-            <a  class="ar-author"
-                target="_blank" 
-                :style="arAuthor"
-                :href="base.editorLink">
-                    {{articleData.eidtorCode}}
-            </a>
-        </div>
-        <div :style="arContent"
-             v-html="item.pageAreaContent"
-             v-for="(item, index) in articleList"></div>
+    <div class="article-list-detail-box">
+        <el-tabs v-model="activeName">
+            <el-tab-pane class="form-discount" label="文章正文" name="articleEdit">
+                <article-show></article-show>
+            </el-tab-pane>
 
-        <img class="ar-img" :style="arImg" :src="base.fileEndPic">
+            <el-tab-pane class="form-discount" label="传播路径" name="articleSpread">
+                <section class="graph-box">
+                  <echart-graph></echart-graph>
+                </section>
+            </el-tab-pane>
+            <!-- 
+            <el-tab-pane class="form-discount" label="文章管理" name="articleManage">
+                <log-page></log-page>
+            </el-tab-pane> -->
+        </el-tabs>
     </div>
 </template>
 <script>
 import util from '../../../assets/common/util'
-import templateMixin from '../../../assets/common/templateMixin'
+import articleShow from './formAlist/articleShow'
+// import logPage from './formAlist/logPage'
+import echartGraph from './formAlist/echart-graph'
 
 export default {
     data () {
         return {
-            base: {},
-            articleList: [],
-            articleData: {
-                pageTitle: '',
-                pageEditTime: '',
-                eidtorCode: ''
-            }
+            activeName: 'articleEdit'
         }
     },
-    mixins: [templateMixin],
-    filters: {
-        formatDate: util.formatDate
-    },
-    mounted () {
-        this.getBase()
-        this.getTemplate()
-        this.getAreaList()
-    },
-    methods: {
-        getBase () {
-            util.request({
-                method: 'get',
-                interface: 'getPageInfo',
-                data: {
-                    enterpriseCode: this.$route.query.enterpriseCode,
-                    pageCode: this.$route.query.pageCode
-                }
-            }).then(res => {
-                if (res.result.success == '1') {
-                  this.articleData = res.result.result
-                } else {
-                  this.$message.error(res.result.message)
-                }
-            })
-        },
-        getAreaList () {
-            util.request({
-                method: 'get',
-                interface: 'listPageArea',
-                data: {
-                    enterpriseCode: this.$route.query.enterpriseCode,
-                    pageCode: this.$route.query.pageCode
-                }
-            }).then(res => {
-                if (res.result.success == '1') {
-                    this.articleList = res.result.result
-                } else {
-                    this.$message.error(res.result.message)
-                }
-            })
-        },
-        getTemplate () {
-            util.request({
-                method: 'get',
-                interface: 'getTemplates',
-                data: {
-                    templateCode: this.$route.query.templateCode
-                }
-            }).then(res => {
-                if (res.result.success == '1') {
-                    this.base = res.result.result[0]
-                } else {
-                    this.$message.error(res.result.message)
-                }
-            })
-        }
+    mounted () {},
+    components: {
+        articleShow,
+        echartGraph
     }
 }
 </script>
 <style lang="scss">
-.article-list-info-box {
+.article-list-detail-box {
     width: 1000px;
     margin: 80px auto 30px;
+
+    .form-discount {
+        padding: 0;
+    }
+
+    .block-title {
+        width: 1000px;
+        clear: both;
+        font-size: 16px;
+        color: #000000;
+        line-height: 30px;
+        font-weight: bold;
+        margin: auto;
+        margin-bottom: 20px;
+    }
+
+    .el-tabs__content {
+        overflow: visible;
+    }
 }
 </style>

@@ -117,7 +117,7 @@
                 type="number"
                 :min="0"
                 placeholder="请输入"
-                v-model="quanData.couponReduceCost">
+                v-model="couponReduceCost">
               </el-input>
             </section>
             <section class="formBox">
@@ -127,7 +127,7 @@
                   type="number"
                   :min="0"
                   placeholder="请输入"
-                  v-model="quanData.couponLeastCost">
+                  v-model="couponLeastCost">
                 </el-input>
             </section>
           </template>
@@ -180,6 +180,8 @@ export default {
               couponLeastCost: '',
               couponReduceCost: ''
             },
+            couponLeastCost: '',
+            couponReduceCost: '',
             couponTypes: [],
             products: [],
             giftLists: [],
@@ -223,6 +225,14 @@ export default {
           }).then((res) => {
               if (res.result.success == '1') {
                 let result = res.result.result.couponInfo
+
+                if (result.couponLeastCost) {
+                  this.couponLeastCost = Math.floor(result.couponLeastCost / 100)
+                }
+
+                if (result.couponReduceCost) {
+                  this.couponReduceCost = Math.floor(result.couponReduceCost / 100)
+                }
 
                 // this.productList = res.result.result.couponProductArray
                 this.quanData = result
@@ -382,6 +392,14 @@ export default {
                 type: 'warning'
             })
             return false
+          }
+
+          if (this.couponLeastCost) {
+            this.quanData.couponLeastCost = Math.floor(this.couponLeastCost * 100)
+          }
+          
+          if (this.couponReduceCost) {
+            this.quanData.couponReduceCost = Math.floor(this.couponReduceCost * 100)
           }
 
           // this.quanData.productCode = this.productList.join(',')

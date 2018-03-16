@@ -33,7 +33,7 @@
                 </div>
                 <section class="card-btns">
                     <i class="el-icon-delete2"
-                        v-if="item.eventStatus == 'draft'"
+                        v-if="item.eventStatus == '1'"
                         @click.prevent="deleteItemByCode(item)"></i>
                 </section>
             </router-link>

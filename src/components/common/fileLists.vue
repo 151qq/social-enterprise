@@ -1,5 +1,5 @@
 <template>
-    <el-dialog title="素材库" :visible.sync="selectData.isShow">
+    <el-dialog class="file-list-box" title="素材库" :visible.sync="selectData.isShow">
       <div class="picBox">
         <section v-for="(item, index) in mediaList"
                     v-if="mediaList.length"
@@ -13,9 +13,6 @@
                 </div>
                 <div class="title-box">
                     <div class="title" v-text="item.docTitle"></div>
-                    <span class="time">
-                        {{item.docCreateTime}}
-                    </span>
                 </div>
             </section>
         </section>
@@ -29,6 +26,7 @@
             class="page-box"
             @current-change="itemPageChange"
             layout="prev, pager, next"
+            :page-size="pageSize"
             :total="total">
         </el-pagination>
       </div>
@@ -106,13 +104,12 @@ export default{
               data: {
                   enterpriseCode: this.$route.query.enterpriseCode,
                   docType: this.docType,
-                  remark: '1',
                   pageNumber: this.pageNumber,
                   pageSize: this.pageSize
               }
           }).then(res => {
               if (res.result.success == '1') {
-                  this.total = Number(res.result.totalPages)
+                  this.total = Number(res.result.total)
 
                   res.result.result.forEach((item) => {
                       item.docCreateTime = item.docCreateTime.split(' ')[0]
@@ -128,13 +125,15 @@ export default{
 }
 </script>
 <style lang="scss">
+.file-list-box {
+  .el-dialog--small {
+    width: 580px;
+  }
+}
+
 .picBox {
   max-height: 360px;
   overflow: scroll;
-
-  .el-dialog--small {
-    width: 640px;
-  }
 
   .sou-box {
       float: left;
@@ -169,6 +168,10 @@ export default{
               line-height: 20px;
               border: none;
               color: #000000;
+              overflow: hidden;
+              height: 20px;
+              text-overflow: ellipsis;
+              word-break: keep-all;
           }
 
           .time {

@@ -83,7 +83,7 @@ export default {
               eventPlanTitle: '',
               eventStartTime: '',
               eventEndTime: '',
-              eventPlanStatus: '',
+              eventStatus: '1',
               eventLeads: '',
               eventHotLeads: '',
               eventSalesOpp: '',
