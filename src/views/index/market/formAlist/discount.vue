@@ -18,10 +18,10 @@
                       v-for="(item, index) in props.row.couponInfoList"
                       :key="index">
                     <div class="card-type">
-                        {{item.couponTypeName}}
+                      {{item.couponTitle}}
                     </div>
                     <div class="card-title">
-                      {{item.couponTitle}}
+                      {{item.couponTypeName}}
                     </div>
                     <div class="card-desc">
                       {{item.couponViewName}}
@@ -52,7 +52,8 @@
           </el-table-column>
           <el-table-column
             prop="couponGroupName"
-            label="套券名称">
+            label="套券名称"
+            width="300">
           </el-table-column>
           <el-table-column
             prop="couponGroupBeginTime"
@@ -470,10 +471,6 @@ export default {
     padding: 10px 0 10px 47px;
   }
 
-  .el-table__expanded-cell {
-    padding: 10px 0 10px 47px;
-  }
-
   .el-dialog--small {
       width: 490px;
   }
@@ -514,7 +511,7 @@ export default {
         }
 
         .card-type {
-            width: 215px;
+            width: 300px;
             font-size: 14px;
             line-height: 36px;
             color: #000000; 
@@ -532,7 +529,7 @@ export default {
         }
 
         .card-desc {
-            width: 425px;
+            width: 367px;
             font-size: 14px;
             line-height: 36px;
             color: #000000;

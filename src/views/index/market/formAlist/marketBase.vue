@@ -16,6 +16,7 @@
               class="input-box"
               type="date"
               :disabled="!!$route.query.eventCode"
+              :picker-options="pickerOptions"
               v-model="base.eventStartTime"
               placeholder="选择">
             </el-date-picker>
@@ -91,7 +92,12 @@ export default {
               eventPlanCover: ''
             },
             statusTypes: [],
-            isOperate: true
+            isOperate: true,
+            pickerOptions: {
+              disabledDate(time) {
+                return time.getTime() < Date.now() + 3600 * 1000 * 24 * 5
+              }
+            }
         }
     },
     mounted () {

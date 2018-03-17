@@ -45,7 +45,7 @@ export default{
         return {
           mediaList: [],
           pageNumber: 1,
-          pageSize: 9,
+          pageSize: 12,
           total: 0,
           curIndex: '',
           curCode: '',
@@ -127,7 +127,7 @@ export default{
 <style lang="scss">
 .file-list-box {
   .el-dialog--small {
-    width: 580px;
+    width: 760px !important;
   }
 }
 
@@ -147,14 +147,14 @@ export default{
       }
 
       .cover-box {
-          height: 170px;
+          height: 130px;
           overflow: hidden;
           cursor: pointer;
           
           img {
               display: block;
               width: 100%;
-              min-height: 170px;
+              min-height: 130px;
           }
       }
 
