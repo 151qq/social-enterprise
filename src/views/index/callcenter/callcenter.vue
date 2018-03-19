@@ -139,6 +139,14 @@
                                 v-model="callcenterData.outbandCoolingMinPeriod">
                         </el-input>
                     </section>
+                    <section class="formBox">
+                        <span>会员营销周期(天)</span>
+                        <el-input
+                                class="input-box"
+                                type="number"
+                                v-model="callcenterData.promotionMinPeriod">
+                        </el-input>
+                    </section>
                 </div>
                 <el-button v-if="isEdit"
                             class="save-btn" type="info" :plain="true" size="small" icon="document"
@@ -253,14 +261,14 @@
                                 v-model="callcenterData.outbandEngagementLimit">
                         </el-input>
                     </section>
-                    <section class="formBox">
+                    <!-- <section class="formBox">
                         <span>预约期外呼限制</span>
                         <el-input
                                 class="input-box"
                                 type="number"
                                 v-model="callcenterData.outbandReserveLimit">
                         </el-input>
-                    </section>
+                    </section> -->
                     <section class="formBox">
                         <span>体验期外呼限制</span>
                         <el-input
@@ -294,14 +302,14 @@
                                 v-model="callcenterData.pipelineEngagementFailRate">
                         </el-input>
                     </section>
-                    <section class="formBox">
+                    <!-- <section class="formBox">
                         <span>预约失败(减分)</span>
                         <el-input
                                 class="input-box"
                                 type="number"
                                 v-model="callcenterData.pipelineReserveFailRate">
                         </el-input>
-                    </section>
+                    </section> -->
                     <section class="formBox">
                         <span>体验失败(减分)</span>
                         <el-input
@@ -560,6 +568,7 @@ export default {
                 // 外呼规则
                 outbandMinPeriod: '',
                 outbandCoolingMinPeriod: '',
+                promotionMinPeriod: '',
                 // 外呼筛选规则
                 memberReadingRate: '',
                 memberCommentRate: '',
@@ -580,11 +589,12 @@ export default {
                 pipelineCreateRate: '',
                 // 商机推进外呼规则
                 outbandEngagementLimit: '',
-                outbandReserveLimit: '',
+                // outbandReserveLimit: '',
                 outbandTrailLimit: '',
+                trailLimit: '',
                 // 商机客户差异度计算规则
                 pipelineEngagementFailRate: '',
-                pipelineReserveFailRate: '',
+                // pipelineReserveFailRate: '',
                 pipelineTrailFailRate: '',
                 pipelineOrderRate: '',
                 // 外呼绩效计算规则

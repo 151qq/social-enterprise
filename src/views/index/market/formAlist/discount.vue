@@ -109,8 +109,8 @@
             <el-form-item label="套券标题">
                 <el-input v-model="quanData.couponGroupName"
                           auto-complete="off"
-                          placeholder="请输入内容,最多16个字"
-                          :maxlength="16"></el-input>
+                          placeholder="请输入内容,最多9个字"
+                          :maxlength="9"></el-input>
             </el-form-item>
             <el-form-item label="生效时间">
                 <el-date-picker
