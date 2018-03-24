@@ -40,14 +40,6 @@
                           *当客户通过微信小程序内超过30秒没有输入消息，客户将受到结束问候
                         </div>
                     </section>
-                    <!-- <section class="formBox">
-                        <span>等候致歉时间(m)</span>
-                        <el-input
-                                class="input-box"
-                                type="number"
-                                v-model="callcenterData.inbandResonseTime">
-                        </el-input>
-                    </section> -->
                     <section class="formBox">
                         <span>客服电话</span>
                         <div class="input-box">
@@ -56,12 +48,6 @@
                                     @input="telChange"
                                     v-model="callcenterData.servicePhone">
                         </div>
-                        <!-- <el-input
-                                class="input-box"
-                                :maxlength="15"
-                                @change="telChange"
-                                v-model="callcenterData.servicePhone">
-                        </el-input> -->
                     </section>
                     <section class="formBox">
                         <span>客服分配模式</span>
@@ -197,27 +183,11 @@
                         </el-input>
                     </section>
                     <section class="formBox">
-                        <span>地推签到权重</span>
-                        <el-input
-                                class="input-box"
-                                type="number"
-                                v-model="callcenterData.memberOffllineSignRate">
-                        </el-input>
-                    </section>
-                    <section class="formBox">
                         <span>主动咨询权重</span>
                         <el-input
                                 class="input-box"
                                 type="number"
                                 v-model="callcenterData.memberConsultingRate">
-                        </el-input>
-                    </section>
-                    <section class="formBox">
-                        <span>线上活动注册权重</span>
-                        <el-input
-                                class="input-box"
-                                type="number"
-                                v-model="callcenterData.memberOnlineEventSignRate">
                         </el-input>
                     </section>
                     <section class="formBox">
@@ -261,14 +231,6 @@
                                 v-model="callcenterData.outbandEngagementLimit">
                         </el-input>
                     </section>
-                    <!-- <section class="formBox">
-                        <span>预约期外呼限制</span>
-                        <el-input
-                                class="input-box"
-                                type="number"
-                                v-model="callcenterData.outbandReserveLimit">
-                        </el-input>
-                    </section> -->
                     <section class="formBox">
                         <span>体验期外呼限制</span>
                         <el-input
@@ -302,14 +264,6 @@
                                 v-model="callcenterData.pipelineEngagementFailRate">
                         </el-input>
                     </section>
-                    <!-- <section class="formBox">
-                        <span>预约失败(减分)</span>
-                        <el-input
-                                class="input-box"
-                                type="number"
-                                v-model="callcenterData.pipelineReserveFailRate">
-                        </el-input>
-                    </section> -->
                     <section class="formBox">
                         <span>体验失败(减分)</span>
                         <el-input
@@ -575,9 +529,7 @@ export default {
                 memberSharePageRate: '',
                 memberShareWxappRate: '',
                 memberCouponRate: '',
-                memberOffllineSignRate: '',
                 memberConsultingRate: '',
-                memberOnlineEventSignRate: '',
                 memberOpenWxappRate: '',
                 memberReserveRate: '',
                 memberTrialGoodResultRate: '',
@@ -589,12 +541,10 @@ export default {
                 pipelineCreateRate: '',
                 // 商机推进外呼规则
                 outbandEngagementLimit: '',
-                // outbandReserveLimit: '',
                 outbandTrailLimit: '',
                 trailLimit: '',
                 // 商机客户差异度计算规则
                 pipelineEngagementFailRate: '',
-                // pipelineReserveFailRate: '',
                 pipelineTrailFailRate: '',
                 pipelineOrderRate: '',
                 // 外呼绩效计算规则
