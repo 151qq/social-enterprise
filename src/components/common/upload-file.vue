@@ -52,13 +52,13 @@ export default {
       }
 
       util.uploadFile(opotion).then(res => {
-        this.imgPath = res.result.result.filePath
-        this.$message({
-          showClose: true,
-          message: '恭喜你，修改成功'
-        })
-        this.$emit('imgChange', this.imgPath)
-        this.dialogFormVisible.visibleF = false
+        if (res.result.success == '1') {
+          this.imgPath = res.result.result.filePath
+          this.$emit('imgChange', this.imgPath)
+          this.dialogFormVisible.visibleF = false
+        } else {
+          this.$message.error(res.result.message)
+        }
       })
     }
   }

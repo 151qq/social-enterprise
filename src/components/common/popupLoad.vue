@@ -77,13 +77,17 @@ export default {
         }
 
         util.uploadFile(opotion).then(res => {
-          let result = res.result.result
-          this.curPath = result.filePath
-          var data = {
-            url: this.curPath
+          if (res.result.success == '1') {
+            let result = res.result.result
+            this.curPath = result.filePath
+            var data = {
+              url: this.curPath
+            }
+            this.isUpload.value = false
+            this.$emit('changeImg', data)
+          } else {
+            this.$message.error(res.result.message)
           }
-          this.isUpload.value = false
-          this.$emit('changeImg', data)
         })
       }
     },

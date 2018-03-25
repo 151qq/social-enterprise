@@ -95,15 +95,19 @@ export default {
         }
 
         util.uploadFile(opotion).then(res => {
-          let result = res.result.result
-          this.curPath = result.filePath
-          var data = {
-            url: this.curPath,
-            index: this.itemIndex,
-            code: this.itemCode
+          if (res.result.success == '1') {
+            let result = res.result.result
+            this.curPath = result.filePath
+            var data = {
+              url: this.curPath,
+              index: this.itemIndex,
+              code: this.itemCode
+            }
+            this.dialogVisible = false
+            this.$emit('changeImg', data)
+          } else {
+            this.$message.error(res.result.message)
           }
-          this.dialogVisible = false
-          this.$emit('changeImg', data)
         })
       },
       showImg (index) {

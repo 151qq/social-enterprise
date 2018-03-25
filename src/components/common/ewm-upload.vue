@@ -52,12 +52,16 @@ export default {
         }
 
         util.uploadFile(opotion).then(res => {
-          let result = res.result.result
-          this.curPath = result.filePath
-          var data = {
-            url: this.curPath
+          if (res.result.success == '1') {
+            let result = res.result.result
+            this.curPath = result.filePath
+            var data = {
+              url: this.curPath
+            }
+            this.$emit('changeImg', data)
+          } else {
+            this.$message.error(res.result.message)
           }
-          this.$emit('changeImg', data)
         })
       }
     }

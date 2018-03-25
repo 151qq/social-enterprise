@@ -46,7 +46,11 @@ export default {
         }
 
         util.uploadFile(opotion).then(res => {
-          this.$emit('changeImg', res.result.result.filePath)
+          if (res.result.success == '1') {
+            this.$emit('changeImg', res.result.result.filePath)
+          } else {
+            this.$message.error(res.result.message)
+          }
         })
       },
       showImg (index) {
