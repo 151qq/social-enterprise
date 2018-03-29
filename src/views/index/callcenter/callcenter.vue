@@ -199,7 +199,7 @@
                         </el-input>
                     </section>
                     <section class="formBox">
-                        <span>接触外呼观察期</span>
+                        <span>外呼观察期(天)</span>
                         <el-input
                                 class="input-box"
                                 type="number"
@@ -224,7 +224,7 @@
           <el-collapse-item class="float-form-box" title="商机推进规则" name="5">
                 <div class="formDiscount">
                     <section class="formBox">
-                        <span>接触期外呼限制</span>
+                        <span>外呼限制</span>
                         <el-input
                                 class="input-box"
                                 type="number"
@@ -232,15 +232,7 @@
                         </el-input>
                     </section>
                     <section class="formBox">
-                        <span>体验期外呼限制</span>
-                        <el-input
-                                class="input-box"
-                                type="number"
-                                v-model="callcenterData.outbandTrailLimit">
-                        </el-input>
-                    </section>
-                    <section class="formBox">
-                        <span>体验期体验限制</span>
+                        <span>体验限制</span>
                         <el-input
                                 class="input-box"
                                 type="number"
@@ -541,7 +533,6 @@ export default {
                 pipelineCreateRate: '',
                 // 商机推进外呼规则
                 outbandEngagementLimit: '',
-                outbandTrailLimit: '',
                 trailLimit: '',
                 // 商机客户差异度计算规则
                 pipelineEngagementFailRate: '',

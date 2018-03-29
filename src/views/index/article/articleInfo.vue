@@ -1,6 +1,7 @@
 <template>
     <div class="article-list-detail-box">
-        <el-tabs v-model="activeName">
+        <article-show></article-show>
+        <!-- <el-tabs v-model="activeName">
             <el-tab-pane class="form-discount" label="文章正文" name="articleEdit">
                 <article-show></article-show>
             </el-tab-pane>
@@ -10,11 +11,11 @@
                   <echart-graph></echart-graph>
                 </section>
             </el-tab-pane>
-            <!-- 
+            
             <el-tab-pane class="form-discount" label="文章管理" name="articleManage">
                 <log-page></log-page>
-            </el-tab-pane> -->
-        </el-tabs>
+            </el-tab-pane>
+        </el-tabs> -->
     </div>
 </template>
 <script>

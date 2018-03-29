@@ -165,7 +165,9 @@ export default {
                 return false
             }
 
-            if (new Date().getTime() > new Date(this.base.eventStartTime).getTime()) {
+            var startTimes = new Date(this.base.eventStartTime).getTime()
+
+            if (new Date().getTime() > startTimes) {
               this.$message({
                   message: '开始时间必须大于当前时间！',
                   type: 'warning'
@@ -181,9 +183,19 @@ export default {
                 return false
             }
 
-            if (new Date(this.base.eventEndTime).getTime() <= new Date(this.base.eventStartTime).getTime()) {
+            var endTimes = new Date(this.base.eventEndTime).getTime()
+
+            if (endTimes <= startTimes) {
               this.$message({
                   message: '结束时间必须大于开始时间！',
+                  type: 'warning'
+              })
+              return false
+            }
+
+            if (endTimes - startTimes > 31 * 24 * 360 * 1000) {
+              this.$message({
+                  message: '活动周期最长31天！',
                   type: 'warning'
               })
               return false

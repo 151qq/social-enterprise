@@ -140,8 +140,8 @@
             <el-form-item label="广告用语">
                 <el-input
                     type="textarea"
-                    :rows="2"
-                    :maxlength="70"
+                    :rows="1"
+                    :maxlength="15"
                     placeholder="请输入内容"
                     v-model="quanData.couponGroupIntro">
                 </el-input>
@@ -213,7 +213,7 @@ export default {
           return this.$route.query.enterpriseCode == this.userInfo.enterpriseCode
         },
         couponGroupIntroNum () {
-          return 70 - this.quanData.couponGroupIntro.length
+          return 15 - this.quanData.couponGroupIntro.length
         }
     },
     watch: {

@@ -1,6 +1,12 @@
 <template>
     <div class="article-list-detail-box">
-        <el-tabs v-model="activeName">
+        <div class="block-title">基本信息</div>
+        <form-article-base @baseChange="baseChange"></form-article-base>
+        <br><br>
+        <div class="block-title">文章正文</div>
+        <form-edit :article-data="articleData"></form-edit>
+
+        <!-- <el-tabs v-model="activeName">
             <el-tab-pane class="form-discount" label="文章编辑" name="articleEdit">
                 <div class="block-title">基本信息</div>
                 <form-article-base @baseChange="baseChange"></form-article-base>
@@ -14,11 +20,11 @@
                   <echart-graph></echart-graph>
                 </section>
             </el-tab-pane>
-
-            <!-- <el-tab-pane class="form-discount" label="文章管理" name="articleManage">
+            
+            <el-tab-pane class="form-discount" label="文章管理" name="articleManage">
                 <log-page></log-page>
-            </el-tab-pane> -->
-        </el-tabs>
+            </el-tab-pane>
+        </el-tabs> -->
     </div>
 </template>
 <script>
@@ -52,7 +58,7 @@ export default {
 <style lang="scss">
 .article-list-detail-box {
     width: 1000px;
-    margin: 80px auto 30px;
+    margin: 0 auto 30px;
 
     .form-discount {
         padding: 0;
