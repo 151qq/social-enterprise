@@ -185,7 +185,7 @@ export default {
               this.getItemList()
               this.isAddOEdit = false
             } else {
-              this.$message.error(res.result.msg)
+              this.$message.error(res.result.message)
             }
         })
       },

@@ -693,3 +693,18 @@
     color: red;
   }
 }
+
+.sou-box .cover-box,.card-box .card-img {
+  display: block;
+  overflow: hidden !important;
+
+  img {
+    position: relative !important;
+    left: 50% !important;
+    top: 0 !important;
+    width: auto !important;
+    min-width: 100% !important;
+    height: 100% !important;
+    transform: translateX(-50%);
+  }
+}

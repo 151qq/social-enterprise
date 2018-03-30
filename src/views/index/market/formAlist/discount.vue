@@ -387,7 +387,7 @@ export default {
               this.getList()
               this.isAddQuan = false
             } else {
-              this.$message.error(res.result.msg)
+              this.$message.error(res.result.message)
             }
         })
       },

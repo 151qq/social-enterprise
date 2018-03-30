@@ -195,7 +195,7 @@ export default {
               window.open('/#/coupon?enterpriseCode=' + this.$route.query.enterpriseCode + '&eventCode=' + this.$route.query.eventCode + '&couponCode=' + res.result.result, '_blank')
 
             } else {
-              this.$message.error(res.result.msg)
+              this.$message.error(res.result.message)
             }
         })
       },

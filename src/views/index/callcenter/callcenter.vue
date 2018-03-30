@@ -2,7 +2,7 @@
     <div class="form-discount callcenter">
         <el-collapse v-model="activeNames" @change="collChange">
           <!-- 基本信息 -->
-          <el-collapse-item class="float-form-box" title="基本配置" name="1">
+          <!-- <el-collapse-item class="float-form-box" title="基本配置" name="1">
                 <div class="formDiscount">
                     <section class="formBox bigF">
                         <span>客户接入欢迎词</span>
@@ -70,8 +70,8 @@
                            @click="saveCallcenter">保存</el-button>
                 <div class="clear"></div>
           </el-collapse-item>
-          <div class="line-bold"></div>
-          <el-collapse-item class="float-form-box" title="软文推广规则" name="2">
+          <div class="line-bold"></div> -->
+          <el-collapse-item class="float-form-box" title="营销推广规则" name="2">
                 <div class="formDiscount">
                     <section class="formBox">
                         <span>全员推广</span>
@@ -84,6 +84,21 @@
                             off-value="0">
                           </el-switch>
                         </div>
+                    </section>
+                    <section class="formBox">
+                        <span>业绩承认规则</span>
+                        <el-select
+                          class="input-box"
+                          v-model="callcenterData.incentiveCreditRule"
+                          filterable
+                          placeholder="请选择">
+                          <el-option
+                            v-for="(item, index) in incentiveCreditRule"
+                            :key="index"
+                            :label="item.key"
+                            :value="item.value">
+                          </el-option>
+                        </el-select>
                     </section>
                     <section class="formBox">
                         <span>评论回复</span>
@@ -100,15 +115,6 @@
                           </el-option>
                         </el-select>
                     </section>
-                </div>
-                <el-button v-if="isEdit"
-                            class="save-btn" type="info" :plain="true" size="small" icon="document"
-                           @click="saveCallcenter">保存</el-button>
-                <div class="clear"></div>
-          </el-collapse-item>
-          <div class="line-bold"></div>
-          <el-collapse-item class="float-form-box" title="外呼规则" name="3">
-                <div class="formDiscount">
                     <section class="formBox">
                         <span>外呼间隔期(天)</span>
                         <el-input
@@ -138,9 +144,9 @@
                             class="save-btn" type="info" :plain="true" size="small" icon="document"
                            @click="saveCallcenter">保存</el-button>
                 <div class="clear"></div>
-            </el-collapse-item>
+          </el-collapse-item>
           <div class="line-bold"></div>
-          <el-collapse-item class="float-form-box" title="商机新建规则" name="4">
+          <el-collapse-item class="float-form-box" title="商机推进规则" name="5">
                 <div class="formDiscount">
                     <section class="formBox">
                         <span>阅读权重</span>
@@ -214,15 +220,6 @@
                                 v-model="callcenterData.pipelineCreateRate">
                         </el-input>
                     </section>
-                </div>
-                <el-button v-if="isEdit"
-                            class="save-btn" type="info" :plain="true" size="small" icon="document"
-                           @click="saveCallcenter">保存</el-button>
-                <div class="clear"></div>
-          </el-collapse-item>
-          <div class="line-bold"></div>
-          <el-collapse-item class="float-form-box" title="商机推进规则" name="5">
-                <div class="formDiscount">
                     <section class="formBox">
                         <span>外呼限制</span>
                         <el-input
@@ -239,15 +236,6 @@
                                 v-model="callcenterData.trailLimit">
                         </el-input>
                     </section>
-                </div>
-                <el-button v-if="isEdit"
-                            class="save-btn" type="info" :plain="true" size="small" icon="document"
-                           @click="saveCallcenter">保存</el-button>
-                <div class="clear"></div>
-          </el-collapse-item>
-          <div class="line-bold"></div>
-          <el-collapse-item class="float-form-box" title="商机客户差异度计算规则" name="6">
-                <div class="formDiscount">
                     <section class="formBox">
                         <span>接触失败(减分)</span>
                         <el-input
@@ -279,70 +267,30 @@
                 <div class="clear"></div>
           </el-collapse-item>
           <div class="line-bold"></div>
-          <el-collapse-item class="float-form-box" title="外呼绩效计算规则" name="7">
+          <el-collapse-item class="float-form-box" title="销售绩效计算规则" name="7">
                 <div class="formDiscount">
                     <section class="formBox">
-                        <span>外呼积分</span>
+                        <span>传播积分</span>
                         <el-input
                                 class="input-box"
                                 type="number"
-                                v-model="callcenterData.userOutbandRate">
+                                v-model="callcenterData.userReadingRate">
                         </el-input>
                     </section>
                     <section class="formBox">
-                        <span>预约积分</span>
+                        <span>新会员积分</span>
                         <el-input
                                 class="input-box"
                                 type="number"
-                                v-model="callcenterData.userReserveRate">
+                                v-model="callcenterData.userNewMemberRate">
                         </el-input>
                     </section>
                     <section class="formBox">
-                        <span>体验积分</span>
+                        <span>销售积分</span>
                         <el-input
                                 class="input-box"
                                 type="number"
-                                v-model="callcenterData.userOfflineSignRate">
-                        </el-input>
-                    </section>
-                    <section class="formBox">
-                        <span>考核周期</span>
-                        <el-select
-                          class="input-box"
-                          v-model="callcenterData.outbandReviewPeriod"
-                          filterable
-                          placeholder="请选择">
-                          <el-option
-                            v-for="(item, index) in periodTypes"
-                            :key="index"
-                            :label="item.dicValue"
-                            :value="item.dicKey">
-                          </el-option>
-                        </el-select>
-                    </section>
-                </div>
-                <el-button v-if="isEdit"
-                            class="save-btn" type="info" :plain="true" size="small" icon="document"
-                           @click="saveCallcenter">保存</el-button>
-                <div class="clear"></div>
-          </el-collapse-item>
-          <div class="line-bold"></div>
-          <el-collapse-item class="float-form-box" title="地面推广绩效计算规则" name="8">
-                <div class="formDiscount">
-                    <section class="formBox">
-                        <span>到场人数积分</span>
-                        <el-input
-                                class="input-box"
-                                type="number"
-                                v-model="callcenterData.partySignRate">
-                        </el-input>
-                    </section>
-                    <section class="formBox">
-                        <span>新增潜客积分</span>
-                        <el-input
-                                class="input-box"
-                                type="number"
-                                v-model="callcenterData.partyMemberRate">
+                                v-model="callcenterData.userSellRate">
                         </el-input>
                     </section>
                 </div>
@@ -355,14 +303,6 @@
           <el-collapse-item class="float-form-box" title="微信推广渠道绩效计算规则" name="9">
                 <div class="formDiscount">
                     <section class="formBox">
-                        <span>推广积分</span>
-                        <el-input
-                                class="input-box"
-                                type="number"
-                                v-model="callcenterData.adChannelSpreadRate">
-                        </el-input>
-                    </section>
-                    <section class="formBox">
                         <span>阅读积分</span>
                         <el-input
                                 class="input-box"
@@ -371,7 +311,7 @@
                         </el-input>
                     </section>
                     <section class="formBox">
-                        <span>新增潜客积分</span>
+                        <span>新会员积分</span>
                         <el-input
                                 class="input-box"
                                 type="number"
@@ -379,19 +319,12 @@
                         </el-input>
                     </section>
                     <section class="formBox">
-                        <span>评估周期</span>
-                        <el-select
-                          class="input-box"
-                          v-model="callcenterData.adChannelReviewPeriod"
-                          filterable
-                          placeholder="请选择">
-                          <el-option
-                            v-for="(item, index) in periodTypes"
-                            :key="index"
-                            :label="item.dicValue"
-                            :value="item.dicKey">
-                          </el-option>
-                        </el-select>
+                        <span>会员消费积分</span>
+                        <el-input
+                                class="input-box"
+                                type="number"
+                                v-model="callcenterData.adChannelSellRate">
+                        </el-input>
                     </section>
                 </div>
                 <el-button v-if="isEdit"
@@ -508,9 +441,10 @@ export default {
                 inbandResonseTime: '',
                 servicePhone: '',
                 callcenterDispatchRule: '',
-                // 软文推广规则
+                // 营销推广规则
                 pagePromotionOpt: '1',
                 commentReplayRule: '',
+                incentiveCreditRule: '1',
                 // 外呼规则
                 outbandMinPeriod: '',
                 outbandCoolingMinPeriod: '',
@@ -538,10 +472,13 @@ export default {
                 pipelineEngagementFailRate: '',
                 pipelineTrailFailRate: '',
                 pipelineOrderRate: '',
-                // 外呼绩效计算规则
+                // 销售绩效计算规则
                 userOutbandRate: '',
                 userReserveRate: '',
                 userOfflineSignRate: '',
+                userReadingRate: '',
+                userNewMemberRate: '',
+                userSellRate: '',
                 outbandReviewPeriod: '',
                 // 地面推广绩效计算规则
                 partySignRate: '',
@@ -550,6 +487,8 @@ export default {
                 adChannelSpreadRate: '',
                 adChannelReadRate: '',
                 adChannelMemberRate: '',
+                adChannelSellRate: '',
+                adChannelTrailRate: '',
                 adChannelReviewPeriod: '',
                 // 优惠券基本信息设置
                 couponCenterTitle: '',
@@ -565,6 +504,16 @@ export default {
             dispatchRules: [],
             periodTypes: [],
             commentReplayRule: [],
+            incentiveCreditRule: [
+                {
+                    value: '1',
+                    key: '销售和推广会员双重承认业绩'
+                },
+                {
+                    value: '0',
+                    key: '销售和推广会员单独核算业绩'
+                }
+            ],
             colorList: [
                 {
                     label: '#63b359',
