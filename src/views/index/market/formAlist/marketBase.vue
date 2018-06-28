@@ -27,6 +27,7 @@
               class="input-box"
               type="date"
               :disabled="!!$route.query.eventCode"
+              :picker-options="pickerOptionsEnd"
               v-model="base.eventEndTime"
               placeholder="选择">
             </el-date-picker>
@@ -114,6 +115,18 @@ export default {
         },
         descNum () {
           return 500 - this.base.eventPlanDesc.length
+        },
+        pickerOptionsEnd () {
+          var eventStartTime = this.base.eventStartTime
+
+          return {
+            disabledDate(time) {
+              var todayTime = eventStartTime ? new Date(eventStartTime).getTime() : Date.now() + 3600 * 1000 * 24 * 5
+              var isLtoday = time.getTime() < todayTime
+              var isRtoday = time.getTime() > todayTime + 3600 * 1000 * 24 * 31
+              return isLtoday || isRtoday
+            }
+          }
         }
     },
     watch: {
@@ -193,7 +206,7 @@ export default {
               return false
             }
 
-            if (endTimes - startTimes > 31 * 24 * 360 * 1000) {
+            if (endTimes - startTimes > 31 * 24 * 3600 * 1000) {
               this.$message({
                   message: '活动周期最长31天！',
                   type: 'warning'

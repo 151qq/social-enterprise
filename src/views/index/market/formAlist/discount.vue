@@ -116,6 +116,7 @@
                 <el-date-picker
                   type="date"
                   v-model="quanData.couponGroupBeginTime"
+                  :picker-options="pickerOptions"
                   placeholder="请选择">
                 </el-date-picker>
             </el-form-item>
@@ -123,6 +124,7 @@
                 <el-date-picker
                   type="date"
                   v-model="quanData.couponGroupEndTime"
+                  :picker-options="pickerOptions"
                   placeholder="请选择">
                 </el-date-picker>
             </el-form-item>
@@ -214,6 +216,19 @@ export default {
         },
         couponGroupIntroNum () {
           return 15 - this.quanData.couponGroupIntro.length
+        },
+        pickerOptions () {
+          var eventStartTime = this.base.eventStartTime
+          var eventEndTime = this.base.eventEndTime
+          return {
+            disabledDate(time) {
+              var startTime = new Date(eventStartTime).getTime()
+              var endTime = new Date(eventEndTime).getTime()
+              var isLtoday = time.getTime() < startTime
+              var isRtoday = time.getTime() > endTime
+              return isLtoday || isRtoday
+            }
+          }
         }
     },
     watch: {
